@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt)
 
-    // Send the userObject to the dbHandler.
+    // Send the userObject to the dbHandler. Need confirm back!
 
     // Return a token to the user.
 });
@@ -57,5 +57,6 @@ router.put('/:email', async (req, res) => {
     // Check from the dbHandler if user exists, if NOT return error.
 
     // if there is a user, update values and send it back.
-    let user;
 });
+
+export = router;
