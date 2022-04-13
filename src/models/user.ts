@@ -1,18 +1,18 @@
 import Joi from "joi";
+import { UserPuzzle } from "./userPuzzle";
 
 export class User {
     private _currentTask: string;
     private _isAdmin: boolean;
     private _userPuzzles: {
-        puzzleId: {
-            userInput: string,
-            answer: string,
-            completionTime: string,
-            numberOfWrongSubmissions: number
-        }
+        puzzleId: UserPuzzle
     };
 
-    constructor(private _name: string, private _email: string, private _password: string, private _year: number) {
+    constructor(
+        private _name: string,
+        private _email: string,
+        private _password: string,
+        private _year: number) {
     }
 
     set password(value) {
@@ -47,6 +47,17 @@ export class User {
         return this._isAdmin;
     }
 
+    set isAdmin(value: boolean) {
+        this._isAdmin = value;
+    }
+
+    addPuzzle(puzzle: UserPuzzle) {
+        this._userPuzzles[puzzle.id] = puzzle;
+    }
+
+    getPuzzle(id: string) {
+        return this._userPuzzles[id];
+    }
 }
 
 export function validateUser(user) {
@@ -54,7 +65,7 @@ export function validateUser(user) {
         name: Joi.string().min(3).max(50).required(),
         email: Joi.string().email().min(10).max(255).required(),
         password: Joi.string().min(8).max(255).required(),
-        year: Joi.number().required().greater(2015)
+        year: Joi.number().required().less(4).greater(0)
     });
 
     return schema.validate(user);
