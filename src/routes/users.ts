@@ -37,11 +37,13 @@ router.post('/', async (req, res) => {
 
     // Hash password.
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt)
+    user.password = await bcrypt.hash(user.password, salt);
 
     // Send the userObject to the dbHandler. Need confirm back!
-
+    
     // Return a token to the user.
+    const token = user.generateAuthToken();
+    res.status(200).header('x-auth-header', token).send(user);
 });
 
 // DELETE A USER
