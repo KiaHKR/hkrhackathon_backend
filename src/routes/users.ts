@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
     user.password = await bcrypt.hash(user.password, salt);
 
     // Send the userObject to the dbHandler. Need confirm back!
-    
+
     // Return a token to the user.
     const token = user.generateAuthToken();
     res.status(200).header('x-auth-header', token).send(user);
