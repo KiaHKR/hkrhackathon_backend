@@ -66,8 +66,8 @@ export class User {
 
     generateAuthToken = function() {
         return jwt.sign({
-            _id: this._id,
-            isAdmin: this.isAdmin
+            email: this._email,
+            isAdmin: this._isAdmin
         },
         process.env.JWT_KEY)
     }
