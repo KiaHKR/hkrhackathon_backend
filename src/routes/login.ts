@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
-    // call dbHandler to check if user exists, if not return error.
+    // dbHandler: GET userObject. If not found, return error.
 
     // validate password by using compare from bcrypt. If not valid return error.
 

@@ -7,8 +7,8 @@ router.get('/', auth, async (req, res) => {
 });
 
 router.get('/:email/:puzzleId', auth, async (req, res) => {
-    // dbHandler: GET userObject.
-    // dbHandler: GET puzzleObject.
+    // dbHandler: GET userObject. If not found, return error.
+    // dbHandler: GET puzzleObject. If not found, return error.
 
     // If User has puzzle id stored, return that.
 
@@ -17,7 +17,7 @@ router.get('/:email/:puzzleId', auth, async (req, res) => {
 });
 
 router.post('/:email', auth, async (req, res) => {
-   // dbHandler: GET userObject.
+    // dbHandler: GET userObject. If not found, return error.
 
    // If user has not the puzzleId, return error.
 
