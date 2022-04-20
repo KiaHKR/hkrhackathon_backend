@@ -1,7 +1,6 @@
 import express from "express";
 const router = express.Router();
 import auth from '../middleware/auth';
-import admin from '../middleware/admin';
 
 router.get('/', auth, async (req, res) => {
     // dbHandler: GET all the puzzles.
