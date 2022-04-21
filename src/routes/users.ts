@@ -1,12 +1,17 @@
 import express from "express";
 const router = express.Router();
 import { User, validateUser } from "../models/user";
+import { dbhandler} from "../database/dbhandler";
+const db = new dbhandler;
 import bcrypt from 'bcrypt';
 import auth from '../middleware/auth';
 
 // GET a user
 router.get('/', auth, async (req, res) => {
-    // dbHandler: GET userObject. If not found, return error.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const user = await db.getUserObject(req.user.email);
+    res.status(200).json(user);
 });
 
 // POST a user
