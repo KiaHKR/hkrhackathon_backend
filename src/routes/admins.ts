@@ -24,8 +24,8 @@ router.put('/:email', [auth, admin], async (req, res) => {
     let user: User = await db.getUserObject(req.params.email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
     user.name = req.body.name;
-    user.password = req.body.password;
     user.year = req.body.year;
+    user.isAdmin = req.body.isAdmin;
 
     user = await db.updateUserObject(user);
 
