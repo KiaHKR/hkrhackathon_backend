@@ -2,12 +2,19 @@ import express from "express";
 const router = express.Router();
 import auth from '../middleware/auth';
 import admin from '../middleware/admin';
+import { dbhandler } from "../database/dbhandler";
+import { User, validateUser } from '../models/user';
+const db = new dbhandler;
 
 // ADMIN CRUD OPERATION
 
 // DELETE user.
 router.delete('/:email', [auth, admin], async (req, res) => {
-    // dbHandler: DELETE userObject by email. If not found, return error.
+    const user = await db.deleteUserObject(req.params.email);
+
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
+
+    res.send(user);
 });
 
 // UPDATE user.

@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { dbhandler } from "../database/dbhandler";
+import { User } from '../models/user';
 import bcrypt from 'bcrypt';
 import Joi from "joi";
 
@@ -11,7 +12,7 @@ router.post('/', async (req, res) => {
 
     const db = new dbhandler;
     const user = await db.getUserObject(req.body.email);
-    if (!user) return res.status(400).json({ error: "Invalid email or password."});
+    if (!(user instanceof User)) return res.status(400).json({ error: "Invalid email or password."});
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send('Invalid email or password.');
