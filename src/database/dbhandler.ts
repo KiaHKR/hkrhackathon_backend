@@ -4,6 +4,7 @@ export class dbhandler {
     async saveUserObject(user) {
         // saves a user to the database.
         console.log("saveUserObject confirm")
+        return new User("joe", "joe@mama.se", "$2b$10$vhvR5lWTjyE2XQPw0AkClup7TVCHPZvxeKGTNvSlR2Oumj0CGeEN2", 2022)
     }
 
     async getUserObject(email) {
@@ -21,11 +22,13 @@ export class dbhandler {
     async deleteUserObject(email) {
         // deletes user from the database, ADMIN ONLY
         console.log("deleteUserObject confirm")
+        return new User("joe", "joe@mama.se", "$2b$10$vhvR5lWTjyE2XQPw0AkClup7TVCHPZvxeKGTNvSlR2Oumj0CGeEN2", 2022)
     }
 
     async updateUserObject(user) {
         // updates a user in the database.
         console.log("updateUserObject confirm")
+        return new User("joe", "joe@mama.se", "$2b$10$vhvR5lWTjyE2XQPw0AkClup7TVCHPZvxeKGTNvSlR2Oumj0CGeEN2", 2022)
     }
 
     // Puzzle related calls
