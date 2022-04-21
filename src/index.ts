@@ -14,7 +14,7 @@ if (!process.env.JWT_KEY) {
 }
 
 app.use(express.json());
-app.use('/users', users);
+app.use('/user', users);
 app.use('/login', login);
 app.use('/admin', admin);
 app.use('/auth', authentic);
