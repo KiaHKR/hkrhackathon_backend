@@ -3,7 +3,7 @@ const router = express.Router();
 import auth from '../middleware/auth';
 import admin from '../middleware/admin';
 import { dbhandler } from "../database/dbhandler";
-import { User, validateUser } from '../models/user';
+import { User, validateUserUpdate } from '../models/user';
 const db = new dbhandler;
 
 // ADMIN CRUD OPERATION
@@ -18,7 +18,7 @@ router.delete('/:email', [auth, admin], async (req, res) => {
 
 // UPDATE user.
 router.put('/:email', [auth, admin], async (req, res) => {
-    const { error } = validateUser(req.body);
+    const { error } = validateUserUpdate(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
     let user: User = await db.getUserObject(req.params.email);
