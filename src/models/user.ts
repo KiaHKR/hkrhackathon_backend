@@ -73,7 +73,16 @@ export class User {
     }
 }
 
-export function validateUser(user) {
+export function validateUserUpdate(user) {
+    const schema = Joi.object({
+        name: Joi.string().min(3).max(50).required(),
+        year: Joi.number().required().less(4).greater(0)
+    });
+
+    return schema.validate(user);
+}
+
+export function validateUserCreation(user) {
     const schema = Joi.object({
         name: Joi.string().min(3).max(50).required(),
         email: Joi.string().email().min(10).max(255).required(),
