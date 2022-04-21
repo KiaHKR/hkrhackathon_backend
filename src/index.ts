@@ -3,7 +3,6 @@ const app = express();
 import users from './routes/users'
 import login from './routes/login'
 import admin from './routes/admins'
-import authentic from './routes/authorisation';
 import puzzles from './routes/puzzles'
 
 import dotenv from 'dotenv';
@@ -17,7 +16,6 @@ app.use(express.json());
 app.use('/user', users);
 app.use('/login', login);
 app.use('/admin', admin);
-app.use('/auth', authentic);
 app.use('/puzzles', puzzles);
 
 const port = 3000 || process.env.PORT;
