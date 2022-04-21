@@ -2,22 +2,11 @@ import express from "express";
 const router = express.Router();
 import { User, validateUser } from "../models/user";
 import bcrypt from 'bcrypt';
-
-
-// GET all the users
-router.get('/', async (req, res) => {
-    // Get all the customers from the dbHandler.
-
-    // Construct the userObjects.
-
-    // Return the array.
-});
+import auth from '../middleware/auth';
 
 // GET a user
-router.get('/:email', async (req, res) => {
-    // Call dbHandler with the email, if not found return an error.
-
-    // Construct the userObject and return it
+router.get('/', auth, async (req, res) => {
+    // dbHandler: GET userObject. If not found, return error.
 });
 
 // POST a user
@@ -25,7 +14,7 @@ router.post('/', async (req, res) => {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
-    // Check from the dbHandler if user already exists, if so return error.
+    // dbHandler: GET userObject. If not found, return error.
 
     // Create the userObject
     let user = new User(
@@ -37,26 +26,30 @@ router.post('/', async (req, res) => {
 
     // Hash password.
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt)
+    user.password = await bcrypt.hash(user.password, salt);
 
-    // Send the userObject to the dbHandler. Need confirm back!
+    // dbHandler: SAVE userObject. return error/userObject.
 
     // Return a token to the user.
+    const token = user.generateAuthToken();
+    res.status(200).header('x-auth-header', token).send(user);
 });
 
 // DELETE A USER
-router.delete('/:email', async (req, res) => {
-    // call dbHandler with the email, if not found return an error.
+router.delete('/', auth, async (req, res) => {
+    // dbHandler: DELETE userObject. If not found, return error/userObject.
 });
 
 // PUT A USER
-router.put('/:email', async (req, res) => {
+router.put('/', auth, async (req, res) => {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
-    // Check from the dbHandler if user exists, if NOT return error.
+    // dbHandler: GET userObject. If not found, return error.
 
-    // if there is a user, update values and send it back.
+    // update values.
+
+    // dbHandler: UPDATE userObject. return error/userObject.
 });
 
 export = router;

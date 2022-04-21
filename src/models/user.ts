@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { UserPuzzle } from "./userPuzzle";
+import jwt from 'jsonwebtoken';
 
 export class User {
     private _currentTask: string;
@@ -17,6 +18,10 @@ export class User {
 
     set password(value) {
         this._password = value;
+    }
+
+    get password(): string {
+        return this._password;
     }
 
     get name(): string {
@@ -57,6 +62,14 @@ export class User {
 
     getPuzzle(id: string) {
         return this._userPuzzles[id];
+    }
+
+    generateAuthToken = function() {
+        return jwt.sign({
+            email: this._email,
+            isAdmin: this._isAdmin
+        },
+        process.env.JWT_KEY)
     }
 }
 
