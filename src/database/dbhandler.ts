@@ -9,13 +9,13 @@ export class dbhandler {
     async getUserObject(email) {
         // fetches a single user from the database and sends an object back.
         console.log("getUserObject confirm")
-        return new User("joe", "joe@mama.se", "joehasnomama", 2022)
+        return new User("joe", "joe@mama.se", "$2b$10$vhvR5lWTjyE2XQPw0AkClup7TVCHPZvxeKGTNvSlR2Oumj0CGeEN2", 2022)
     }
 
     async getAllUserObject() {
         // returns an array of all users in the database
         console.log("getAllUserObject confirm")
-        return [new User("joe", "joe@mama.se", "joehasnomama", 2022), new User("john", "john@doe.se", "johndoebae", 2022)]
+        return [new User("joe", "joe@mama.se", "$2b$10$vhvR5lWTjyE2XQPw0AkClup7TVCHPZvxeKGTNvSlR2Oumj0CGeEN2", 2022), new User("john", "john@doe.se", "$2b$10$vhvR5lWTjyE2XQPw0AkClup7TVCHPZvxeKGTNvSlR2Oumj0CGeEN2", 2022)]
     }
 
     async deleteUserObject(email) {
