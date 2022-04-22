@@ -3,29 +3,17 @@ dotenv.config();
 
 import express from 'express';
 const app = express();
-import users from './routes/users';
-import login from './routes/login';
-import admin from './routes/admins';
-import puzzles from './routes/puzzles';
-import mongoose from "mongoose";
-import error from './middleware/error'
 
-if (!process.env.JWT_KEY) {
-   console.log('FATAL ERROR: jwt private key is not defined.');
-   process.exit(1);
-}
+import logger from "./middleware/logger";
+import config from "./startup/config";
+import logging from "./startup/logging";
+import db from './startup/db'
+import routes from "./startup/routes";
 
-mongoose.connect(process.env.DB_CONNECT)
-    .then(() => console.log('Connected to mongoDB'));
+config();
+logging();
+routes(app);
+db();
 
-app.use(express.json());
-app.use('/user', users);
-app.use('/login', login);
-app.use('/admin', admin);
-app.use('/puzzles', puzzles);
-app.use(error);
-
-const port = 3000 || process.env.PORT;
-app.listen(port, () => {
-   return console.log(`Express is listening at: ${port} port.`)
-});
+const port = process.env.PORT || 3000;
+app.listen(port, () => logger.info(`Listening port ${port}...`));
