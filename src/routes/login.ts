@@ -4,9 +4,9 @@ import { dbhandler } from "../database/dbhandler";
 import { User } from '../models/user';
 import bcrypt from 'bcrypt';
 import Joi from "joi";
+import asyncMiddleware from '../middleware/async'
 
-
-router.post('/', async (req, res) => {
+router.post('/', asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 
     const userToken = user.generateAuthToken();
     res.json({ token: userToken });
-});
+}));
 
 function validate(request) {
     const schema = Joi.object({

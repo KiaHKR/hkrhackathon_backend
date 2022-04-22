@@ -5,15 +5,17 @@ import { dbhandler} from "../database/dbhandler";
 const db = new dbhandler;
 import bcrypt from 'bcrypt';
 import auth from '../middleware/auth';
+import asyncMiddleware from '../middleware/async'
 
 // GET user
-router.get('/', auth, async (req, res) => {
+router.get('/',  auth, asyncMiddleware(async (req, res) => {
+    throw new Error('test')
     const user = await db.getUserObject(req["user"].email);
     res.status(200).json(user);
-});
+}));
 
 // POST user
-router.post('/', async (req, res) => {
+router.post('/', asyncMiddleware(async (req, res) => {
     const { error } = validateUserCreation(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
@@ -34,18 +36,18 @@ router.post('/', async (req, res) => {
 
     const token = user.generateAuthToken();
     res.status(200).header('x-auth-header', token).json(user);
-});
+}));
 
 // DELETE user
-router.delete('/', auth, async (req, res) => {
+router.delete('/', auth, asyncMiddleware(async (req, res) => {
     const user = await db.deleteUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
 
     res.json(user);
-});
+}));
 
 // PUT user
-router.put('/', auth, async (req, res) => {
+router.put('/', auth, asyncMiddleware(async (req, res) => {
     const { error } = validateUserUpdate(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
@@ -57,10 +59,10 @@ router.put('/', auth, async (req, res) => {
     user = await db.updateUserObject(user);
 
     res.status(200).send(user);
-});
+}));
 
 // GET userFile
-router.get('/:puzzleId', auth, async (req, res) => {
+router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     // dbHandler: GET userObject. If not found, return error.
     // dbHandler: GET puzzleObject. If not found, return error.
 
@@ -68,6 +70,6 @@ router.get('/:puzzleId', auth, async (req, res) => {
 
     // Else puzzleHandler: GET puzzleObject, and save it to the userObject, then return puzzleObject.
 
-});
+}));
 
 export = router;
