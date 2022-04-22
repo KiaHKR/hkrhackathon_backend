@@ -8,14 +8,14 @@ import Joi from "joi";
 
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
-    if (error) return res.status(400).json({error: error.details[0].message});
+    if (error) return res.status(400).json({ error: error.details[0].message });
 
     const db = new dbhandler;
     const user = await db.getUserObject(req.body.email);
-    if (!(user instanceof User)) return res.status(400).json({ error: "Invalid email or password."});
+    if (!(user instanceof User)) return res.status(400).json({ error: "Invalid email or password." });
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).json({ error: "Invalid email or password."});
+    if (!validPassword) return res.status(400).json({ error: "Invalid email or password." });
 
     const userToken = user.generateAuthToken();
     res.json({ token: userToken });

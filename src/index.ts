@@ -14,7 +14,13 @@ if (!process.env.JWT_KEY) {
 }
 
 mongoose.connect(process.env.DB_CONNECT)
-    .then(() => console.log('Connected to mongoDB'));
+   .then(() => console.log('Connected to mongoDB'));
+
+app.use((req, res, next) => {
+   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Headers', '*');
+   next();
+})
 
 app.use(express.json());
 app.use('/user', users);
