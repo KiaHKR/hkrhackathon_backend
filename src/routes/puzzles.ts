@@ -1,12 +1,17 @@
 import express from "express";
 const router = express.Router();
 import auth from '../middleware/auth';
+import {dbhandler} from "../database/dbhandler";
+const db = new dbhandler;
 
 router.get('/', auth, async (req, res) => {
-    // dbHandler: GET all the puzzles.
+    const puzzles = await db.getAllPuzzles();
+//    if (puzzles.length === 0) return res.status(404).json({ error: "No puzzles in the database." });
+
+    res.status(200).send(puzzles);
 });
 
-router.get('/:email/:puzzleId', auth, async (req, res) => {
+router.get('/:puzzleId', auth, async (req, res) => {
     // dbHandler: GET userObject. If not found, return error.
     // dbHandler: GET puzzleObject. If not found, return error.
 
