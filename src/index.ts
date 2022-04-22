@@ -1,9 +1,9 @@
 import express from 'express';
 const app = express();
-import users from './routes/users'
-import login from './routes/login'
-import admin from './routes/admins'
-import puzzles from './routes/puzzles'
+import users from './routes/users';
+import login from './routes/login';
+import admin from './routes/admins';
+import puzzles from './routes/puzzles';
 import mongoose from "mongoose";
 
 import dotenv from 'dotenv';
