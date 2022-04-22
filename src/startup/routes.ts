@@ -7,6 +7,11 @@ import express from "express";
 
 export default function (app) {
     app.use(express.json());
+    app.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', '*');
+        next();
+    });
     app.use('/user', users);
     app.use('/login', login);
     app.use('/admin', admin);
