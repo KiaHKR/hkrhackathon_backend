@@ -4,7 +4,8 @@ export class puzzle {
     constructor(
         private _id: string,
         private _title: string,
-        private _story: string
+        private _story: string,
+        private _examples: string[]
     ) {}
 
 
@@ -30,6 +31,15 @@ export class puzzle {
 
     set story(value: string) {
         this._story = value;
+    }
+
+
+    get examples(): string[] {
+        return this._examples;
+    }
+
+    set examples(value: string[]) {
+        this._examples = value;
     }
 }
 
