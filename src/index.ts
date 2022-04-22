@@ -4,6 +4,7 @@ import users from './routes/users'
 import login from './routes/login'
 import admin from './routes/admins'
 import puzzles from './routes/puzzles'
+import mongoose from "mongoose";
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -11,6 +12,9 @@ if (!process.env.JWT_KEY) {
    console.log('FATAL ERROR: jwt private key is not defined.');
    process.exit(1);
 }
+
+mongoose.connect(process.env.DB_CONNECT)
+    .then(() => console.log('Connected to mongoDB'));
 
 app.use(express.json());
 app.use('/user', users);
