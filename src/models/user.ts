@@ -20,11 +20,11 @@ export class User {
         this._password = value;
     }
 
-    get password(): string {
+    get password() {
         return this._password;
     }
 
-    get name(): string {
+    get name() {
         return this._name;
     }
 
@@ -32,7 +32,7 @@ export class User {
         this._name = value;
     }
 
-    get year(): number {
+    get year() {
         return this._year;
     }
 
@@ -40,7 +40,7 @@ export class User {
         this._year = value;
     }
 
-    get currentTask(): string {
+    get currentTask() {
         return this._currentTask;
     }
 
@@ -48,7 +48,7 @@ export class User {
         this._currentTask = value;
     }
 
-    get isAdmin(): boolean {
+    get isAdmin() {
         return this._isAdmin;
     }
 
@@ -75,7 +75,7 @@ export class User {
 
 export function validateUserUpdate(user) {
     const schema = Joi.object({
-        name: Joi.string().min(3).max(50).required(),
+        name: Joi.string().min(2).max(50).required(),
         year: Joi.number().required().less(4).greater(0)
     });
 
@@ -84,9 +84,9 @@ export function validateUserUpdate(user) {
 
 export function validateUserCreation(user) {
     const schema = Joi.object({
-        name: Joi.string().min(3).max(50).required(),
-        email: Joi.string().email().min(10).max(255).required(),
-        password: Joi.string().min(8).max(255).required(),
+        name: Joi.string().min(2).max(50).required(),
+        email: Joi.string().email().min(5).max(255).required(),
+        password: Joi.string().min(8).max(50).required(),
         year: Joi.number().required().less(4).greater(0)
     });
 

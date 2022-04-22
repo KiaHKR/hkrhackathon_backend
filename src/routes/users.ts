@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { User, validateUserCreation, validateUserUpdate } from "../models/user";
-import { dbhandler} from "../database/dbhandler";
+import { dbhandler } from "../database/dbhandler";
 const db = new dbhandler;
 import bcrypt from 'bcrypt';
 import auth from '../middleware/auth';
@@ -9,7 +9,6 @@ import asyncMiddleware from '../middleware/async'
 
 // GET user
 router.get('/',  auth, asyncMiddleware(async (req, res) => {
-    throw new Error('test')
     const user = await db.getUserObject(req["user"].email);
     res.status(200).json(user);
 }));
@@ -20,7 +19,7 @@ router.post('/', asyncMiddleware(async (req, res) => {
     if (error) return res.status(400).json({error: error.details[0].message});
 
     let user = await db.getUserObject(req.body.email);
-    if (!(user instanceof User)) return res.status(400).json({error: "Email already in use."});
+    if (user instanceof User) return res.status(400).json({error: "Email already in use."});
 
     user = new User(
         req.body.name,
