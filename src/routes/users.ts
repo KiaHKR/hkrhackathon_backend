@@ -8,9 +8,7 @@ import auth from '../middleware/auth';
 
 // GET a user
 router.get('/', auth, async (req, res) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const user = await db.getUserObject(req.user.email);
+    const user = await db.getUserObject(req["user"].email);
     res.status(200).json(user);
 });
 
@@ -40,9 +38,7 @@ router.post('/', async (req, res) => {
 
 // DELETE A USER
 router.delete('/', auth, async (req, res) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const user = await db.deleteUserObject(req.user.email);
+    const user = await db.deleteUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
 
     res.json(user);
@@ -53,9 +49,7 @@ router.put('/', auth, async (req, res) => {
     const { error } = validateUserUpdate(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    let user = await db.getUserObject(req.user.email);
+    let user = await db.getUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
     user.name = req.body.name;
     user.year = req.body.year;
