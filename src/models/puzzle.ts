@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export class puzzle {
+export class Puzzle {
     constructor(
         private _id: string,
         private _title: string,
