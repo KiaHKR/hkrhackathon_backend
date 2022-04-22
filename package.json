@@ -1,5 +1,6 @@
 {
   "name": "hkrhackathon_backend",
+  "type": "module",
   "version": "1.0.0",
   "description": "cake",
   "main": "index.js",
@@ -33,6 +34,8 @@
     "express": "^4.17.3",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.0"
+    "mongoose": "^6.3.0",
+    "winston": "^3.7.2",
+    "winston-mongodb": "^5.0.7"
   }
 }
