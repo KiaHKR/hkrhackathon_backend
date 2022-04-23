@@ -3,7 +3,7 @@ import { UserPuzzle } from "./userPuzzle";
 import jwt from 'jsonwebtoken';
 
 export class User {
-    private _currentTask: string;
+    private _currentPuzzleId: string;
     private _isAdmin: boolean;
     private _userPuzzles: {
         puzzleId: UserPuzzle
@@ -14,6 +14,11 @@ export class User {
         private _email: string,
         private _password: string,
         private _year: number) {
+    }
+
+
+    get email(): string {
+        return this._email;
     }
 
     set password(value) {
@@ -40,12 +45,12 @@ export class User {
         this._year = value;
     }
 
-    get currentTask() {
-        return this._currentTask;
+    get currentPuzzleId(): string {
+        return this._currentPuzzleId;
     }
 
-    set currentTask(value: string) {
-        this._currentTask = value;
+    set currentPuzzleId(value: string) {
+        this._currentPuzzleId = value;
     }
 
     get isAdmin() {

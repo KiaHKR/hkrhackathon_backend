@@ -13,11 +13,9 @@ router.get('/', auth, asyncMiddleware(async (req, res) => {
     res.status(200).send(puzzles);
 }));
 
-// GET a puzzle
+// GET a puzzle     possibly not needed.
 router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     // GET a puzzle by id.
-
-
 }));
 
 // POST user's answer

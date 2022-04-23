@@ -1,10 +1,17 @@
+import { User } from "./user";
+
 export default class PublicUser {
     name: string;
     email: string;
     year: number;
     isAdmin: boolean;
-    nextPuzzleId: string;
-    userPuzzles: {
-        [puzzleId: string]: string // This is key-value. Value is the user game data.
+    currentPuzzleId: string;
+
+    fromUser(user: User) {
+        this.name = user.name;
+        this.email = user.email;
+        this.year = user.year;
+        this.isAdmin = user.isAdmin;
+        this.currentPuzzleId = user.currentPuzzleId;
     }
 }
