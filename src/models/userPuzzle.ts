@@ -4,7 +4,8 @@ export class UserPuzzle {
         private _userInput: string,
         private _answer: string,
         private _completionTime: string,
-        private _numberOfWrongSubmissions: number) {
+        private _numberOfWrongSubmissions: number,
+        private _completed: boolean) {
     }
 
 
@@ -46,5 +47,13 @@ export class UserPuzzle {
 
     set numberOfWrongSubmissions(value: number) {
         this._numberOfWrongSubmissions = value;
+    }
+
+    get completed(): boolean {
+        return this._completed;
+    }
+
+    set completed(value: boolean) {
+        this._completed = value;
     }
 }
