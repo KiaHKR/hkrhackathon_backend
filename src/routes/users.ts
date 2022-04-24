@@ -35,6 +35,8 @@ router.post('/', asyncMiddleware(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
+    // ADD FIRST
+
     await db.saveUserObject(user);
     const publicUser = new PublicUser;
     publicUser.fromUser(user)

@@ -3,9 +3,9 @@ export class UserPuzzle {
         private _id: string,
         private _userInput: string,
         private _answer: string,
-        private _completionTime: string,
-        private _numberOfWrongSubmissions: number,
-        private _completed: boolean) {
+        private _completionTime: number,
+        private _numberOfWrongSubmissions = 0,
+        private _completed = false) {
     }
 
 
@@ -33,27 +33,24 @@ export class UserPuzzle {
         this._answer = value;
     }
 
-    get completionTime(): string {
+    get completionTime(): number {
         return this._completionTime;
-    }
-
-    set completionTime(value: string) {
-        this._completionTime = value;
-    }
-
-    get numberOfWrongSubmissions(): number {
-        return this._numberOfWrongSubmissions;
-    }
-
-    set numberOfWrongSubmissions(value: number) {
-        this._numberOfWrongSubmissions = value;
     }
 
     get completed(): boolean {
         return this._completed;
     }
 
-    set completed(value: boolean) {
-        this._completed = value;
+    get numberOfWrongSubmissions(): number {
+        return this._numberOfWrongSubmissions;
+    }
+
+    correct() {
+        this._completionTime = Date.now();
+        this._completed = true;
+    }
+
+    incorrect() {
+        this._numberOfWrongSubmissions ++;
     }
 }

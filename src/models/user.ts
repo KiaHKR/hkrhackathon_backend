@@ -63,10 +63,15 @@ export class User {
 
     addPuzzle(puzzle: UserPuzzle) {
         this._userPuzzles[puzzle.id] = puzzle;
+        this._currentPuzzleId = puzzle.id
     }
 
     getPuzzle(id: string) {
         return this._userPuzzles[id];
+    }
+
+    updatePuzzle(puzzle: UserPuzzle) {
+        this._userPuzzles[puzzle.id] = puzzle;
     }
 
     generateAuthToken = function() {
