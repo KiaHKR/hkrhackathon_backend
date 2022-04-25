@@ -6,7 +6,7 @@ export default function() {
         winston.add(new winston.transports.Console());
         logger.error(ex.message, ex);
         winston.info(ex);
-    }
+    };
 
     process.on('uncaughtException', (ex) => {
         actions(ex);
