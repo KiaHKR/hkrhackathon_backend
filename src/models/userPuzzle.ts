@@ -1,11 +1,12 @@
 export class UserPuzzle {
+    private _completionTime: number;
+    private _numberOfWrongSubmissions = 0;
+    private _completed = false;
+    
     constructor(
         private _id: string,
         private _userInput: string,
-        private _answer: string,
-        private _completionTime: number,
-        private _numberOfWrongSubmissions = 0,
-        private _completed = false) {
+        private _answer: string,) {
     }
 
 

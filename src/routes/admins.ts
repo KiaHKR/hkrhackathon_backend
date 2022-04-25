@@ -64,6 +64,4 @@ router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
     res.status(200).send(publicUsers);
 }));
 
-// POST PUZZLES
-
 export = router;

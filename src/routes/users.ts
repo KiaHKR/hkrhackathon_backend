@@ -7,6 +7,9 @@ import bcrypt from 'bcrypt';
 import auth from '../middleware/auth';
 import asyncMiddleware from '../middleware/async'
 import PublicUser from "../models/publicUser";
+import PuzzleHandler from "../puzzle_service/puzzleHandler";
+import {UserPuzzle} from "../models/userPuzzle";
+const puzzleHandler = new PuzzleHandler;
 
 
 // GET user
@@ -35,7 +38,9 @@ router.post('/', asyncMiddleware(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
-    // ADD FIRST
+    const newCurrentPuzzleId = await db.getNextPuzzleId();
+    const userPuzzle = PuzzleHandler.generatePuzzle(newCurrentPuzzleId);
+    user.addPuzzle(userPuzzle);
 
     await db.saveUserObject(user);
     const publicUser = new PublicUser;
@@ -76,17 +81,12 @@ router.put('/', auth, asyncMiddleware(async (req, res) => {
 
 // GET userFile
 router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
-    // return long ass string for USERS puzzleId.
+    const user = await db.getUserObject(req["user"].email);
 
+    const userPuzzle = user.getPuzzle(req.params.puzzleId)
+    if (!(userPuzzle instanceof UserPuzzle)) return res.status(404).json({ error: "No puzzle found." });
 
-
-    // dbHandler: GET userObject. If not found, return error.
-    // dbHandler: GET puzzleObject. If not found, return error.
-
-    // If User has puzzle id stored, return that.
-
-    // Else puzzleHandler: GET puzzleObject, and save it to the userObject, then return puzzleObject.
-
+    res.status(200).json({ userInput: userPuzzle.userInput });
 }));
 
 export = router;

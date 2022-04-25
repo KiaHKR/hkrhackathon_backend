@@ -1,4 +1,5 @@
-import { User } from "../models/user" // userObject
+import { User } from "../models/user"
+import {UserPuzzle} from "../models/userPuzzle"; // userObject
 export class dbhandler {
 
     async saveUserObject(user) {
@@ -10,7 +11,10 @@ export class dbhandler {
     async getUserObject(email) {
         // fetches a single user from the database and sends an object back.
         console.log("getUserObject confirm")
-        return new User("joe", "joe@mama.se", "$2b$10$vhvR5lWTjyE2XQPw0AkClup7TVCHPZvxeKGTNvSlR2Oumj0CGeEN2", 2022)
+        const userPuzzle = new UserPuzzle("test", "123123123", "3")
+        const user = new User("joe", "joe@mama.se", "$2b$10$vhvR5lWTjyE2XQPw0AkClup7TVCHPZvxeKGTNvSlR2Oumj0CGeEN2", 2022)
+        user.addPuzzle(userPuzzle);
+        return user
     }
 
     async getAllUserObject() {
@@ -57,5 +61,8 @@ export class dbhandler {
         console.log("detelePuzzle confirmed")
     }
 
-
+    async getNextPuzzleId(id?: string) {
+        // Function to return next puzzle's Id. IF no param present sent the first puzzle.
+        return undefined
+    }
 }

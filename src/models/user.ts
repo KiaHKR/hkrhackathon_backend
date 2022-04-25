@@ -6,8 +6,8 @@ export class User {
     private _currentPuzzleId: string;
     private _isAdmin: boolean;
     private _userPuzzles: {
-        puzzleId: UserPuzzle
-    };
+        [puzzleId: string]: UserPuzzle
+    } = {};
 
     constructor(
         private _name: string,
@@ -62,8 +62,8 @@ export class User {
     }
 
     addPuzzle(puzzle: UserPuzzle) {
-        this._userPuzzles[puzzle.id] = puzzle;
         this._currentPuzzleId = puzzle.id
+        this._userPuzzles[puzzle.id] = puzzle;
     }
 
     getPuzzle(id: string) {
