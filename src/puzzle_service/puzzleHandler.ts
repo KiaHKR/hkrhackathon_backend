@@ -1,13 +1,21 @@
-import { UserPuzzle } from "../models/userPuzzle";
+import {UserPuzzle} from "../models/userPuzzle";
+import {PuzzleModuleInterface} from "./puzzleModuleInterface";
+import AlphaPuzzle from "./alphaPuzzle";
 
 export default class PuzzleHandler{
+    private static puzzleClasses: {
+        [puzzleId: string]: PuzzleModuleInterface
+    } = {
+        "alphaPuzzle" : new AlphaPuzzle()
+    };
 
-    checkAnswer(id:string, correctAnswer: string, guessAnswer: string) {
-        if (guessAnswer == correctAnswer) return { answer: true, information: "Correct" };
-        return { answer: false, information: "Incorrect" };
+    static generatePuzzle(id: string): UserPuzzle {
+        const puzzleClass = PuzzleHandler.puzzleClasses[id];
+        return puzzleClass.generatePuzzle();
     }
 
-    generatePuzzle(newCurrentPuzzleId: any): UserPuzzle {
-        return undefined
+    static checkAnswer(id: string, correctAnswer: string, guessAnswer: string) {
+        const puzzleClass = PuzzleHandler.puzzleClasses[id];
+        return puzzleClass.checkAnswer(correctAnswer, guessAnswer);
     }
 }
