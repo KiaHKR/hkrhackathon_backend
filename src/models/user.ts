@@ -79,7 +79,10 @@ export class User {
             email: this._email,
             isAdmin: this._isAdmin
         },
-        process.env.JWT_KEY)
+            process.env.JWT_KEY,
+            {
+                expiresIn: process.env.JWT_EXPIRES_IN
+            })
     }
 }
 
