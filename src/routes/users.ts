@@ -8,15 +8,14 @@ import auth from '../middleware/auth';
 import asyncMiddleware from '../middleware/async'
 import PublicUser from "../models/publicUser";
 import PuzzleHandler from "../puzzle_service/puzzleHandler";
-import {UserPuzzle} from "../models/userPuzzle";
-const puzzleHandler = new PuzzleHandler;
+import { UserPuzzle } from "../models/userPuzzle";
 
 
 // GET user
 router.get('/',  auth, asyncMiddleware(async (req, res) => {
     const user = await db.getUserObject(req["user"].email);
     const publicUser = new PublicUser;
-    publicUser.fromUser(user)
+    publicUser.fromUser(user);
     res.status(200).json(publicUser);
 }));
 
