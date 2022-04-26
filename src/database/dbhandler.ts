@@ -4,7 +4,6 @@ import { Schema, model, connect } from 'mongoose';
 import * as dotenv from "dotenv";
 import { dbUser } from "./models/db_users"
 import { dbPuzzle } from "./models/db_puzzles";
-import { updateCommaList, updateNamedExports } from "typescript";
 
 export class dbhandler {
     // Upon creating the class, the boot method connects to the db.
@@ -42,8 +41,6 @@ export class dbhandler {
             return 'User not found.'
         }
     }
-
-
 
     async getAllUserObject() { // tested and working
         // returns an array of all users in the database
