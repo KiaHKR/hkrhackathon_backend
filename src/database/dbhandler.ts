@@ -1,6 +1,18 @@
 import { User } from "../models/user"
-import {UserPuzzle} from "../models/userPuzzle"; // userObject
+import { UserPuzzle } from "../models/userPuzzle"; // userObject
+import { Schema, model, connect } from 'mongoose';
+import * as dotenv from "dotenv";
+
 export class dbhandler {
+
+    constructor() {
+        dotenv.config();
+        this.boot();
+    }
+    async boot() {
+        await connect(process.env.DB_CONNECT)
+        console.log('Database connected.')
+    }
 
     async saveUserObject(user) {
         // saves a user to the database.
