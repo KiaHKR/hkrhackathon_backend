@@ -14,6 +14,4 @@ describe('puzzleHandler', () => {
             });
         });
     });
-
-    
 });
