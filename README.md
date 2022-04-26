@@ -18,4 +18,4 @@ cake
 | /admin    | GET       | /:email    |                             | adminToken | error/publicUser                             |
 | /admin    | GET       |            |                             | adminToken | error/publicUser[]                           |
 | /puzzles  | GET       |            |                             | token      | puzzleObjects[]                              |
-| /puzzles  | POST      | /:puzzleId | answer                      | token      | error/{answer: boolean, information: string} |
+| /puzzles  | POST      | /:puzzleId | guess                       | token      | error/{answer: boolean, information: string} |

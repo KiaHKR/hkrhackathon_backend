@@ -25,7 +25,7 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     const userPuzzle = user.getPuzzle(req.params.puzzleId);
     if (!(userPuzzle instanceof UserPuzzle)) return res.status(404).json({ error: "No puzzle found." });
 
-    const result: { answer, information } = PuzzleHandler.checkAnswer(userPuzzle.id, userPuzzle.answer, req.body.answer);
+    const result: { answer, information } = PuzzleHandler.checkAnswer(userPuzzle.id, userPuzzle.answer, req.body.guess);
 
     if (userPuzzle.completed) return res.status(200).json(result);
 
