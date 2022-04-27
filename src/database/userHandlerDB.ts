@@ -2,12 +2,12 @@ import { dbUser } from "./models/db_users"
 
 
 /** Class for handling all db interactions */
-export class userHandler {
+export class UserHandlerDB {
     // Upon creating the class, the boot method connects to the db.
 
 
     userDeconstruct(user) {
-        return { name: user._name, email: user._email, password: user._password, year: user._year, currentTask: user._currentTask, userPuzzles: user._userPuzzles, isAdmin: user._isAdmin }
+        return { name: user._name, email: user._email, password: user._password, year: user._year, currentPuzzleId: user._currentPuzzleId, userPuzzles: user._userPuzzles, isAdmin: user._isAdmin }
     }
 
 
@@ -49,7 +49,7 @@ export class userHandler {
     async updateUserObject(user) { // discuss with Aki, currently searches by email. Tested and working
         // updates a user in the database.
         const userInfo = this.userDeconstruct(user)
-        const res = await dbUser.findOneAndUpdate({ email: userInfo.email }, { name: userInfo.name, email: userInfo.email, password: userInfo.password, year: userInfo.year, currentTask: userInfo.currentTask, userPuzzles: userInfo.userPuzzles, isAdmin: userInfo.isAdmin });
+        const res = await dbUser.findOneAndUpdate({ email: userInfo.email }, { name: userInfo.name, email: userInfo.email, password: userInfo.password, year: userInfo.year, currentPuzzleId: userInfo.currentPuzzleId, userPuzzles: userInfo.userPuzzles, isAdmin: userInfo.isAdmin });
         if (res) {
             console.log("updateUserObject confirm.")
 
