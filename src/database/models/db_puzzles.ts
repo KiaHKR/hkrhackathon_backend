@@ -33,4 +33,5 @@ const puzzleSchema = new mongoose.Schema({
 
 
 
-module.exports = mongoose.model('Puzzle', puzzleSchema);
+const dbPuzzle = mongoose.model('dbPuzzle', puzzleSchema)
+export { dbPuzzle }
