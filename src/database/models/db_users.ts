@@ -22,7 +22,7 @@ var userSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    currentTask: {
+    currentPuzzleId: {
         type: String,
         required: false,
         max: 1024,
