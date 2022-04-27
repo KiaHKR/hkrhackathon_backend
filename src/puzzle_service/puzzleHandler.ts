@@ -1,12 +1,12 @@
 import {UserPuzzle} from "../models/userPuzzle";
 import {PuzzleModuleInterface} from "./puzzleModuleInterface";
-import AlphaPuzzle from "./alphaPuzzle";
+import TestPuzzle from "./testPuzzle";
 
 export default class PuzzleHandler{
     private static puzzleClasses: {
         [puzzleId: string]: PuzzleModuleInterface
     } = {
-        "alphaPuzzle" : new AlphaPuzzle()
+        "testPuzzle" : new TestPuzzle()
     };
 
     static generatePuzzle(id: string): UserPuzzle {

@@ -1,7 +1,7 @@
 import { PuzzleModuleInterface } from "./puzzleModuleInterface";
 import { UserPuzzle } from "../models/userPuzzle";
 
-export default class AlphaPuzzle implements PuzzleModuleInterface {
+export default class TestPuzzle implements PuzzleModuleInterface {
     puzzleId: "alphaPuzzle";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer; information } {
