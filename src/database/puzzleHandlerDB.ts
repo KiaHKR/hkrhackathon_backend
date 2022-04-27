@@ -28,7 +28,7 @@ export class PuzzleHandlerDB {
             return puzzle
         } else {
             console.log("getPuzzle confirm.")
-            return 'Puzzle not found.'
+            return { error: 'Puzzle not found.' }
         }
     }
 
@@ -48,7 +48,7 @@ export class PuzzleHandlerDB {
             return res
         } else {
             console.log("updatePuzzle confirm.")
-            return "Puzzle update failed, puzzle not found."
+            return { error: "Puzzle update failed, puzzle not found." }
         }
     }
 

@@ -28,7 +28,7 @@ export class UserHandlerDB {
             return user
         } else {
             console.log("getUserObject confirm.")
-            return 'User not found.'
+            return { error: 'User not found.' }
         }
     }
 
@@ -57,7 +57,7 @@ export class UserHandlerDB {
         } else {
             console.log("updateUserObject confirm.")
 
-            return "User update failed, user not found."
+            return { error: "User update failed, user not found." }
         }
     }
 }
