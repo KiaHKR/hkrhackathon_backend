@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const userSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -18,16 +18,19 @@ const userSchema = new mongoose.Schema({
         max: 1024,
         min: 6
     },
+    year: {
+        type: Number,
+        required: true
+    },
     currentTask: {
         type: String,
-        required: true,
+        required: false,
         max: 1024,
         min: 6
     },
     userPuzzles: {
         puzzleId: {
             type: Object,  // discuss with Aki
-            required: true,
             max: 1024,
             min: 6
         }
@@ -38,4 +41,5 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+const dbUser = mongoose.model('User', userSchema)
+export { dbUser }
