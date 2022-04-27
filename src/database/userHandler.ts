@@ -2,7 +2,7 @@ import { dbUser } from "./models/db_users"
 
 
 /** Class for handling all db interactions */
-export class userHandler {
+export class UserHandlerDB {
     // Upon creating the class, the boot method connects to the db.
 
 
