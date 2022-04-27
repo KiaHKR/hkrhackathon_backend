@@ -1,15 +1,19 @@
 import express from "express";
 const router = express.Router();
+
 import auth from '../middleware/auth';
-import { dbhandler } from "../database/dbhandler";
-const db = new dbhandler;
 import asyncMiddleware from '../middleware/async'
+
 import { UserPuzzle } from "../models/userPuzzle";
 import PuzzleHandler from "../puzzle_service/puzzleHandler";
+import {PuzzleHandlerDB} from "../database/puzzleHandlerDB";
+const puzzleDB = new PuzzleHandlerDB();
+import {UserHandlerDB} from "../database/userHandlerDB";
+const userDB = new UserHandlerDB();
 
 // GET all puzzles
 router.get('/', auth, asyncMiddleware(async (req, res) => {
-    const puzzles = await db.getAllPuzzles();
+    const puzzles = await puzzleDB.getAllPuzzles();
     res.status(200).send(puzzles);
 }));
 
@@ -20,7 +24,7 @@ router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
 
 // POST user's answer
 router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
-    const user = await db.getUserObject(req["user"].email);
+    const user = await userDB.getUserObject(req["user"].email);
 
     const userPuzzle = user.getPuzzle(req.params.puzzleId);
     if (!(userPuzzle instanceof UserPuzzle)) return res.status(404).json({ error: "No puzzle found." });
@@ -32,7 +36,7 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     if (result.answer) {
         userPuzzle.correct()
         user.updatePuzzle(userPuzzle);
-        const newCurrentPuzzleId = await db.getNextPuzzleId(userPuzzle.id);
+        const newCurrentPuzzleId = await puzzleDB.getNextPuzzleId(userPuzzle.id);
         const newUserPuzzle = PuzzleHandler.generatePuzzle(newCurrentPuzzleId);
         user.addPuzzle(newUserPuzzle);
     }
@@ -41,7 +45,7 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
         user.updatePuzzle(userPuzzle)
     }
 
-    await db.updateUserObject(user);
+    await userDB.updateUserObject(user);
     return res.status(200).json(result);
 }));
 

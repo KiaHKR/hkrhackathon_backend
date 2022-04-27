@@ -1,19 +1,22 @@
 import express from "express";
 const router = express.Router();
 import { User, validateUserCreation, validateUserUpdate } from "../models/user";
-import { dbhandler } from "../database/dbhandler";
-const db = new dbhandler;
 import bcrypt from 'bcrypt';
+
 import auth from '../middleware/auth';
 import asyncMiddleware from '../middleware/async'
+
 import PublicUser from "../models/publicUser";
 import PuzzleHandler from "../puzzle_service/puzzleHandler";
 import { UserPuzzle } from "../models/userPuzzle";
-
+import {PuzzleHandlerDB} from "../database/puzzleHandlerDB";
+const puzzleDB = new PuzzleHandlerDB();
+import {UserHandlerDB} from "../database/userHandlerDB";
+const userDB = new UserHandlerDB();
 
 // GET user
 router.get('/',  auth, asyncMiddleware(async (req, res) => {
-    const user = await db.getUserObject(req["user"].email);
+    const user = await userDB.getUserObject(req["user"].email);
     const publicUser = new PublicUser;
     publicUser.fromUser(user);
     res.status(200).json(publicUser);
@@ -24,7 +27,7 @@ router.post('/', asyncMiddleware(async (req, res) => {
     const { error } = validateUserCreation(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
-    let user = await db.getUserObject(req.body.email);
+    let user = await userDB.getUserObject(req.body.email);
     if (user instanceof User) return res.status(400).json({error: "Email already in use."});
 
     user = new User(
@@ -37,11 +40,11 @@ router.post('/', asyncMiddleware(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
-    const newCurrentPuzzleId = await db.getNextPuzzleId();
+    const newCurrentPuzzleId = await puzzleDB.getNextPuzzleId();
     const userPuzzle = PuzzleHandler.generatePuzzle(newCurrentPuzzleId);
     user.addPuzzle(userPuzzle);
 
-    await db.saveUserObject(user);
+    await userDB.saveUserObject(user);
     const publicUser = new PublicUser;
     publicUser.fromUser(user)
 
@@ -51,7 +54,7 @@ router.post('/', asyncMiddleware(async (req, res) => {
 
 // DELETE user
 router.delete('/', auth, asyncMiddleware(async (req, res) => {
-    const user = await db.deleteUserObject(req["user"].email);
+    const user = await userDB.deleteUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
 
     const publicUser = new PublicUser;
@@ -65,12 +68,12 @@ router.put('/', auth, asyncMiddleware(async (req, res) => {
     const { error } = validateUserUpdate(req.body);
     if (error) return res.status(400).json({error: error.details[0].message});
 
-    let user = await db.getUserObject(req["user"].email);
+    let user = await userDB.getUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
     user.name = req.body.name;
     user.year = req.body.year;
 
-    user = await db.updateUserObject(user);
+    user = await userDB.updateUserObject(user);
 
     const publicUser = new PublicUser;
     publicUser.fromUser(user)
@@ -80,7 +83,7 @@ router.put('/', auth, asyncMiddleware(async (req, res) => {
 
 // GET userFile
 router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
-    const user = await db.getUserObject(req["user"].email);
+    const user = await userDB.getUserObject(req["user"].email);
 
     const userPuzzle = user.getPuzzle(req.params.puzzleId)
     if (!(userPuzzle instanceof UserPuzzle)) return res.status(404).json({ error: "No puzzle found." });
