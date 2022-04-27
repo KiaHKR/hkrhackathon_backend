@@ -7,9 +7,8 @@ import asyncMiddleware from '../middleware/async'
 
 import { User, validateUserUpdate } from '../models/user';
 import PublicUser from "../models/publicUser";
-import {PuzzleHandlerDB} from "../database/puzzleHandlerDB";
-const puzzleDB = new PuzzleHandlerDB();
-import {UserHandlerDB} from "../database/userHandlerDB";
+
+import { UserHandlerDB } from "../database/userHandlerDB";
 const userDB = new UserHandlerDB();
 
 // DELETE user.

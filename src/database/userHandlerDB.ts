@@ -43,7 +43,7 @@ export class UserHandlerDB {
         // deletes user from the database, ADMIN ONLY
         const confirmation = await dbUser.deleteOne({ email: email })
         console.log("deleteUserObject confirm.")
-        return confirmation.deletedCount
+        return confirmation
     }
 
     async updateUserObject(user) { // discuss with Aki, currently searches by email. Tested and working

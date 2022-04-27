@@ -1,12 +1,16 @@
 import {UserPuzzle} from "../models/userPuzzle";
 import {PuzzleModuleInterface} from "./puzzleModuleInterface";
-import TestPuzzle from "./testPuzzle";
+import FirstTestPuzzle from "./firstTestPuzzle";
+import SecondTestPuzzle from "./secondTestPuzzle";
+import ThirdTestPuzzle from "./thirdTestPuzzle";
 
 export default class PuzzleHandler{
     private static puzzleClasses: {
         [puzzleId: string]: PuzzleModuleInterface
     } = {
-        "testPuzzle" : new TestPuzzle()
+        "firstTestPuzzle" : new FirstTestPuzzle(),
+        "secondTestPuzzle" : new SecondTestPuzzle(),
+        "thirdTestPuzzle" : new ThirdTestPuzzle()
     };
 
     static generatePuzzle(id: string): UserPuzzle {

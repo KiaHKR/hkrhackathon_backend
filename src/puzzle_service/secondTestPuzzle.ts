@@ -1,22 +1,26 @@
 import { PuzzleModuleInterface } from "./puzzleModuleInterface";
 import { UserPuzzle } from "../models/userPuzzle";
 
-export default class TestPuzzle implements PuzzleModuleInterface {
-    puzzleId: "alphaPuzzle";
+export default class SecondTestPuzzle implements PuzzleModuleInterface {
+    puzzleId: "secondTestPuzzle";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer; information } {
         return (correctAnswer === guessAnswer) ? { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" }
     }
 
     generatePuzzle(): UserPuzzle {
-        const userInput = "1 2 3";
-        const answer = "2";
+        // GET MEAN OF THE USER INPUT AS AN ANSWER.
+
+        const numbersList = Array.from({length: 1000}, () => Math.floor(Math.random() * 100000));
+        const sum = numbersList.reduce((a, b) => a + b, 0);
+        const result = Math.floor(sum / 1000);
+
+        const userInput = numbersList.join(`\n`);
+        const answer = result.toString();
 
         return new UserPuzzle(
             this.puzzleId,
             userInput,
             answer);
     }
-
-
 }

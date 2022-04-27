@@ -1,6 +1,6 @@
 import PuzzleHandler from "../../../src/puzzle_service/puzzleHandler";
 import {UserPuzzle} from "../../../src/models/userPuzzle";
-import TestPuzzle from "../../../src/puzzle_service/testPuzzle";
+import FirstTestPuzzle from "../../../src/puzzle_service/firstTestPuzzle";
 
 describe('puzzleHandler', () => {
 
@@ -19,7 +19,7 @@ describe('puzzleHandler', () => {
         describe('generatePuzzle', () => {
             const payload = new UserPuzzle("test", "0 0 0", "-")
             const generatePuzzleMock = jest
-                .spyOn(TestPuzzle.prototype, 'generatePuzzle')
+                .spyOn(FirstTestPuzzle.prototype, 'generatePuzzle')
                 .mockImplementation(() => {
                     return payload;
                 });

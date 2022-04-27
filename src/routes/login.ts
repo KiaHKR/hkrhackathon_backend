@@ -4,7 +4,7 @@ import { User } from '../models/user';
 import bcrypt from 'bcrypt';
 import Joi from "joi";
 import asyncMiddleware from '../middleware/async';
-import {UserHandlerDB} from "../database/userHandlerDB";
+import { UserHandlerDB } from "../database/userHandlerDB";
 const userDB = new UserHandlerDB();
 
 router.post('/', asyncMiddleware(async (req, res) => {
