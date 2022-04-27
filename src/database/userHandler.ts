@@ -6,13 +6,12 @@ export class userHandler {
     // Upon creating the class, the boot method connects to the db.
 
 
-
     userDeconstruct(user) {
         return { name: user._name, email: user._email, password: user._password, year: user._year, currentTask: user._currentTask, userPuzzles: user._userPuzzles, isAdmin: user._isAdmin }
     }
 
 
-async saveUserObject(user) { // tested and working, missing existing check
+    async saveUserObject(user) { // tested and working, missing existing check
         const userInfo = this.userDeconstruct(user)
         const newUser = new dbUser(userInfo
         )
@@ -60,4 +59,5 @@ async saveUserObject(user) { // tested and working, missing existing check
 
             return "User update failed, user not found."
         }
-    }}
+    }
+}
