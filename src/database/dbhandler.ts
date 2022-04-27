@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import { dbUser } from "./models/db_users"
 import { dbPuzzle } from "./models/db_puzzles";
 
+/** Class for handling all db interactions */
 export class dbhandler {
     // Upon creating the class, the boot method connects to the db.
     constructor() {
