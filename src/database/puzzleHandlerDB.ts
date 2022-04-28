@@ -10,6 +10,10 @@ export class PuzzleHandlerDB {
         return { id: puzzle._id, title: puzzle._title, story: puzzle._story, examples: puzzle._examples, template: puzzle._template, answer: puzzle._answer }
     }
 
+    puzzleReconstruct(dbpuzzle) { // do same for user
+        return { id: puzzle._id, title: puzzle._title, story: puzzle._story, examples: puzzle._examples, template: puzzle._template, answer: puzzle._answer }
+    }
+
     // Puzzle related calls
     async savePuzzle(puzzle) {
         // Saves a puzzle to the database.
@@ -40,26 +44,8 @@ export class PuzzleHandlerDB {
         return puzzles
     }
 
-    async updatePuzzle(puzzle) {
-        const puzzleData = this.puzzleDeconstruct(puzzle)
-        const res = await dbPuzzle.findOneAndUpdate({ id: puzzleData.id }, { title: puzzleData.title, story: puzzleData.story, examples: puzzleData.examples, template: puzzleData.template, answer: puzzleData.answer });
-        if (res) {
-            console.log("updatePuzzle confirm.")
-            return res
-        } else {
-            console.log("updatePuzzle confirm.")
-            return { error: "Puzzle update failed, puzzle not found." }
-        }
-    }
 
-    async deletePuzzle(puzzleid) {
-        // deletes a puzzle from the database.
-        const confirmation = await dbPuzzle.deleteOne({ id: puzzleid })
-        console.log("deletePuzzle confirmed.")
-        return confirmation.deletedCount
-    }
-
-    async getNextPuzzleId(id?: string) {
+    async getNextPuzzleId(id?: string) { // if you get an argument, return right puzzle. Else, first puzzle.
         const puzzles = await dbPuzzle.find();
         var next = false;
         for (var i of puzzles) {
