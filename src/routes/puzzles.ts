@@ -35,14 +35,14 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
 
     if (result.answer) {
         userPuzzle.correct()
-        user.updatePuzzle(userPuzzle);
+//        user.updatePuzzle(userPuzzle);
         const newCurrentPuzzleId = await puzzleDB.getNextPuzzleId(userPuzzle.id);
         const newUserPuzzle = PuzzleHandler.generatePuzzle(newCurrentPuzzleId);
         user.addPuzzle(newUserPuzzle);
     }
     if (!result.answer) {
         userPuzzle.incorrect()
-        user.updatePuzzle(userPuzzle)
+//        user.updatePuzzle(userPuzzle);
     }
 
     await userDB.updateUserObject(user);

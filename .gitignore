@@ -106,3 +106,5 @@ dist
 # Webstorm configs
 .idea/
 env
+
+coverage/

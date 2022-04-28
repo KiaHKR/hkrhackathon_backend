@@ -16,4 +16,6 @@ routes(app);
 db();
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => logger.info(`Listening port ${port}...`));
+const server =app.listen(port, () => logger.info(`Listening port ${port}...`));
+
+export = server;

@@ -1,12 +1,14 @@
 {
   "name": "hkrhackathon_backend",
-  "eslintIgnore": ["*.js"],
+  "eslintIgnore": [
+    "*.js"
+  ],
   "type": "module",
   "version": "1.0.0",
   "description": "cake",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose",
+    "test": "jest --watchAll --verbose --runInBand --coverage",
     "lint": "eslint . --ext .ts",
     "backend": "ts-node-dev src/index.ts",
     "build": "tsc -p .",
@@ -30,6 +32,7 @@
     "@typescript-eslint/parser": "^5.19.0",
     "eslint": "^8.13.0",
     "jest": "^27.5.1",
+    "supertest": "^6.2.3",
     "ts-jest": "^27.1.4",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.3"

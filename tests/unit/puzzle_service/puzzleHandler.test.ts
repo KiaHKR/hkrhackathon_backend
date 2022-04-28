@@ -7,11 +7,11 @@ describe('puzzleHandler', () => {
     describe('testPuzzle', () => {
         describe('checkAnswer', () => {
             it('should return {answer: true} with correct answer', function () {
-                const result = PuzzleHandler.checkAnswer("testPuzzle", "2", "2");
+                const result = PuzzleHandler.checkAnswer("firstTestPuzzle", "2", "2");
                 expect(result).toHaveProperty('answer', true);
             });
             it('should return {answer: false} with incorrect answer', function () {
-                const result = PuzzleHandler.checkAnswer("testPuzzle", "2", "1");
+                const result = PuzzleHandler.checkAnswer("firstTestPuzzle", "2", "1");
                 expect(result).toHaveProperty('answer', false);
             });
         });
@@ -24,11 +24,11 @@ describe('puzzleHandler', () => {
                     return payload;
                 });
             it('should call generatePuzzle method', function () {
-                PuzzleHandler.generatePuzzle("testPuzzle");
+                PuzzleHandler.generatePuzzle("firstTestPuzzle");
                 expect(generatePuzzleMock).toHaveBeenCalled();
             });
             it('should return userPuzzle object', function () {
-                const results = PuzzleHandler.generatePuzzle("testPuzzle");
+                const results = PuzzleHandler.generatePuzzle("firstTestPuzzle");
                 expect(results).toMatchObject(payload);
             });
         });
