@@ -34,6 +34,7 @@ router.put('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     user.isAdmin = req.body.isAdmin;
 
     user = await userDB.updateUserObject(user);
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
 
     const publicUser = new PublicUser;
     publicUser.fromUser(user)

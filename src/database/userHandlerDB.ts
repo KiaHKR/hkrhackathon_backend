@@ -28,7 +28,7 @@ export class UserHandlerDB {
             return user
         } else {
             console.log("getUserObject confirm.")
-            return { error: 'User not found.' }
+            return { error: 'User not found.' }g
         }
     }
 

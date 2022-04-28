@@ -17,6 +17,14 @@ export class User {
     }
 
 
+    get userPuzzles(): { [p: string]: UserPuzzle } {
+        return this._userPuzzles;
+    }
+
+    set userPuzzles(value: { [p: string]: UserPuzzle }) {
+        this._userPuzzles = value;
+    }
+
     get email(): string {
         return this._email;
     }

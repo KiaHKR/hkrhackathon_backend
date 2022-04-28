@@ -51,7 +51,7 @@ export default class ThirdTestPuzzle implements PuzzleModuleInterface {
         let userInput = '';
         user_maze.forEach(ele => {
             ele.forEach(e => {
-                if (e === "x") userInput += '"x" '
+                if (e === "x") userInput += '.x. '
                 else userInput += `${e} `
             });
             userInput += `\n`

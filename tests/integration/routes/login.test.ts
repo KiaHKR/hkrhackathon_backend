@@ -1,6 +1,5 @@
 import request from 'supertest'
 import {dbUser} from "../../../src/database/models/db_users";
-
 let server;
 
 describe('/login', () => {
@@ -10,7 +9,7 @@ describe('/login', () => {
         user = new dbUser({
             name: "test",
             email: "test@example.com",
-            password: "$2b$10$UVgNyYDWsF7vS05dBEh98uKNSG7vCLlo4qH0NxHFCoXVzwgfQE.RK",
+            password: "$2b$10$kPLid/ALLlbf27PW6l19GuG.oNZdL3gyFA9abXU4zj58yKMLjwIGW",
             year: 1,
             currentPuzzleId: "firstTestPuzzle"
         })
@@ -28,8 +27,8 @@ describe('/login', () => {
         return await request(server)
             .post('/login')
             .send({
-                'email': email,
-                'password': password
+                email,
+                password
             })
     }
 

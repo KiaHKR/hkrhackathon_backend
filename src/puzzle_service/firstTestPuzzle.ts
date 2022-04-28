@@ -11,9 +11,10 @@ export default class FirstTestPuzzle implements PuzzleModuleInterface {
     generatePuzzle(): UserPuzzle {
         const userInput = "1 2 3";
         const answer = "2";
+        const puzzleID = "firstTestPuzzle"
 
         return new UserPuzzle(
-            this.puzzleId,
+            puzzleID,
             userInput,
             answer);
     }
