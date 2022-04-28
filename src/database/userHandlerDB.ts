@@ -1,4 +1,5 @@
 import { dbUser } from "./models/db_users"
+import {User} from "../models/user";
 
 
 /** Class for handling all db interactions */
@@ -7,7 +8,22 @@ export class UserHandlerDB {
 
 
     userDeconstruct(user) {
-        return { name: user._name, email: user._email, password: user._password, year: user._year, currentPuzzleId: user._currentPuzzleId, userPuzzles: user._userPuzzles, isAdmin: user._isAdmin }
+        return { name: user._name, email: user._email, password: user._password, year: user._year,
+            currentPuzzleId: user._currentPuzzleId, userPuzzles: user._userPuzzles, isAdmin: user._isAdmin }
+    }
+
+    userConstruct(user) {
+        const userObject = new User(
+            user.name,
+            user.email,
+            user.password,
+            user.year
+        )
+        userObject.currentPuzzleId = user.currentPuzzleId;
+        userObject.userPuzzles = user.userPuzzles;
+        userObject.isAdmin = user.isAdmin;
+
+        return userObject;
     }
 
 
@@ -25,10 +41,10 @@ export class UserHandlerDB {
         const user = await dbUser.findOne({ email: email })
         if (user) {
             console.log("getUserObject confirm.")
-            return user
+            return this.userConstruct(user)
         } else {
             console.log("getUserObject confirm.")
-            return { error: 'User not found.' }g
+            return { error: 'User not found.' }
         }
     }
 
