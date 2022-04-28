@@ -4,6 +4,8 @@ let server;
 
 describe('/login', () => {
     let user;
+    let email = "test@example.com"
+    let password = "12345678"
     beforeEach(async () => {
         server = require('../../../src/index')
         user = new dbUser({
@@ -14,14 +16,15 @@ describe('/login', () => {
             currentPuzzleId: "firstTestPuzzle"
         })
         await user.save();
+        email = "test@example.com"
+        password = "12345678"
     });
     afterEach(async () => {
         server.close();
         await dbUser.remove();
     });
 
-    let email = "test@example.com"
-    let password = "12345678"
+
 
     const exec = async () => {
         return await request(server)
@@ -50,19 +53,13 @@ describe('/login', () => {
         password = 'wrongPassword';
         const res = await exec()
 
-        expect(res.status).toBe(400);
+        expect(res.status).toBe(402);
     });
 
     it('should return a 200 and token if valid login', async function () {
         const res = await exec()
 
         expect(res.status).toBe(200);
-        // expect(res.body).toHaveProperty('token');
+        expect(res.body).toHaveProperty('token');
     });
-
-    // Happy Path
-        // valid req.body
-        // user in db
-        // valid password
-        // get token
 });

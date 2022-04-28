@@ -15,7 +15,7 @@ router.post('/', asyncMiddleware(async (req, res) => {
     if (!(user instanceof User)) return res.status(400).json({ error: "Invalid email or password." });
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).json({ error: "Invalid email or password." });
+    if (!validPassword) return res.status(402).json({ error: "Invalid email or password." });
 
     const userToken = user.generateAuthToken();
     res.status(200).json({ token: userToken });

@@ -18,6 +18,7 @@ const userDB = new UserHandlerDB();
 router.get('/',  auth, asyncMiddleware(async (req, res) => {
     const user: User | { error: string } = await userDB.getUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."})
+
     const publicUser = new PublicUser;
     publicUser.fromUser(user);
     res.status(200).json(publicUser);
@@ -41,8 +42,8 @@ router.post('/', asyncMiddleware(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
-    // const newCurrentPuzzleId = await puzzleDB.getNextPuzzleId();
-    const userPuzzle = PuzzleHandler.generatePuzzle("firstTestPuzzle");
+    const newCurrentPuzzleId = await puzzleDB.getNextPuzzleId();
+    const userPuzzle = PuzzleHandler.generatePuzzle(newCurrentPuzzleId);
     user.addPuzzle(userPuzzle);
 
     await userDB.saveUserObject(user);
