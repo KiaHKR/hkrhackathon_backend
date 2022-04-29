@@ -29,8 +29,8 @@ var userSchema = new mongoose.Schema({
         min: 6
     },
     userPuzzles: {
-        puzzleId: {
-            type: Object,  // discuss with Aki
+        userPuzzle: {
+            type: Object,
             max: 1024,
             min: 6
         }
