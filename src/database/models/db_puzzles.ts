@@ -12,6 +12,10 @@ const puzzleSchema = new mongoose.Schema({
         max: 255,
         min: 6
     },
+    story: {
+        type: String,
+        required: true
+    },
     description: {
         inputExample: {
             type: String,
@@ -22,12 +26,6 @@ const puzzleSchema = new mongoose.Schema({
             required: true,
         }
 
-    },
-    template: {
-        type: String
-    },
-    answer: {
-        type: String
     }
 });
 
