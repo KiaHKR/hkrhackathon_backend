@@ -1,33 +1,41 @@
 import { dbUser } from "./models/db_users"
-
+import { User } from "../models/user"
+import { UserPuzzle } from "../models/userPuzzle"
 
 /** Class for handling all db interactions */
 export class UserHandlerDB {
     // Upon creating the class, the boot method connects to the db.
 
-
+    // NOTE !!! WHEN CREATING THE USER I NEED TO STORE THE USERPUZZLE TOO - POTENTIALLY CREATE SEPERATELY !!!
     userDeconstruct(user) {
-        return { name: user._name, email: user._email, password: user._password, year: user._year, currentPuzzleId: user._currentPuzzleId, userPuzzles: user._userPuzzles, isAdmin: user._isAdmin }
+        return new dbUser({ name: user._name, email: user._email, password: user._password, year: user._year, currentPuzzleId: user._currentPuzzleId, userPuzzles: user._userPuzzles, isAdmin: user._isAdmin })
+    }
+
+    userReconstruct(dbuser) {
+        const uObject = new User(dbuser.name, dbuser.email, dbuser.password, dbuser.year)
+        if (dbuser.currentPuzzleId) {
+            uObject.currentPuzzleId = dbuser.currentPuzzleId;
+        } if (dbuser.userPuzzles) {
+
+        } if (dbuser.isAdmin) {
+            uObject.isAdmin = dbuser.isAdmin
+        }
+        return uObject
     }
 
 
     async saveUserObject(user) { // tested and working, missing existing check
-        const userInfo = this.userDeconstruct(user)
-        const newUser = new dbUser(userInfo
-        )
+        const newUser = this.userDeconstruct(user)
         await newUser.save();
-        console.log("saveUserObject confirm.")
-        return newUser
+        return newUser // Return db user or user
     }
 
     async getUserObject(email) { // tested and working
         // fetches a single user from the database and sends an object back.
         const user = await dbUser.findOne({ email: email })
         if (user) {
-            console.log("getUserObject confirm.")
-            return user
+            return this.userReconstruct(user)
         } else {
-            console.log("getUserObject confirm.")
             return { error: 'User not found.' }
         }
     }
@@ -35,14 +43,16 @@ export class UserHandlerDB {
     async getAllUserObject() { // tested and working
         // returns an array of all users in the database
         const users = await dbUser.find();
-        console.log("getAllUserObject confirm.");
-        return users
+        let userList = []
+        for (let i in users) {
+            userList.push(this.userReconstruct(i))
+        }
+        return userList
     }
 
     async deleteUserObject(email) { // Returns deleted count. If 0, error. If 1, success.
         // deletes user from the database, ADMIN ONLY
         const confirmation = await dbUser.deleteOne({ email: email })
-        console.log("deleteUserObject confirm.")
         return confirmation
     }
 
@@ -51,12 +61,8 @@ export class UserHandlerDB {
         const userInfo = this.userDeconstruct(user)
         const res = await dbUser.findOneAndUpdate({ email: userInfo.email }, { name: userInfo.name, email: userInfo.email, password: userInfo.password, year: userInfo.year, currentPuzzleId: userInfo.currentPuzzleId, userPuzzles: userInfo.userPuzzles, isAdmin: userInfo.isAdmin });
         if (res) {
-            console.log("updateUserObject confirm.")
-
             return res
         } else {
-            console.log("updateUserObject confirm.")
-
             return { error: "User update failed, user not found." }
         }
     }
