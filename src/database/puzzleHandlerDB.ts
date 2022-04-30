@@ -37,7 +37,7 @@ export class PuzzleHandlerDB {
         // returns an array of all users from the database.
         const puzzles = await dbPuzzle.find();
         let puzzleList = [];
-        for (let i in puzzles) {
+        for (let i of puzzles) {
             puzzleList.push(this.puzzleReconstruct(i))
         }
         return puzzleList
