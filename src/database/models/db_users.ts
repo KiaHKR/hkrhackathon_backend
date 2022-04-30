@@ -8,6 +8,7 @@ var userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: true,
         max: 255,
         min: 6
@@ -28,13 +29,12 @@ var userSchema = new mongoose.Schema({
         max: 1024,
         min: 6
     },
-    userPuzzles: {
-        userPuzzle: {
-            type: Object,
-            max: 1024,
-            min: 6
-        }
-    },
+    userPuzzles: [{
+
+        type: userSchema.Types.ObjectId,
+        ref: "UserPuzzle"
+
+    }],
     isAdmin: {
         type: Boolean,
         default: false
