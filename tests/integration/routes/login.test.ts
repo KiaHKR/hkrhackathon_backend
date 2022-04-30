@@ -1,22 +1,16 @@
 import request from 'supertest'
 import {dbUser} from "../../../src/database/models/db_users";
+import { populateDatabase } from "../databasePopulater";
+
 let server;
 
 describe('/login', () => {
-    let user;
     let email;
     let password;
 
     beforeEach(async () => {
         server = require('../../../src/index')
-        user = new dbUser({
-            name: "test",
-            email: "test@example.com",
-            password: "$2b$10$kPLid/ALLlbf27PW6l19GuG.oNZdL3gyFA9abXU4zj58yKMLjwIGW",
-            year: 1,
-            currentPuzzleId: "firstTestPuzzle"
-        });
-        await user.save();
+        await populateDatabase();
         email = "test@example.com";
         password = "12345678";
     });

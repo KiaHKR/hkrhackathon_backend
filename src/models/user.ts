@@ -106,7 +106,7 @@ export function validateUserUpdate(user) {
 export function validateUserCreation(user) {
     const schema = Joi.object({
         name: Joi.string().min(2).max(50).required(),
-        email: Joi.string().email().min(5).max(255).required(),
+        email: Joi.string().min(5).max(255).email().required(),
         password: Joi.string().min(8).max(50).required(),
         year: Joi.number().required().less(4).greater(0)
     });
