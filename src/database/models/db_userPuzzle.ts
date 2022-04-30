@@ -1,4 +1,3 @@
-import { boolean } from 'joi';
 import mongoose from 'mongoose';
 var userPuzzleSchema = new mongoose.Schema({
 
