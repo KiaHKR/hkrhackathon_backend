@@ -61,8 +61,13 @@ export class UserHandlerDB {
 
     async deleteUserObject(email) { // Returns deleted count. If 0, error. If 1, success.
         // deletes user from the database, ADMIN ONLY
-        const confirmation = await dbUser.deleteOne({ email: email })
-        return confirmation
+        const user = await dbUser.findOne({ email: email })
+        if (user) {
+            await dbUser.deleteOne({ email: email })
+            return this.userReconstruct(user)
+        } else {
+            return { error: 'User not found.' }
+        }
     }
 
     async updateUserObject(user) { // discuss with Aki, currently searches by email. Tested and working
