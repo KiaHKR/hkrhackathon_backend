@@ -2,6 +2,7 @@ import request from 'supertest'
 import { dbUser } from "../../../src/database/models/db_users";
 import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
+import {depopulateDatabase} from "../databaseDepopulater";
 let server;
 
 describe('/user', () => {
@@ -14,7 +15,7 @@ describe('/user', () => {
 
     afterAll(async () => {
         server.close();
-        await dbUser.remove();
+        await depopulateDatabase();
     })
 
     describe('GET', () => {
@@ -24,6 +25,10 @@ describe('/user', () => {
             email = "test@example.com";
             password = "12345678";
         });
+
+        afterEach(async () => {
+            await depopulateDatabase();
+        })
 
         const exec = async () => {
             const token = new User("test", email, password, 1).generateAuthToken();
@@ -71,6 +76,10 @@ describe('/user', () => {
             email = "postTest@example.com";
             password = "12345678";
             year = 2;
+        })
+
+        afterEach(async () => {
+            await depopulateDatabase();
         })
 
         const exec = async () => {
@@ -199,7 +208,8 @@ describe('/user', () => {
         });
 
         afterEach(async () => {
-            await dbUser.remove();
+            await depopulateDatabase();
+
         })
 
         const exec = async () => {
@@ -265,7 +275,7 @@ describe('/user', () => {
         });
 
         afterEach(async () => {
-            await dbUser.remove();
+            await depopulateDatabase();
         });
 
         const exec = async () => {
@@ -337,7 +347,6 @@ describe('/user', () => {
 
         it('should update the user if input is valid', async function () {
             let user = await dbUser.findOne({ email });
-
             expect(user).not.toHaveProperty('name', name);
             expect(user).not.toHaveProperty('year', year);
 
@@ -359,25 +368,63 @@ describe('/user', () => {
         });
     });
 
-    // describe('GET /:puzzleId', () => {
-    //     let id;
-    //     beforeEach(async () => {
-    //         await populateDatabase();
-    //         email = "test@example.com";
-    //         password = "12345678";
-    //         id = "firstTestPuzzle"
-    //     });
-    //
-    //     afterEach(async () => {
-    //         await dbUser.remove();
-    //     });
-    //
-    //     const exec = async () => {
-    //         const token = new User("test", email, password, 1).generateAuthToken();
-    //         return await request(server)
-    //             .put('/user/ + id')
-    //             .set('x-auth-header', token)
-    //             .send()
-    //     };
-    // });
+    describe('GET /:puzzleId', () => {
+        let id;
+        beforeEach(async () => {
+            await populateDatabase();
+            email = "test@example.com";
+            password = "12345678";
+            id = "firstTestPuzzle"
+        });
+
+        afterEach(async () => {
+            await dbUser.remove();
+        });
+
+        const exec = async () => {
+            const token = new User("test", email, password, 1).generateAuthToken();
+            return await request(server)
+                .get('/user/' + id)
+                .set('x-auth-header', token)
+                .send()
+        };
+
+        it('should return 401 if no token is provided', async function () {
+            const res = await request(server)
+                .get('/user/' + id)
+                .set('x-auth-header', '')
+                .send()
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 400 if invalid token is provided', async function () {
+            const res = await request(server)
+                .get('/user/ + id')
+                .set('x-auth-header', 'a')
+                .send()
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 404 if email is not found', async function () {
+            email = "wrong@example.com";
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if puzzle id is not found', async function () {
+            id = "wrongId";
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 200 if puzzle id is valid', async function () {
+            id = "firstTestPuzzle"
+            const res = await exec();
+
+            expect(res.status).toBe(200);
+        });
+    });
 });

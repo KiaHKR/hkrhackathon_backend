@@ -1,6 +1,7 @@
 import request from 'supertest'
 import {dbUser} from "../../../src/database/models/db_users";
 import { populateDatabase } from "../databasePopulater";
+import {depopulateDatabase} from "../databaseDepopulater";
 
 let server;
 
@@ -17,7 +18,7 @@ describe('/login', () => {
 
     afterEach(async () => {
         server.close();
-        await dbUser.remove();
+        await depopulateDatabase();
     });
 
     const exec = async () => {

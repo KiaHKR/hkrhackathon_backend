@@ -8,7 +8,7 @@ export async function populateDatabase() {
         password: "$2b$10$kPLid/ALLlbf27PW6l19GuG.oNZdL3gyFA9abXU4zj58yKMLjwIGW",
         year: 1,
         currentPuzzleId: "firstTestPuzzle",
-        _userPuzzles: {
+        userPuzzles: {
             "firstTestPuzzle": {
                 _id: "firstTestPuzzle",
                 _userInput: "1 2 3",
