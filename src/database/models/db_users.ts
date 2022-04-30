@@ -31,7 +31,7 @@ var userSchema = new mongoose.Schema({
     },
     userPuzzles: [{
 
-        type: userSchema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "UserPuzzle"
 
     }],
