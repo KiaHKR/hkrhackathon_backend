@@ -1,6 +1,5 @@
 import { dbUser } from "./models/db_users"
 import { User } from "../models/user"
-import { UserPuzzle } from "../models/userPuzzle"
 
 /** Class for handling all db interactions */
 export class UserHandlerDB {
