@@ -1,21 +1,29 @@
 import { dbUser } from "./models/db_users"
 import { User } from "../models/user"
+import { dbUserPuzzle } from "./models/db_userPuzzle"
 
 /** Class for handling all db interactions */
 export class UserHandlerDB {
     // Upon creating the class, the boot method connects to the db.
 
-    // NOTE !!! WHEN CREATING THE USER I NEED TO STORE THE USERPUZZLE TOO - POTENTIALLY CREATE SEPERATELY !!!
     userDeconstruct(user) {
-        return new dbUser({ name: user._name, email: user._email, password: user._password, year: user._year, currentPuzzleId: user._currentPuzzleId, userPuzzles: user._userPuzzles, isAdmin: user._isAdmin })
+        return new dbUser({ name: user._name, email: user._email, password: user._password, year: user._year, currentPuzzleId: user._currentPuzzleId, userPuzzles: this.userPuzzleDeconstruct(user._userPuzzles), isAdmin: user._isAdmin })
+    }
+
+    userPuzzleDeconstruct(userPuzzleList) {
+        let upList = []
+        for (let userPuzzle of userPuzzleList) {
+            upList.push(new dbUserPuzzle({ userinput: userPuzzle._userInput, answer: userPuzzle._answer, completionTime: userPuzzle._completionTime, numberOfWrongSubmissions: userPuzzle._numberOfWrongSubmissions, completed: userPuzzle._completed }))
+        }
+        return upList
     }
 
     userReconstruct(dbuser) {
         const uObject = new User(dbuser.name, dbuser.email, dbuser.password, dbuser.year)
-        if (dbuser.currentPuzzleId) {
+        for (let i of dbuser.userPuzzles) {
+            uObject.addPuzzle(i)
+        } if (dbuser.currentPuzzleId) {
             uObject.currentPuzzleId = dbuser.currentPuzzleId;
-        } if (dbuser.userPuzzles) {
-
         } if (dbuser.isAdmin) {
             uObject.isAdmin = dbuser.isAdmin
         }
