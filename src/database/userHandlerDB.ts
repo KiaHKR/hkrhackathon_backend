@@ -1,5 +1,6 @@
 import { dbUser } from "./models/db_users"
 import { User } from "../models/user"
+import {UserPuzzle} from "../models/userPuzzle";
 
 
 /** Class for handling all db interactions */
@@ -11,10 +12,26 @@ export class UserHandlerDB {
     }
 
     userReconstruct(dbuser) {
-        const uObject = new User(dbuser.name, dbuser.email, dbuser.password, dbuser.year)
-        uObject.userPuzzles = dbuser.userPuzzles;
+        const uObject = new User(
+            dbuser.name,
+            dbuser.email,
+            dbuser.password,
+            dbuser.year
+        )
+        Object.keys(dbuser.userPuzzles).forEach(key => {
+            const userPuzzle = new UserPuzzle(
+                dbuser.userPuzzles[key]._id,
+                dbuser.userPuzzles[key]._userInput,
+                dbuser.userPuzzles[key]._answer,
+            );
+            userPuzzle.numberOfWrongSubmissions = dbuser.userPuzzles[key]._numberOfWrongSubmissions;
+            userPuzzle.completionTime = dbuser.userPuzzles[key]._completionTime
+            userPuzzle.completed = dbuser.userPuzzles[key]._completed
+            uObject.addPuzzle(userPuzzle);
+        });
         uObject.currentPuzzleId = dbuser.currentPuzzleId;
         uObject.isAdmin = dbuser.isAdmin
+
         return uObject
     }
 
@@ -64,9 +81,20 @@ export class UserHandlerDB {
     async updateUserObject(user): Promise<User | { error: string; }> {
         // updates a user in the database.
         const userInfo = this.userDeconstruct(user)
-        const res = await dbUser.findOneAndUpdate({ email: userInfo.email }, { name: userInfo.name, email: userInfo.email, password: userInfo.password, year: userInfo.year, currentPuzzleId: userInfo.currentPuzzleId, userPuzzles: userInfo.userPuzzles, isAdmin: userInfo.isAdmin }, { new: true });
+        const res = await dbUser.findOneAndUpdate(
+            {email: userInfo.email },
+            {
+                name: userInfo.name,
+                email: userInfo.email,
+                password: userInfo.password,
+                year: userInfo.year, currentPuzzleId:
+                userInfo.currentPuzzleId,
+                userPuzzles: userInfo.userPuzzles,
+                isAdmin: userInfo.isAdmin
+            },
+            { new: true });
         if (res) {
-            return await dbUser.findOne({ email: userInfo.email })
+            return this.userReconstruct(res);
         } else {
             return { error: "User update failed, user not found." }
         }

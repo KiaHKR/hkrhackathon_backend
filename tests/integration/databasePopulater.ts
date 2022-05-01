@@ -9,7 +9,10 @@ export async function populateDatabase() {
         password: "$2b$10$kPLid/ALLlbf27PW6l19GuG.oNZdL3gyFA9abXU4zj58yKMLjwIGW",
         year: 1,
         currentPuzzleId: "firstTestPuzzle",
-        userPuzzles: { "firstTestPuzzle": new UserPuzzle("firstTestPuzzle", "1 2 3", "2") }
+        userPuzzles: {
+            "firstTestPuzzle": new UserPuzzle("firstTestPuzzle", "1 1 1", "1"),
+            "secondTestPuzzle": new UserPuzzle("secondTestPuzzle", "2 2 2", "2")
+        }
     });
     await userDB.save();
 

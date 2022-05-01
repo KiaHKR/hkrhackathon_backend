@@ -54,4 +54,16 @@ export class UserPuzzle {
     incorrect() {
         this._numberOfWrongSubmissions ++;
     }
+
+    set completionTime(value: number) {
+        this._completionTime = value;
+    }
+
+    set numberOfWrongSubmissions(value: number) {
+        this._numberOfWrongSubmissions = value;
+    }
+
+    set completed(value: boolean) {
+        this._completed = value;
+    }
 }

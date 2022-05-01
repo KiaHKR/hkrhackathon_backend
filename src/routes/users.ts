@@ -89,9 +89,9 @@ router.put('/', auth, asyncMiddleware(async (req, res) => {
 // GET userFile
 router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     const user = await userDB.getUserObject(req["user"].email);
-    if (!(user instanceof User)) return res.status(404).json({ error: "User not found."})
+    if (!(user instanceof User)) return res.status(404).json({ error: "User not found."});
 
-    const userPuzzle = user.getPuzzle(req.params.puzzleId)
+    const userPuzzle = user.getPuzzle(req.params.puzzleId);
     if (!(userPuzzle instanceof UserPuzzle)) return res.status(404).json({ error: "No puzzle found." });
 
     res.status(200).json({ userInput: userPuzzle.userInput });

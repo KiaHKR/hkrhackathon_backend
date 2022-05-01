@@ -347,8 +347,8 @@ describe('/user', () => {
 
         it('should update the user if input is valid', async function () {
             let user = await dbUser.findOne({ email });
-            expect(user).not.toHaveProperty('name', name);
-            expect(user).not.toHaveProperty('year', year);
+            expect(user).toHaveProperty('name', "test");
+            expect(user).toHaveProperty('year', 1);
 
             const res = await exec();
             expect(res.status).toBe(200);
@@ -425,6 +425,10 @@ describe('/user', () => {
             const res = await exec();
 
             expect(res.status).toBe(200);
+        });
+
+        it('should return a correct file', async function () {
+            
         });
     });
 });
