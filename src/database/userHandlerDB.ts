@@ -1,45 +1,33 @@
 import { dbUser } from "./models/db_users"
 
 import { User } from "../models/user"
-import { dbUserPuzzle } from "./models/db_userPuzzle"
 
 
 /** Class for handling all db interactions */
 export class UserHandlerDB {
     // Upon creating the class, the boot method connects to the db.
 
-    userDeconstruct(user) {
-        return new dbUser({ name: user._name, email: user._email, password: user._password, year: user._year, currentPuzzleId: user._currentPuzzleId, userPuzzles: this.userPuzzleDeconstruct(user._userPuzzles), isAdmin: user._isAdmin })
-    }
-
-    userPuzzleDeconstruct(userPuzzleList) {
-        let upList = []
-        for (let userPuzzle of userPuzzleList) {
-            upList.push(new dbUserPuzzle({ userinput: userPuzzle._userInput, answer: userPuzzle._answer, completionTime: userPuzzle._completionTime, numberOfWrongSubmissions: userPuzzle._numberOfWrongSubmissions, completed: userPuzzle._completed }))
-        }
-        return upList
+    userDeconstruct(user: User) {
+        return new dbUser({ name: user.name, email: user.email, password: user.password, year: user.year, currentPuzzleId: user.currentPuzzleId, userPuzzles: user.userPuzzles, isAdmin: user.isAdmin })
     }
 
     userReconstruct(dbuser) {
         const uObject = new User(dbuser.name, dbuser.email, dbuser.password, dbuser.year)
-        for (let i of dbuser.userPuzzles) {
-            uObject.addPuzzle(i)
-        } if (dbuser.currentPuzzleId) {
-            uObject.currentPuzzleId = dbuser.currentPuzzleId;
-        } if (dbuser.isAdmin) {
-            uObject.isAdmin = dbuser.isAdmin
-        }
+        uObject.userPuzzles = dbuser.userPuzzles;
+        uObject.currentPuzzleId = dbuser.currentPuzzleId;
+        uObject.isAdmin = dbuser.isAdmin
         return uObject
     }
 
 
-    async saveUserObject(user) { // tested and working, missing existing check
+    async saveUserObject(user: User): Promise<User | { error: string; }> {
+        // saves a user to the database.
         const newUser = this.userDeconstruct(user)
         await newUser.save();
-        return newUser // Return db user or user
+        return this.userReconstruct(newUser)
     }
 
-    async getUserObject(email) { // tested and working
+    async getUserObject(email): Promise<User | { error: string; }> {
         // fetches a single user from the database and sends an object back.
         const user = await dbUser.findOne({ email: email })
         if (user) {
@@ -49,8 +37,8 @@ export class UserHandlerDB {
         }
     }
 
-    async getAllUserObject() { // tested and working
-        // returns an array of all users in the database
+    async getAllUserObject(): Promise<any[]> {
+        // returns an array of all users in the database.
         const users = await dbUser.find();
         let userList = []
         for (let i in users) {
@@ -59,8 +47,8 @@ export class UserHandlerDB {
         return userList
     }
 
-    async deleteUserObject(email) { // Returns deleted count. If 0, error. If 1, success.
-        // deletes user from the database, ADMIN ONLY
+    async deleteUserObject(email): Promise<User | { error: string; }> {
+        // deletes user from the database.
         const user = await dbUser.findOne({ email: email })
         if (user) {
             await dbUser.deleteOne({ email: email })
@@ -70,12 +58,12 @@ export class UserHandlerDB {
         }
     }
 
-    async updateUserObject(user) { // discuss with Aki, currently searches by email. Tested and working
+    async updateUserObject(user): Promise<User | { error: string; }> {
         // updates a user in the database.
         const userInfo = this.userDeconstruct(user)
         const res = await dbUser.findOneAndUpdate({ email: userInfo.email }, { name: userInfo.name, email: userInfo.email, password: userInfo.password, year: userInfo.year, currentPuzzleId: userInfo.currentPuzzleId, userPuzzles: userInfo.userPuzzles, isAdmin: userInfo.isAdmin });
         if (res) {
-            return res
+            return await dbUser.findOne({ email: userInfo.email })
         } else {
             return { error: "User update failed, user not found." }
         }
