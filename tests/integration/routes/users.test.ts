@@ -427,8 +427,20 @@ describe('/user', () => {
             expect(res.status).toBe(200);
         });
 
-        it('should return a correct file', async function () {
-            
+        it('should return a correct file "firstTestPuzzle"', async function () {
+            id = "firstTestPuzzle"
+            const res = await exec();
+
+            expect(res.status).toBe(200);
+            expect(res.body.userInput).toMatch('1 1')
+        });
+
+        it('should return a correct file "secondTestPuzzle"', async function () {
+            id = "secondTestPuzzle"
+            const res = await exec();
+
+            expect(res.status).toBe(200);
+            expect(res.body.userInput).toMatch('2 2')
         });
     });
 });
