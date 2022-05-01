@@ -1,5 +1,5 @@
-import { boolean, number, string } from 'joi';
 import mongoose from 'mongoose';
+import { UserPuzzle } from '../../models/userPuzzle';
 var userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -30,16 +30,12 @@ var userSchema = new mongoose.Schema({
         max: 1024,
         min: 6
     },
-    userPuzzles: {
-        puzzleId: {
-            id: string,
-            userInput: string,
-            answer: string,
-            completetionTime: number,
-            numberOfWrongSubmissions: number,
-            completed: boolean
+    userPuzzles: [{
+        userPuzzle: {
+            type: UserPuzzle,
+            required: true
         }
-    }
+    }]
     ,
     isAdmin: {
         type: Boolean,
