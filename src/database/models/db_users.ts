@@ -29,12 +29,9 @@ var userSchema = new mongoose.Schema({
         max: 1024,
         min: 6
     },
-    userPuzzles: [{
-
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "UserPuzzle"
-
-    }],
+    userPuzzles: {
+        type: Object
+    },
     isAdmin: {
         type: Boolean,
         default: false
