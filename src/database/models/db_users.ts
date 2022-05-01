@@ -30,12 +30,9 @@ var userSchema = new mongoose.Schema({
         max: 1024,
         min: 6
     },
-    userPuzzles: [{
-        userPuzzle: {
-            type: UserPuzzle,
-            required: true
-        }
-    }]
+    userPuzzles: {
+        type: mongoose.Schema.Types.Mixed,
+    }
     ,
     isAdmin: {
         type: Boolean,
