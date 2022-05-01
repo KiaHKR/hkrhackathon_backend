@@ -53,10 +53,10 @@ router.get('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     res.status(200).send(publicUser);
 }));
 
-// GET ALL users
+// GET ALL users  TODO: work in progress.
 router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
-    const users: User[] = await userDB.getAllUserObject();
-    if (users.length === 0) return res.status(404).json({error: "No users in the database."});
+    const users: User[] | { error: string } = await userDB.getAllUserObject();
+    if (!Array.isArray(users)) return res.status(404).json({error: "No users in the database."});
     
     const publicUsers = [];
     users.forEach((user) => {

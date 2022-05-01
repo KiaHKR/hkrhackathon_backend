@@ -38,8 +38,8 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     if (result.answer) {
         userPuzzle.correct()
 //        user.updatePuzzle(userPuzzle);
-        const newCurrentPuzzleId = await puzzleDB.getNextPuzzleId(userPuzzle.id);
-        const newUserPuzzle = PuzzleHandler.generatePuzzle(newCurrentPuzzleId);
+        const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId(userPuzzle.id);
+        const newUserPuzzle = PuzzleHandler.generatePuzzle(currentPuzzleId as string);
         user.addPuzzle(newUserPuzzle);
     }
     if (!result.answer) {
