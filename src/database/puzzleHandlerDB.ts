@@ -3,8 +3,6 @@ import { dbPuzzle } from "./models/db_puzzles";
 
 /** Class for handling all db interactions */
 export class PuzzleHandlerDB {
-    // Upon creating the class, the boot method connects to the db.
-
 
     puzzleDeconstruct(puzzle) {
         return new dbPuzzle({ id: puzzle._id, title: puzzle._title, story: puzzle._story, examples: puzzle._examples })
@@ -14,15 +12,14 @@ export class PuzzleHandlerDB {
         return new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
     }
 
-    // Puzzle related calls
-    async savePuzzle(puzzle) {
-        // Saves a puzzle to the database.
+    async savePuzzle(puzzle: Puzzle): Promise<Puzzle | { error: string; }> {
+        // saves a puzzle to the database.
         const newPuzzle = this.puzzleDeconstruct(puzzle)
         await newPuzzle.save();
         return this.puzzleReconstruct(newPuzzle)
     }
 
-    async getPuzzle(puzzleId) {
+    async getPuzzle(puzzleId: string): Promise<Puzzle | { error: string; }> {
         // returns a puzzle from the database.
         const puzzle = await dbPuzzle.findOne({ id: puzzleId })
         if (puzzle) {
@@ -33,7 +30,7 @@ export class PuzzleHandlerDB {
     }
 
 
-    async getAllPuzzles() {
+    async getAllPuzzles(): Promise<any[]> {
         // returns an array of all users from the database.
         const puzzles = await dbPuzzle.find();
         let puzzleList = [];
@@ -43,9 +40,9 @@ export class PuzzleHandlerDB {
         return puzzleList
     }
 
-
-    async getNextPuzzleId(id?: string) { // if you get an argument, return right puzzle. Else, first puzzle.
-        const puzzles = await dbPuzzle.find();
+    async getNextPuzzleId(id?: string): Promise<string | { error: string; }> {
+        // if you get an argument, return right puzzle. Else, first puzzle.
+        const puzzles = await dbPuzzle.find().sort({ "_id": 1 });
         if (id == undefined) {
             return puzzles[0].id
         } else {
@@ -58,7 +55,7 @@ export class PuzzleHandlerDB {
                     next = true;
                 }
             }
-            return undefined;
+            return { error: "Error while browsing Puzzles." };
         }
 
     }
