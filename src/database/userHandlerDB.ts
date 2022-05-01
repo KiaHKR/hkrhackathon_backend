@@ -37,14 +37,18 @@ export class UserHandlerDB {
         }
     }
 
-    async getAllUserObject(): Promise<any[]> {
+    async getAllUserObject(): Promise<User[] | { error: string }> {
         // returns an array of all users in the database.
         const users = await dbUser.find();
         let userList = []
         for (let i in users) {
             userList.push(this.userReconstruct(i))
+        } if (userList.length == 0) {
+            return { error: "No users in database." }
+        } else {
+            return userList
         }
-        return userList
+
     }
 
     async deleteUserObject(email): Promise<User | { error: string; }> {
@@ -61,7 +65,7 @@ export class UserHandlerDB {
     async updateUserObject(user): Promise<User | { error: string; }> {
         // updates a user in the database.
         const userInfo = this.userDeconstruct(user)
-        const res = await dbUser.findOneAndUpdate({ email: userInfo.email }, { name: userInfo.name, email: userInfo.email, password: userInfo.password, year: userInfo.year, currentPuzzleId: userInfo.currentPuzzleId, userPuzzles: userInfo.userPuzzles, isAdmin: userInfo.isAdmin });
+        const res = await dbUser.findOneAndUpdate({ email: userInfo.email }, { name: userInfo.name, email: userInfo.email, password: userInfo.password, year: userInfo.year, currentPuzzleId: userInfo.currentPuzzleId, userPuzzles: userInfo.userPuzzles, isAdmin: userInfo.isAdmin }, { new: true });
         if (res) {
             return await dbUser.findOne({ email: userInfo.email })
         } else {

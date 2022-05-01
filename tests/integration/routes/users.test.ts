@@ -2,7 +2,7 @@ import request from 'supertest'
 import { dbUser } from "../../../src/database/models/db_users";
 import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
-import {depopulateDatabase} from "../databaseDepopulater";
+import { depopulateDatabase } from "../databaseDepopulater";
 let server;
 
 describe('/user', () => {
@@ -249,7 +249,7 @@ describe('/user', () => {
 
         it('should delete user if valid email is provided', async function () {
             await exec();
-            const userInDb = await dbUser.findOne({email});
+            const userInDb = await dbUser.findOne({ email });
 
             expect(userInDb).toBeNull();
         });
