@@ -1,5 +1,5 @@
-import {UserPuzzle} from "../../../src/models/userPuzzle";
-import {User} from "../../../src/models/user";
+import { UserPuzzle } from "../../../src/models/userPuzzle";
+import { User } from "../../../src/models/user";
 
 describe('userPuzzle', () => {
     let userPuzzle;
@@ -7,11 +7,11 @@ describe('userPuzzle', () => {
         userPuzzle = new UserPuzzle("test", "1 2 3", "0");
     })
 
-   it('after correct (), object should have _completionTime and completed fields', function () {
-       userPuzzle.correct();
-       expect(userPuzzle).toHaveProperty('_completionTime');
-       expect(userPuzzle).toHaveProperty('completed', true);
-   });
+    it('after correct (), object should have _completionTime and completed fields', function () {
+        userPuzzle.correct();
+        expect(userPuzzle).toHaveProperty('_completionTime');
+        expect(userPuzzle).toHaveProperty('completed', true);
+    });
 
     it('after incorrect(), object should have _numberOfWrongSubmissions to 1', function () {
         userPuzzle.incorrect();
