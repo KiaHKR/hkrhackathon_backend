@@ -9,7 +9,7 @@ export class PuzzleHandlerDB {
     }
 
     puzzleReconstruct(dbpuzzle) {
-        return new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
+        return new Puzzle(dbpuzzle._id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
     }
 
     async savePuzzle(puzzle: Puzzle): Promise<Puzzle | { error: string; }> {
@@ -28,7 +28,6 @@ export class PuzzleHandlerDB {
             return { error: 'Puzzle not found.' }
         }
     }
-
 
     async getAllPuzzles(): Promise<any[]> {
         // returns an array of all users from the database.
