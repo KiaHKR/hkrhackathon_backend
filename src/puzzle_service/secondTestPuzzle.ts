@@ -14,7 +14,7 @@ export default class SecondTestPuzzle implements PuzzleModuleInterface {
         const sum = numbersList.reduce((a, b) => a + b, 0);
         const result = Math.floor(sum / 1000);
 
-        const userInput = numbersList.join(`\n`);
+        const userInput = numbersList.join(`<br/>`);
         const answer = result.toString();
 
         return new UserPuzzle(
