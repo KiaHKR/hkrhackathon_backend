@@ -1,7 +1,6 @@
 import request from 'supertest'
-import {dbUser} from "../../../src/database/models/db_users";
 import { populateDatabase } from "../databasePopulater";
-import {depopulateDatabase} from "../databaseDepopulater";
+import { depopulateDatabase } from "../databaseDepopulater";
 
 let server;
 
@@ -48,7 +47,7 @@ describe('/login', () => {
         password = 'wrongPassword';
         const res = await exec();
 
-        expect(res.status).toBe(402);
+        expect(res.status).toBe(400);
     });
 
     it('should return a 200 and token if valid login', async function () {

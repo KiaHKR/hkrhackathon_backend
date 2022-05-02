@@ -94,4 +94,51 @@ describe('admin', () => {
 
     });
 
+    describe('PUT /:email', () => {
+        let email;
+        let token;
+
+        beforeEach(async () => {
+            await populateDatabase();
+            email = "test@example.com";
+            const user = new User("test", "admin@email.com", "12345678", 1);
+            user.isAdmin = true;
+            token = user.generateAuthToken();
+        });
+
+        afterEach(async () => {
+            await depopulateDatabase();
+        })
+
+        const exec = async () => {
+            return await request(server)
+                .put('/admin/' + email)
+                .set('x-auth-header', token)
+                .send()
+        };
+
+        it('should return a 401 if no token is provided.', async function () {
+            const res = await request(server)
+                .get('/user')
+                .set('x-auth-header', '')
+                .send()
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 403 if not an admin token provided', async function () {
+            token = new User("test", "test@email.com", "password", 3).generateAuthToken();
+            const res = await exec();
+
+            expect(res.status).toBe(403);
+        });
+
+        it('should return 400 if invalid token provided', async function () {
+            token = 'a'
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+    });
 });
