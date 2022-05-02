@@ -15,9 +15,9 @@ import { UserHandlerDB } from "../database/userHandlerDB";
 const userDB = new UserHandlerDB();
 
 // GET user
-router.get('/',  auth, asyncMiddleware(async (req, res) => {
+router.get('/', auth, asyncMiddleware(async (req, res) => {
     const user: User | { error: string } = await userDB.getUserObject(req["user"].email);
-    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."})
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." })
 
     const publicUser = new PublicUser;
     publicUser.fromUser(user);
@@ -27,10 +27,10 @@ router.get('/',  auth, asyncMiddleware(async (req, res) => {
 // POST user
 router.post('/', asyncMiddleware(async (req, res) => {
     const { error } = validateUserCreation(req.body);
-    if (error) return res.status(400).json({error: error.details[0].message});
+    if (error) return res.status(400).json({ error: error.details[0].message });
 
     let user = await userDB.getUserObject(req.body.email);
-    if (user instanceof User) return res.status(400).json({error: "Email already in use."});
+    if (user instanceof User) return res.status(400).json({ error: "Email already in use." });
 
     user = new User(
         req.body.name,
@@ -43,7 +43,7 @@ router.post('/', asyncMiddleware(async (req, res) => {
     user.password = await bcrypt.hash(user.password, salt);
 
     const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId();
-    if (typeof currentPuzzleId !== 'string') return res.status(404).json({ error: "Next puzzle id not found."});
+    if (typeof currentPuzzleId !== 'string') return res.status(404).json({ error: "Next puzzle id not found." });
 
     const userPuzzle = PuzzleHandler.generatePuzzle(currentPuzzleId as string);
     user.addPuzzle(userPuzzle);
@@ -53,13 +53,13 @@ router.post('/', asyncMiddleware(async (req, res) => {
     publicUser.fromUser(user)
 
     const token = user.generateAuthToken();
-    res.status(200).header('x-auth-header', token).json(publicUser);
+    res.status(200).setHeader('x-auth-header', token).json(publicUser);
 }));
 
 // DELETE user
 router.delete('/', auth, asyncMiddleware(async (req, res) => {
     const user = await userDB.deleteUserObject(req["user"].email);
-    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
 
     const publicUser = new PublicUser;
     publicUser.fromUser(user)
@@ -70,15 +70,15 @@ router.delete('/', auth, asyncMiddleware(async (req, res) => {
 // PUT user
 router.put('/', auth, asyncMiddleware(async (req, res) => {
     const { error } = validateUserUpdate(req.body);
-    if (error) return res.status(400).json({error: error.details[0].message});
+    if (error) return res.status(400).json({ error: error.details[0].message });
 
     let user = await userDB.getUserObject(req["user"].email);
-    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
     user.name = req.body.name;
     user.year = req.body.year;
 
     user = await userDB.updateUserObject(user);
-    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."})
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." })
 
     const publicUser = new PublicUser;
     publicUser.fromUser(user)
@@ -89,7 +89,7 @@ router.put('/', auth, asyncMiddleware(async (req, res) => {
 // GET userFile
 router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     const user = await userDB.getUserObject(req["user"].email);
-    if (!(user instanceof User)) return res.status(404).json({ error: "User not found."});
+    if (!(user instanceof User)) return res.status(404).json({ error: "User not found." });
 
     const userPuzzle = user.getPuzzle(req.params.puzzleId);
     if (!(userPuzzle instanceof UserPuzzle)) return res.status(404).json({ error: "No puzzle found." });
