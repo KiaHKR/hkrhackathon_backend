@@ -42,6 +42,7 @@ export class PuzzleHandlerDB {
     async getNextPuzzleId(id?: string): Promise<string | { error: string; }> {
         // if you get an argument, return right puzzle. Else, first puzzle.
         const puzzles = await dbPuzzle.find().sort({ "_id": 1 });
+        if (puzzles.length!==0){
         if (id == undefined) {
             return puzzles[0].id
         } else {
@@ -54,8 +55,8 @@ export class PuzzleHandlerDB {
                     next = true;
                 }
             }
-            return { error: "Error while browsing Puzzles." };
-        }
+          
+        }}else{  return { error: "Error while browsing Puzzles." }}
 
     }
 }
