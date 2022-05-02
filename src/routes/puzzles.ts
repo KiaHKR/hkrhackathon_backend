@@ -31,20 +31,18 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     const userPuzzle = user.getPuzzle(req.params.puzzleId);
     if (!(userPuzzle instanceof UserPuzzle)) return res.status(404).json({ error: "No puzzle found." });
 
-    const result: { answer, information } = PuzzleHandler.checkAnswer(userPuzzle.id, userPuzzle.answer, req.body.guess);
+    const result: { answer: boolean, information: string } = PuzzleHandler.checkAnswer(userPuzzle.id, userPuzzle.answer, req.body.guess);
 
     if (userPuzzle.completed) return res.status(200).json(result);
 
     if (result.answer) {
         userPuzzle.correct()
-        //        user.updatePuzzle(userPuzzle);
         const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId(userPuzzle.id);
         const newUserPuzzle = PuzzleHandler.generatePuzzle(currentPuzzleId as string);
         user.addPuzzle(newUserPuzzle);
     }
     if (!result.answer) {
         userPuzzle.incorrect()
-        //        user.updatePuzzle(userPuzzle);
     }
 
     await userDB.updateUserObject(user);
