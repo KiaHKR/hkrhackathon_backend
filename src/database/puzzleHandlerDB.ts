@@ -5,11 +5,11 @@ import { dbPuzzle } from "./models/db_puzzles";
 export class PuzzleHandlerDB {
 
     puzzleDeconstruct(puzzle) {
-        return new dbPuzzle({ id: puzzle._id, title: puzzle._title, story: puzzle._story, examples: puzzle._examples })
+        return new dbPuzzle({ id: puzzle.id, title: puzzle.title, story: puzzle.story, examples: puzzle.examples })
     }
 
     puzzleReconstruct(dbpuzzle) {
-        return new Puzzle(dbpuzzle._id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
+        return new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
     }
 
     async savePuzzle(puzzle: Puzzle): Promise<Puzzle | { error: string; }> {
