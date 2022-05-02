@@ -1,6 +1,6 @@
 import { dbUser } from "./models/db_users"
 import { User } from "../models/user"
-import {UserPuzzle} from "../models/userPuzzle";
+import { UserPuzzle } from "../models/userPuzzle";
 
 
 /** Class for handling all db interactions */
@@ -20,7 +20,7 @@ export class UserHandlerDB {
         )
         Object.keys(dbuser.userPuzzles).forEach(key => {
             const userPuzzle = new UserPuzzle(
-                dbuser.userPuzzles[key]._id,
+                dbuser.userPuzzles[key].id,
                 dbuser.userPuzzles[key]._userInput,
                 dbuser.userPuzzles[key]._answer,
             );
@@ -82,13 +82,13 @@ export class UserHandlerDB {
         // updates a user in the database.
         const userInfo = this.userDeconstruct(user)
         const res = await dbUser.findOneAndUpdate(
-            {email: userInfo.email },
+            { email: userInfo.email },
             {
                 name: userInfo.name,
                 email: userInfo.email,
                 password: userInfo.password,
                 year: userInfo.year, currentPuzzleId:
-                userInfo.currentPuzzleId,
+                    userInfo.currentPuzzleId,
                 userPuzzles: userInfo.userPuzzles,
                 isAdmin: userInfo.isAdmin
             },
