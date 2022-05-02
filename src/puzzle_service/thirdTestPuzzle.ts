@@ -53,7 +53,7 @@ export default class ThirdTestPuzzle implements PuzzleModuleInterface {
                 if (e === "x") userInput += '.x. '
                 else userInput += `${e} `
             });
-            userInput += `\n`
+            userInput += `<br/>`
         });
 
         return new UserPuzzle(
