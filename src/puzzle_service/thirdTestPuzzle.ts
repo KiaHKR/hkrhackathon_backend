@@ -2,7 +2,6 @@ import { PuzzleModuleInterface } from "./puzzleModuleInterface";
 import { UserPuzzle } from "../models/userPuzzle";
 
 export default class ThirdTestPuzzle implements PuzzleModuleInterface {
-    puzzleId: "thirdTestPuzzle";
     private maze_template = [
         ["x", 111, "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"],
         ["x", 111, 111, 111, 111, 111, 111, 111, 222, 222, "x", 222, "x", 222, 222, 222, 222, 222, "x", 222, "x"],
@@ -58,7 +57,7 @@ export default class ThirdTestPuzzle implements PuzzleModuleInterface {
         });
 
         return new UserPuzzle(
-            this.puzzleId,
+            "thirdTestPuzzle",
             userInput,
             answer);
     }

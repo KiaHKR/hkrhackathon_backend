@@ -20,7 +20,7 @@ export class UserHandlerDB {
         )
         Object.keys(dbuser.userPuzzles).forEach(key => {
             const userPuzzle = new UserPuzzle(
-                dbuser.userPuzzles[key].id,
+                dbuser.userPuzzles[key]._id,
                 dbuser.userPuzzles[key]._userInput,
                 dbuser.userPuzzles[key]._answer,
             );

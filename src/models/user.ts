@@ -71,6 +71,7 @@ export class User {
 
     addPuzzle(puzzle: UserPuzzle) {
         this._currentPuzzleId = puzzle.id
+        console.log(puzzle)
         this._userPuzzles[puzzle.id] = puzzle;
     }
 
@@ -82,7 +83,7 @@ export class User {
         this._userPuzzles[puzzle.id] = puzzle;
     }
 
-    generateAuthToken = function() {
+    generateAuthToken = function () {
         return jwt.sign({
             email: this._email,
             isAdmin: this._isAdmin
