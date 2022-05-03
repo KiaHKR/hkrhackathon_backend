@@ -57,13 +57,13 @@ export class UserHandlerDB {
         // returns an array of all users in the database.
         const users = await dbUser.find();
         let userList = []
-        for (let i in users) {
+        if (users.length == 0) {
+            return { error: "No users in database." }}
+        else{
+            for (let i in users) {
             userList.push(this.userReconstruct(i))
-        } if (userList.length == 0) {
-            return { error: "No users in database." }
-        } else {
-            return userList
-        }
+        }  return userList
+        } 
 
     }
 

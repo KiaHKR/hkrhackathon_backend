@@ -5,11 +5,11 @@ import { dbPuzzle } from "./models/db_puzzles";
 export class PuzzleHandlerDB {
 
     puzzleDeconstruct(puzzle) {
-        return new dbPuzzle({ id: puzzle._id, title: puzzle._title, story: puzzle._story, examples: puzzle._examples })
+        return new dbPuzzle({ id: puzzle.id, title: puzzle.title, story: puzzle.story, examples: puzzle.examples })
     }
 
     puzzleReconstruct(dbpuzzle) {
-        return new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.description)
+        return new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
     }
 
     async savePuzzle(puzzle: Puzzle): Promise<Puzzle | { error: string; }> {
@@ -46,6 +46,7 @@ export class PuzzleHandlerDB {
     async getNextPuzzleId(id?: string): Promise<string | { error: string; }> {
         // if you get an argument, return right puzzle. Else, first puzzle.
         const puzzles = await dbPuzzle.find().sort({ "_id": 1 });
+        if (puzzles.length!==0){
         if (id == undefined) {
             return puzzles[0].id
         } else {
@@ -58,8 +59,8 @@ export class PuzzleHandlerDB {
                     next = true;
                 }
             }
-            return { error: "Error while browsing Puzzles." };
-        }
+          
+        }}else{  return { error: "Error while browsing Puzzles." }}
 
     }
 }
