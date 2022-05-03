@@ -1,5 +1,6 @@
 import { Puzzle } from "../models/puzzle";
 import { dbPuzzle } from "./models/db_puzzles";
+import { dbpuzzleStorage } from "./models/db_puzzleStorage"
 
 /** Class for handling all db interactions */
 export class PuzzleHandlerDB {
@@ -47,7 +48,7 @@ export class PuzzleHandlerDB {
 
     async getNextPuzzleId(id?: string): Promise<string | { error: string; }> {
         // if you get an argument, return right puzzle. Else, first puzzle.
-        const puzzles = await dbPuzzle.find().sort({ "_id": 1 });
+        const puzzles = await dbpuzzleStorage.find({ visibility: true }).sort({ "puzzleid": 1 });
         if (puzzles.length !== 0) {
             if (id == undefined) {
                 return puzzles[0].id
@@ -66,4 +67,15 @@ export class PuzzleHandlerDB {
         } else { return { error: "Error while browsing Puzzles." } }
 
     }
+
+    async changePuzzleVisibility(id: string, visibility: boolean): Promise<string | { error: string; }> {
+        const puzzle = await dbpuzzleStorage.findOne({ id: id });
+        if (puzzle) {
+            puzzle.visiblity = visibility;
+            return puzzle
+        } else { return { error: "No such puzzle found." } }
+
+    }
+
+
 }
