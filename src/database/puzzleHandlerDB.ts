@@ -78,7 +78,6 @@ export class PuzzleHandlerDB {
     async saveOrderArray(orderArray): Promise<[{ id: string, visibility: boolean }]> {
         // updates puzzle storage array
         console.log(orderArray)
-        const storage = new dbpuzzleStorage
         const res = await dbpuzzleStorage.deleteMany()
         return await new dbpuzzleStorage(orderArray).save()
     }
