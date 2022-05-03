@@ -99,7 +99,7 @@ export function validateUserUpdate(user) {
         name: Joi.string().min(2).max(50).required(),
         year: Joi.number().required().less(4).greater(0),
         isAdmin: Joi.boolean(),
-        currentPuzzleId: Joi.string().min(1).required(),
+        currentPuzzleId: Joi.string().min(1),
     });
 
     return schema.validate(user);

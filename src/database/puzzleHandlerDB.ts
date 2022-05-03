@@ -74,7 +74,7 @@ export class PuzzleHandlerDB {
     }
 
 
-    async saveOrderArray(orderArray: [{ id: string, visiblity: boolean }]): Promise<[{ id: string, visiblity: boolean }]> {
+    async saveOrderArray(orderArray: [{ id: string, visibility: boolean }]): Promise<[{ id: string, visibility: boolean }]> {
         // updates puzzle storage array
         return await new dbpuzzleStorage(orderArray).save()
     }
