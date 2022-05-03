@@ -2,23 +2,16 @@ import mongoose from "mongoose";
 import { dbUser } from "./models/db_users"
 import { UserPuzzle } from "../models/userPuzzle"
 import dotenv from "dotenv"
+import { PuzzleHandlerDB } from "./puzzleHandlerDB";
 async function letsgo() {
     dotenv.config();
 
-    const mongoConnection = process.env.DB_TEST_CONNECT;
+    const mongoConnection = process.env.DB_CONNECT;
     mongoose.connect(mongoConnection)
+    let puzzhand = new PuzzleHandlerDB;
+    let res = await puzzhand.getAllPuzzles();
 
-    const testuser = new dbUser({
-        name: "test",
-        email: "testemail2",
-        password: "assword",
-        year: 2022,
-        currentPuzzleId: "1216546",
-        userPuzzles: { "firstTestPuzzle": new UserPuzzle("firstTestPuzzle", "1 2 3", "2") },
-        isAdmin: true
-    })
 
-    await testuser.save()
     console.log("jobs done.")
 }
 

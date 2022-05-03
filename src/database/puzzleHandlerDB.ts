@@ -9,7 +9,8 @@ export class PuzzleHandlerDB {
     }
 
     puzzleReconstruct(dbpuzzle) {
-        return new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
+        const puzz = new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
+        return puzz
     }
 
     async savePuzzle(puzzle: Puzzle): Promise<Puzzle | { error: string; }> {
