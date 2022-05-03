@@ -1,7 +1,6 @@
-import {UserPuzzle} from "../models/userPuzzle";
+import { UserPuzzle } from "../models/userPuzzle";
 
 export interface PuzzleModuleInterface {
-    puzzleId: string;
-    checkAnswer(correctAnswer: string, guessAnswer: string): { answer, information };
+    checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean, information: string };
     generatePuzzle(): UserPuzzle;
 }

@@ -10,6 +10,7 @@ export default function (app) {
     app.use((req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', '*');
+        res.header('Access-Control-Expose-Headers', 'x-auth-header');
         next();
     });
     app.use('/user', users);

@@ -2,7 +2,6 @@ import { PuzzleModuleInterface } from "./puzzleModuleInterface";
 import { UserPuzzle } from "../models/userPuzzle";
 
 export default class ThirdTestPuzzle implements PuzzleModuleInterface {
-    puzzleId: "thirdTestPuzzle";
     private maze_template = [
         ["x", 111, "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"],
         ["x", 111, 111, 111, 111, 111, 111, 111, 222, 222, "x", 222, "x", 222, 222, 222, 222, 222, "x", 222, "x"],
@@ -27,7 +26,7 @@ export default class ThirdTestPuzzle implements PuzzleModuleInterface {
         ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", 111, "x"],
     ]
 
-    checkAnswer(correctAnswer: string, guessAnswer: string): { answer; information } {
+    checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean, information: string } {
         return (correctAnswer === guessAnswer) ? { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" }
     }
 
@@ -54,11 +53,11 @@ export default class ThirdTestPuzzle implements PuzzleModuleInterface {
                 if (e === "x") userInput += '.x. '
                 else userInput += `${e} `
             });
-            userInput += `\n`
+            userInput += `<br/>`
         });
 
         return new UserPuzzle(
-            this.puzzleId,
+            "thirdTestPuzzle",
             userInput,
             answer);
     }
