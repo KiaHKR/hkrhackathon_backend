@@ -35,7 +35,7 @@ export async function populateDatabase() {
         id: "firstTestPuzzle",
         title: "FIRST Test Title",
         story: "This is the story of the FIRST test",
-        description: {
+        examples: {
             inputExample: "this is the FIRST input example",
             logicExample: "this is the FIRST logic example",
         }
@@ -45,7 +45,7 @@ export async function populateDatabase() {
         id: "secondTestPuzzle",
         title: "SECOND Test Title",
         story: "This is the story of the SECOND test",
-        description: {
+        examples: {
             inputExample: "this is the SECOND input example",
             logicExample: "this is the SECOND logic example",
         }

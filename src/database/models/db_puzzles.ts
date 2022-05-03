@@ -16,7 +16,7 @@ const puzzleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
+    examples: {
         inputExample: {
             type: String,
             required: true,
@@ -27,7 +27,7 @@ const puzzleSchema = new mongoose.Schema({
         }
 
     }
-});
+}, { minimize: false });
 
 
 
