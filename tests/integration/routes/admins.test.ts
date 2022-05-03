@@ -318,7 +318,7 @@ describe('admin', () => {
         });
 
         it('should return 404 if no users in the db', async function () {
-            dbUser.deleteMany();
+            await dbUser.deleteMany();
 
             const res = await exec();
 
