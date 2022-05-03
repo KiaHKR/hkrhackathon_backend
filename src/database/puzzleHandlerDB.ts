@@ -29,15 +29,19 @@ export class PuzzleHandlerDB {
         }
     }
 
-    async getAllPuzzles(): Promise<any[]> {
+    async getAllPuzzles(): Promise<Puzzle[] | { error: string }> {
         // returns an array of all users from the database.
         const puzzles = await dbPuzzle.find();
         let puzzleList = [];
+        if (puzzleList.length == 0) {
+            
+                return { error: "No puzzles in database." }
+        } else{
         for (let i of puzzles) {
             puzzleList.push(this.puzzleReconstruct(i))
-        }
         return puzzleList
-    }
+        
+    }}}
 
     async getNextPuzzleId(id?: string): Promise<string | { error: string; }> {
         // if you get an argument, return right puzzle. Else, first puzzle.
