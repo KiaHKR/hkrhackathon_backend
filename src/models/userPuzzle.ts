@@ -9,7 +9,6 @@ export class UserPuzzle {
         private _answer: string,) {
     }
 
-
     get id(): string {
         return this._id;
     }

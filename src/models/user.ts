@@ -71,7 +71,6 @@ export class User {
 
     addPuzzle(puzzle: UserPuzzle) {
         this._currentPuzzleId = puzzle.id
-        console.log(puzzle)
         this._userPuzzles[puzzle.id] = puzzle;
     }
 
@@ -98,7 +97,8 @@ export class User {
 export function validateUserUpdate(user) {
     const schema = Joi.object({
         name: Joi.string().min(2).max(50).required(),
-        year: Joi.number().required().less(4).greater(0)
+        year: Joi.number().required().less(4).greater(0),
+        isAdmin: Joi.boolean()
     });
 
     return schema.validate(user);

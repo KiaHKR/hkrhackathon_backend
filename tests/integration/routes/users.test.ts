@@ -3,6 +3,7 @@ import { dbUser } from "../../../src/database/models/db_users";
 import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
+import {PuzzleHandlerDB} from "../../../src/database/puzzleHandlerDB";
 let server;
 
 describe('/user', () => {
