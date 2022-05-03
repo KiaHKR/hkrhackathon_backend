@@ -74,7 +74,7 @@ router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
 
 // GET THE ORDER ARRAY
 router.get('/admin/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
-    const orderArray = puzzleDB.getOrderArray();
+    const orderArray = await puzzleDB.getOrderArray();
     if (!Array.isArray(orderArray)) return res.status(404).json({ error: "ORDER ARRAY not found." });
 
     res.status(200).send(orderArray);
@@ -85,7 +85,7 @@ router.post('/admin/puzzles', [auth, admin], asyncMiddleware(async (req, res) =>
     const { error } = validateOrderArray(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
-    const result = puzzleDB.saveOrderArray(req.body.orderArray);
+    const result = await puzzleDB.saveOrderArray(req.body.orderArray);
     res.status(200).send(result);
 }));
 

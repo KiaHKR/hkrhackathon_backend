@@ -5,5 +5,5 @@ import { dbpuzzleStorage } from "../../src/database/models/db_puzzleStorage";
 export async function depopulateDatabase() {
     await dbUser.remove();
     await dbPuzzle.remove();
-    // await dbpuzzleStorage.remove();
+    await dbpuzzleStorage.remove();
 }
