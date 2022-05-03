@@ -36,10 +36,10 @@ export class PuzzleHandlerDB {
         if (puzzles.length == 0) {
                 return { error: "No puzzles in database." }
         } else{
-        for (let i of puzzles) {
+        for (const i of puzzles) {
             puzzleList.push(this.puzzleReconstruct(i))
         return puzzleList
-        
+
     }}}
 
     async getNextPuzzleId(id?: string): Promise<string | { error: string; }> {

@@ -296,7 +296,7 @@ describe('admin', () => {
 
         it('should return a 401 if no token is provided.', async function () {
             const res = await request(server)
-                .get('/user')
+                .get('/admin')
                 .set('x-auth-header', '')
                 .send()
 

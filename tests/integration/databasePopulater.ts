@@ -50,6 +50,6 @@ export async function populateDatabase() {
             logicExample: "this is the SECOND logic example",
         }
     });
-    puzzle.save();
-    puzzle2.save();
+    await puzzle.save();
+    await puzzle2.save();
 }
