@@ -3,9 +3,9 @@ const puzzleStorageSchema = new mongoose.Schema({
 
     storage: [{
         puzzleid: String,
-        public: Boolean
+        visibility: Boolean
     }]
-})
+}, { minimize: false })
 
 
 
