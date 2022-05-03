@@ -9,7 +9,9 @@ import { User, validateUserUpdate } from '../models/user';
 import PublicUser from "../models/publicUser";
 
 import { UserHandlerDB } from "../database/userHandlerDB";
+import { PuzzleHandlerDB } from "../database/puzzleHandlerDB";
 const userDB = new UserHandlerDB();
+const puzzleDB = new PuzzleHandlerDB();
 
 // DELETE user.
 router.delete('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
@@ -68,5 +70,14 @@ router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
 
     res.status(200).send(publicUsers);
 }));
+
+// GET THE ORDER ARRAY
+// router.get('/admin/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
+//     const orderArray = puzzleDB.getOrderArray();
+// }));
+//
+// router.post('/admin/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
+//     const orderArray = puzzleDB.getOrderArray();
+// }));
 
 export = router;
