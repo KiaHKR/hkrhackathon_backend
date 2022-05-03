@@ -9,7 +9,8 @@ export class PuzzleHandlerDB {
     }
 
     puzzleReconstruct(dbpuzzle) {
-        return new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
+        const puzz = new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
+        return puzz
     }
 
     async savePuzzle(puzzle: Puzzle): Promise<Puzzle | { error: string; }> {
@@ -34,32 +35,35 @@ export class PuzzleHandlerDB {
         const puzzles = await dbPuzzle.find();
         let puzzleList = [];
         if (puzzles.length == 0) {
-                return { error: "No puzzles in database." }
-        } else{
-        for (const i of puzzles) {
-            puzzleList.push(this.puzzleReconstruct(i))
-        return puzzleList
+            return { error: "No puzzles in database." }
+        } else {
+            for (const i of puzzles) {
+                puzzleList.push(this.puzzleReconstruct(i))
+            }
+            return puzzleList
 
-    }}}
+        }
+    }
 
     async getNextPuzzleId(id?: string): Promise<string | { error: string; }> {
         // if you get an argument, return right puzzle. Else, first puzzle.
         const puzzles = await dbPuzzle.find().sort({ "_id": 1 });
-        if (puzzles.length!==0){
-        if (id == undefined) {
-            return puzzles[0].id
-        } else {
-            let next = false;
-            for (let i of puzzles) {
-                if (next) {
-                    return i.id
+        if (puzzles.length !== 0) {
+            if (id == undefined) {
+                return puzzles[0].id
+            } else {
+                let next = false;
+                for (let i of puzzles) {
+                    if (next) {
+                        return i.id
+                    }
+                    if (i.id == id) {
+                        next = true;
+                    }
                 }
-                if (i.id == id) {
-                    next = true;
-                }
+
             }
-          
-        }}else{  return { error: "Error while browsing Puzzles." }}
+        } else { return { error: "Error while browsing Puzzles." } }
 
     }
 }
