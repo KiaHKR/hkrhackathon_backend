@@ -3,6 +3,7 @@ import { PuzzleModuleInterface } from "./puzzleModuleInterface";
 import FirstTestPuzzle from "./firstTestPuzzle";
 import SecondTestPuzzle from "./secondTestPuzzle";
 import ThirdTestPuzzle from "./thirdTestPuzzle";
+import LastTestPuzzleModule from "./lastTestPuzzleModule";
 
 export default class PuzzleHandler {
     private static puzzleClasses: {
@@ -10,8 +11,9 @@ export default class PuzzleHandler {
     } = {
             "firstTestPuzzle": new FirstTestPuzzle(),
             "secondTestPuzzle": new SecondTestPuzzle(),
-            "thirdTestPuzzle": new ThirdTestPuzzle()
-        };
+            "thirdTestPuzzle": new ThirdTestPuzzle(),
+            "lastTestPuzzle": new LastTestPuzzleModule()
+    };
 
     static generatePuzzle(id: string): UserPuzzle {
         if (!this.idFound(id)) throw new Error("ID does not match to any puzzle modules");
