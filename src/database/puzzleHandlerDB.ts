@@ -33,8 +33,7 @@ export class PuzzleHandlerDB {
         // returns an array of all users from the database.
         const puzzles = await dbPuzzle.find();
         let puzzleList = [];
-        if (puzzleList.length == 0) {
-            
+        if (puzzles.length == 0) {
                 return { error: "No puzzles in database." }
         } else{
         for (let i of puzzles) {
