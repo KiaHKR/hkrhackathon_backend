@@ -11,6 +11,7 @@ export default function (app) {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', '*');
         res.header('Access-Control-Expose-Headers', 'x-auth-header');
+        res.header('Access-Control-Allow-Methods', '*');
         next();
     });
     app.use('/user', users);
