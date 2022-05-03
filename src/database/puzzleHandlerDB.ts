@@ -66,7 +66,15 @@ export class PuzzleHandlerDB {
         }
     }
 
-    async updatingPuzzleStorage(orderArray: [{ id: string, visiblity: boolean }]): Promise<[{ id: string, visiblity: boolean }]> {
+    async getOrderArray(): Promise<any[] | { error: string; }> {
+        // updates puzzle storage array
+        const orderArray = await dbpuzzleStorage.find();
+        if (orderArray.length == 0) { return { error: "OrderArray not found" } }
+        else { return orderArray }
+    }
+
+
+    async saveOrderArray(orderArray: [{ id: string, visiblity: boolean }]): Promise<[{ id: string, visiblity: boolean }]> {
         // updates puzzle storage array
         return await new dbpuzzleStorage(orderArray).save()
     }
