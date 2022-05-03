@@ -98,7 +98,8 @@ export function validateUserUpdate(user) {
     const schema = Joi.object({
         name: Joi.string().min(2).max(50).required(),
         year: Joi.number().required().less(4).greater(0),
-        isAdmin: Joi.boolean()
+        isAdmin: Joi.boolean(),
+        currentPuzzleId: Joi.string().min(1).required(),
     });
 
     return schema.validate(user);

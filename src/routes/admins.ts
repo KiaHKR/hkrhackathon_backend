@@ -14,28 +14,28 @@ const userDB = new UserHandlerDB();
 // DELETE user.
 router.delete('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     const user = await userDB.deleteUserObject(req.params.email);
-    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
 
     const publicUser = new PublicUser;
     publicUser.fromUser(user)
-    
+
     res.status(200).send(publicUser);
 }));
 
 // UPDATE user.
 router.put('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     const { error } = validateUserUpdate(req.body);
-    if (error) return res.status(400).json({error: error.details[0].message});
+    if (error) return res.status(400).json({ error: error.details[0].message });
 
     let user = await userDB.getUserObject(req.params.email);
-    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
     user.name = req.body.name;
     user.year = req.body.year;
     user.isAdmin = req.body.isAdmin;
     user.currentPuzzleId = req.body.currentPuzzleId;
 
     user = await userDB.updateUserObject(user);
-    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
 
     const publicUser = new PublicUser;
     publicUser.fromUser(user)
@@ -46,7 +46,7 @@ router.put('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
 // GET user.
 router.get('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     const user = await userDB.getUserObject(req.params.email);
-    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found."});
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
 
     const publicUser = new PublicUser;
     publicUser.fromUser(user)
@@ -57,15 +57,15 @@ router.get('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
 // GET ALL users
 router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
     const users: User[] | { error: string } = await userDB.getAllUserObject();
-    if (!Array.isArray(users)) return res.status(404).json({error: "No users in the database."});
-    
+    if (!Array.isArray(users)) return res.status(404).json({ error: "No users in the database." });
+
     const publicUsers = [];
     users.forEach((user) => {
         const publicUser = new PublicUser;
         publicUser.fromUser(user)
         publicUsers.push(publicUser);
     });
-    
+
     res.status(200).send(publicUsers);
 }));
 
