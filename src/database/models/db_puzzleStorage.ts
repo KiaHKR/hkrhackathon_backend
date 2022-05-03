@@ -4,9 +4,10 @@ const puzzleStorageSchema = new mongoose.Schema({
     storage: [{
         puzzleid: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
-        visibility: {
+        public: {
             type: Boolean,
             required: true,
             default: true
