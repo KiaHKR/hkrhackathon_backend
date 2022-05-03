@@ -74,35 +74,35 @@ export class PuzzleHandlerDB {
     }
 
 
-    async saveOrderArray(orderArray: [{ id: string, visibility: boolean }]): Promise<[{ id: string, visiblity: boolean }]> {
+    async saveOrderArray(orderArray: [{ id: string, visibility: boolean }]): Promise<[{ id: string, visibility: boolean }]> {
         // updates puzzle storage array
         return await new dbpuzzleStorage(orderArray).save()
     }
 }
 
-    /* async changePuzzleVisibility(id: string, visiblity: boolean): Promise<string | { error: string; }> {
-         const puzzle = await dbpuzzleStorage.findOne({ puzzleid: id });
-         if (puzzle) {
-             puzzle.public = visiblity;
-             return puzzle.puzzleid
-         } else { return { error: "No such puzzle found." } }
-        }
-    */
-
-
-
-    /*async delPuzzleFromStorage(id: string): Promise<string | { error: string; }> {
-        const puzzle = await dbpuzzleStorage.findOne({ id: id });
-        if (puzzle) {
-            const puzzleRet = await puzzle.deleteOne({ id: id })
-            if (puzzleRet === 1) {
-                return puzzle.id
-            } else { return { error: "Error while deleting." } }
-        } else {
-            return { error: "Puzzle not found." }
-
-        }
+/* async changePuzzleVisibility(id: string, visiblity: boolean): Promise<string | { error: string; }> {
+     const puzzle = await dbpuzzleStorage.findOne({ puzzleid: id });
+     if (puzzle) {
+         puzzle.public = visiblity;
+         return puzzle.puzzleid
+     } else { return { error: "No such puzzle found." } }
     }
-    */
+*/
 
+
+
+/*async delPuzzleFromStorage(id: string): Promise<string | { error: string; }> {
+    const puzzle = await dbpuzzleStorage.findOne({ id: id });
+    if (puzzle) {
+        const puzzleRet = await puzzle.deleteOne({ id: id })
+        if (puzzleRet === 1) {
+            return puzzle.id
+        } else { return { error: "Error while deleting." } }
+    } else {
+        return { error: "Puzzle not found." }
+
+    }
 }
+*/
+
+
