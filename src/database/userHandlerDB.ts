@@ -60,7 +60,7 @@ export class UserHandlerDB {
         if (users.length == 0) {
             return { error: "No users in database." }}
         else{
-            for (let i in users) {
+            for (let i of users) {
             userList.push(this.userReconstruct(i))
         }  return userList
         } 

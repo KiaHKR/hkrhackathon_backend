@@ -15,12 +15,9 @@ const userDB = new UserHandlerDB();
 // GET all puzzles
 router.get('/', auth, asyncMiddleware(async (req, res) => {
     const puzzles = await puzzleDB.getAllPuzzles();
-    res.status(200).send(puzzles);
-}));
+    if (!Array.isArray(puzzles)) return res.status(404).json({error: "No users in the database."});
 
-// GET a puzzle                     possibly not needed.
-router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
-    // GET a puzzle by id.
+    res.status(200).send(puzzles);
 }));
 
 // POST user's answer
