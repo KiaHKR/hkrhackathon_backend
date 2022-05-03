@@ -68,14 +68,35 @@ export class PuzzleHandlerDB {
 
     }
 
-    async changePuzzleVisibility(id: string, visibility: boolean): Promise<string | { error: string; }> {
+    async changePuzzleVisibility(id: string, visiblity: boolean): Promise<string | { error: string; }> {
         const puzzle = await dbpuzzleStorage.findOne({ id: id });
         if (puzzle) {
-            puzzle.visiblity = visibility;
-            return puzzle
+            puzzle.public = visiblity;
+            return puzzle.id
         } else { return { error: "No such puzzle found." } }
-
     }
 
+    async addPuzzleToStorage(id: string, visiblity: boolean): Promise<string | { error: string; }> {
+        const check = await dbpuzzleStorage.findOne({ id: id });
+        if (check) { return { error: "Puzzle exists already." } }
+        else {
+            const puzzle = await new dbpuzzleStorage({ id: id, public: visiblity })
+            await puzzle.save()
+            return puzzle.id
+        }
+    }
+
+    async delPuzzleFromStorage(id: string): Promise<string | { error: string; }> {
+        const puzzle = await dbpuzzleStorage.findOne({ id: id });
+        if (puzzle) {
+            const puzzleRet = await puzzle.deleteOne({ id: id })
+            if (puzzleRet === 1) {
+                return puzzle.id
+            } else { return { error: "Error while deleting." } }
+        } else {
+            return { error: "Puzzle not found." }
+
+        }
+    }
 
 }
