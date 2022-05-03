@@ -1,6 +1,7 @@
 import { dbUser } from "../../src/database/models/db_users";
 import { dbPuzzle } from "../../src/database/models/db_puzzles";
 import { UserPuzzle } from "../../src/models/userPuzzle";
+import { dbpuzzleStorage } from "../../src/database/models/db_puzzleStorage";
 
 export async function populateDatabase() {
     const userDB = new dbUser({
@@ -52,4 +53,7 @@ export async function populateDatabase() {
     });
     await puzzle.save();
     await puzzle2.save();
+
+    const puzzlestorage = new dbpuzzleStorage({ storage: [{ puzzleid: "firstTestPuzzle", visibility: true }, { puzzleid: "secpndTestPuzzle", visibility: true }] })
+    await puzzlestorage.save();
 }
