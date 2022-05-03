@@ -2,9 +2,8 @@ import { PuzzleModuleInterface } from "./puzzleModuleInterface";
 import { UserPuzzle } from "../models/userPuzzle";
 
 export default class FirstTestPuzzle implements PuzzleModuleInterface {
-    puzzleId: "firstTestPuzzle";
 
-    checkAnswer(correctAnswer: string, guessAnswer: string): { answer; information } {
+    checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean, information: string } {
         return (correctAnswer === guessAnswer) ? { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" }
     }
 
