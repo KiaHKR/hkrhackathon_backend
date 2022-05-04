@@ -113,10 +113,20 @@ describe('/puzzle', () => {
             expect(res.body.error).toMatch('puzzle');
         });
 
-        // it('should return 200 and result object', async function () {
-        //     const user = dbUser.findOne({ email: "test@example.com" })
-        //     user.userPuzzles
-        // });
+         it('should return 200 and result object if puzzle marked completed', async function () {
+             let user = await dbUser.findOne({ email: "test@example.com" })
+             user.userPuzzles[puzzleId]._completed = true;
+
+             const res = await exec();
+
+             user = await dbUser.findOne({ email: "test@example.com" })
+             console.log(user)
+             const number = user.userPuzzles[puzzleId]._completionTime;
+
+             expect(res.status).toBe(200);
+             expect(number).toBeNull();
+
+         });
     });
 
 });

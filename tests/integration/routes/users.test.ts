@@ -3,7 +3,7 @@ import { dbUser } from "../../../src/database/models/db_users";
 import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
-import {PuzzleHandlerDB} from "../../../src/database/puzzleHandlerDB";
+
 let server;
 
 describe('/user', () => {
@@ -434,14 +434,6 @@ describe('/user', () => {
 
             expect(res.status).toBe(200);
             expect(res.body.userInput).toMatch('1 1')
-        });
-
-        it('should return a correct file "secondTestPuzzle"', async function () {
-            id = "secondTestPuzzle"
-            const res = await exec();
-
-            expect(res.status).toBe(200);
-            expect(res.body.userInput).toMatch('2 2')
         });
     });
 });

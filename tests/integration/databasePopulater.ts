@@ -13,9 +13,7 @@ export async function populateDatabase() {
         year: 1,
         currentPuzzleId: "firstTestPuzzle",
         userPuzzles: {
-            "firstTestPuzzle": new UserPuzzle("firstTestPuzzle", "1 1 1", "1"),
-            "secondTestPuzzle": new UserPuzzle("secondTestPuzzle", "2 2 2", "2"),
-            "thirdTestPuzzle": new UserPuzzle("thirdTestPuzzle", "3 3 3", "3"),
+            "firstTestPuzzle": new UserPuzzle("firstTestPuzzle", "1 1 1", "1")
         }
     });
 

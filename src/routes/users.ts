@@ -9,7 +9,7 @@ import asyncMiddleware from '../middleware/async'
 import PublicUser from "../models/publicUser";
 import PuzzleHandler from "../puzzle_service/puzzleHandler";
 import { UserPuzzle } from "../models/userPuzzle";
-import { PuzzleHandlerDB } from "../database/puzzleHandlerDB";
+import {PuzzleHandlerDB} from "../database/puzzleHandlerDB";
 const puzzleDB = new PuzzleHandlerDB();
 import { UserHandlerDB } from "../database/userHandlerDB";
 const userDB = new UserHandlerDB();
