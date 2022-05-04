@@ -11,6 +11,7 @@ import PublicUser from "../models/publicUser";
 import { UserHandlerDB } from "../database/userHandlerDB";
 import { PuzzleHandlerDB } from "../database/puzzleHandlerDB";
 import Joi from "joi";
+import PuzzleHandler from "../puzzle_service/puzzleHandler";
 const userDB = new UserHandlerDB();
 const puzzleDB = new PuzzleHandlerDB();
 
@@ -73,7 +74,7 @@ router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
 }));
 
 // GET THE ORDER ARRAY
-router.get('/admin/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
+router.get('/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
     const orderArray = await puzzleDB.getOrderArray();
     if (!Array.isArray(orderArray)) return res.status(404).json({ error: "ORDER ARRAY not found." });
 
@@ -81,7 +82,7 @@ router.get('/admin/puzzles', [auth, admin], asyncMiddleware(async (req, res) => 
 }));
 
 // SAVE THE ORDER ARRAY
-router.post('/admin/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
+router.post('/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
     const { error } = validateOrderArray(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
@@ -89,12 +90,47 @@ router.post('/admin/puzzles', [auth, admin], asyncMiddleware(async (req, res) =>
     res.status(200).send(result);
 }));
 
+// MODIFY user's puzzles.
+router.put('/update/:email', [auth, admin], asyncMiddleware(async (req, res) => {
+    const { error } = validateUserPuzzleUpdate(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    const user: User | { error: string } = await userDB.getUserObject(req.params.email);
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
+
+    user.removePuzzles();
+
+    const puzzles: string[] = req.body.puzzles;
+
+    puzzles.forEach(puzzleId => {
+        const userPuzzle = PuzzleHandler.generatePuzzle(puzzleId);
+        userPuzzle.correct();
+        user.addPuzzle(userPuzzle);
+    });
+
+    user.currentPuzzleId = req.bosy.newPuzzleId;
+
+    const result = await userDB.updateUserObject(user);
+
+    return res.status(200).json(result);
+}));
+
+
 export = router;
 
-function validateOrderArray(orderArray: [{ id: string, visiblity: boolean }]) {
+function validateOrderArray(orderArray) {
     const schema = Joi.object({
         orderArray: Joi.array().required()
     });
 
     return schema.validate(orderArray);
+}
+
+function validateUserPuzzleUpdate(input) {
+    const schema = Joi.object({
+        puzzles: Joi.array().required().min(1),
+        newPuzzleId: Joi.string().required()
+    });
+
+    return schema.validate(input);
 }
