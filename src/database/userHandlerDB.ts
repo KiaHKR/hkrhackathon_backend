@@ -1,6 +1,9 @@
 import { dbUser } from "./models/db_users"
 import { User } from "../models/user"
 import { UserPuzzle } from "../models/userPuzzle";
+import { dbpuzzleStorage } from "./models/db_puzzleStorage";
+import { not } from "joi";
+import { dbPuzzle } from "./models/db_puzzles";
 
 
 /** Class for handling all db interactions */
@@ -43,14 +46,43 @@ export class UserHandlerDB {
         return this.userReconstruct(newUser)
     }
 
+    async getActiveList(): Promise<string[] | { error: string; }> {
+        const puzzleIds = []
+        for (let i of await dbpuzzleStorage.find()[0].storage) {
+            if (i.visibility == true) { puzzleIds.push(i.puzzleid) }
+        }
+        if (puzzleIds.length == 0) return { error: "Active list empty" }
+        return puzzleIds
+    }
+
+    async getFullList(): Promise<any[] | { error: string; }> {
+        const puzzleIds = []
+        for (let i of await dbpuzzleStorage.find()[0].storage) {
+            puzzleIds.push(i)
+        }
+        if (puzzleIds.length == 0) return { error: "Order list empty" }
+        return puzzleIds
+    }
+
     async getUserObject(email): Promise<User | { error: string; }> {
         // fetches a single user from the database and sends an object back.
         const user = await dbUser.findOne({ email: email })
-        if (user) {
+        if (!user) return { error: "User not found." }
+        const activeList = await this.getActiveList()
+        if (!Array.isArray(activeList)) return { error: "Active list empty" }
+        if (activeList.includes(user.currentPuzzleId)) {
             return this.userReconstruct(user)
-        } else {
-            return { error: 'User not found.' }
         }
+        const fullList = await this.getFullList()
+        if (!Array.isArray(fullList)) return { error: "Order list empty" }
+        for (let i of fullList.slice(fullList.indexOf(user.currentPuzzleId))) {
+            if (i.visibility == true) {
+                user.currentPuzzleId == i.puzzleid;
+                break
+            }
+        }
+        await this.updateUserObject(this.userReconstruct(user));
+        return this.userReconstruct(user)
     }
 
     async getAllUserObject(): Promise<User[] | { error: string }> {
@@ -58,12 +90,13 @@ export class UserHandlerDB {
         const users = await dbUser.find();
         let userList = []
         if (users.length == 0) {
-            return { error: "No users in database." }}
-        else{
+            return { error: "No users in database." }
+        }
+        else {
             for (let i of users) {
-            userList.push(this.userReconstruct(i))
-        }  return userList
-        } 
+                userList.push(this.userReconstruct(i))
+            } return userList
+        }
 
     }
 

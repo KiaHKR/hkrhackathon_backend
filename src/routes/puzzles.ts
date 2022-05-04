@@ -15,7 +15,7 @@ const userDB = new UserHandlerDB();
 // GET all puzzles
 router.get('/', auth, asyncMiddleware(async (req, res) => {
     const puzzles = await puzzleDB.getAllPuzzles();
-    if (!Array.isArray(puzzles)) return res.status(404).json({error: "No users in the database."});
+    if (!Array.isArray(puzzles)) return res.status(404).json({ error: "No users in the database." });
 
     res.status(200).send(puzzles);
 }));
@@ -35,8 +35,8 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     if (result.answer) {
         userPuzzle.correct()
         const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId(userPuzzle.id);
-        if (typeof currentPuzzleId !== 'string') return res.status(404).json({ error: "Next puzzle id not found."});
-
+        if (typeof currentPuzzleId !== 'string') return res.status(404).json({ error: "Next puzzle id not found." });
+        console.log(currentPuzzleId)
         const newUserPuzzle = PuzzleHandler.generatePuzzle(currentPuzzleId as string);
         user.addPuzzle(newUserPuzzle);
     }
