@@ -1,6 +1,7 @@
 import { Puzzle } from "../models/puzzle";
 import { dbPuzzle } from "./models/db_puzzles";
 import { dbpuzzleStorage } from "./models/db_puzzleStorage"
+import { dbUser } from "./models/db_users";
 
 /** Class for handling all db interactions */
 export class PuzzleHandlerDB {
@@ -69,7 +70,6 @@ export class PuzzleHandlerDB {
     async getOrderArray(): Promise<any[] | { error: string; }> {
         // updates puzzle storage array
         const orderArray = await dbpuzzleStorage.find();
-        console.log(orderArray)
         if (orderArray.length == 0) { return { error: "OrderArray not found" } }
         else { return orderArray }
     }
@@ -77,9 +77,15 @@ export class PuzzleHandlerDB {
     //: { storage: [{ puzzleid: string, visibility: boolean }] }
     async saveOrderArray(orderArray): Promise<[{ id: string, visibility: boolean }]> {
         // updates puzzle storage array
-        console.log(orderArray)
         const res = await dbpuzzleStorage.deleteMany()
         return await new dbpuzzleStorage(orderArray).save()
+    }
+
+
+    async checkUsersOnPuzzle(puzzleid): Promise<boolean> {
+        const users = await dbUser.find({ currentPuzzleId: puzzleid })
+        if (users.length == 0) { return true }
+        return false
     }
 }
 
