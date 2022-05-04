@@ -82,6 +82,10 @@ export class User {
         this._userPuzzles[puzzle.id] = puzzle;
     }
 
+    removePuzzles() {
+        this._userPuzzles = {};
+    }
+
     generateAuthToken = function () {
         return jwt.sign({
             email: this._email,
