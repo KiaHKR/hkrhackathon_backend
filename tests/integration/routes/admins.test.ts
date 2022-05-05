@@ -422,7 +422,7 @@ describe('/admin', () => {
             const res = await exec();
 
             expect(res.status).toBe(400);
-            expect(res.body.error).toMatch('at least one');
+            expect(res.body.error).toMatch('at least 1');
         });
 
         it('should return 200 with valid input', async function () {
