@@ -69,9 +69,12 @@ export class PuzzleHandlerDB {
 
     async getOrderArray(): Promise<any[] | { error: string; }> {
         // updates puzzle storage array
+        const returnArray = []
         const orderArray = await dbpuzzleStorage.find();
         if (orderArray.length == 0) { return { error: "OrderArray not found" } }
-        else { return orderArray }
+        for (let i of orderArray[0].storage) {
+            returnArray.push({ puzzleid: i.puzzleid, visibility: i.visibility })
+        } return returnArray
     }
 
     //: { storage: [{ puzzleid: string, visibility: boolean }] }
