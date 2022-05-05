@@ -39,7 +39,7 @@ router.post('/', asyncMiddleware(async (req, res) => {
         req.body.year
     );
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT));
     user.password = await bcrypt.hash(user.password, salt);
 
     const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId();
@@ -97,6 +97,7 @@ router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     res.status(200).json({ userInput: userPuzzle.userInput });
 }));
 
+// POST change user's password.
 router.post('/password', auth, asyncMiddleware(async (req, res) => {
     const { error } = validateUserPassword(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -107,7 +108,7 @@ router.post('/password', auth, asyncMiddleware(async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
     if (!validPassword) return res.status(400).json({ error: "Wrong password." });
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT));
     user.password = await bcrypt.hash(req.body.newPassword, salt);
     
     await userDB.updateUserObject(user);
@@ -117,5 +118,9 @@ router.post('/password', auth, asyncMiddleware(async (req, res) => {
     res.status(200).json(publicUser);
 }));
 
+// reset password only accessible with reset token!
+    // check if user exists, if not throw error. No data to the frontend.
+    // create token with user's email and isResetToken field
+    // have a middleware check the token and redirect to
 
 export = router;
