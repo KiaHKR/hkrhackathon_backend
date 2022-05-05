@@ -436,4 +436,91 @@ describe('/user', () => {
             expect(res.body.userInput).toMatch('1 1')
         });
     });
+
+    describe('POST /password', () => {
+        let oldPassword;
+        let newPassword;
+
+        beforeEach(async () => {
+            await populateDatabase();
+            email = "test@example.com";
+            password = "12345678";
+            oldPassword = "12345678";
+            newPassword = "87654321";
+        });
+
+        afterEach(async () => {
+            await depopulateDatabase();
+        });
+
+        const exec = async () => {
+            const token = new User("test", email, password, 1).generateAuthToken();
+            return await request(server)
+                .post('/user/password')
+                .set('x-auth-header', token)
+                .send({
+                    oldPassword,
+                    newPassword
+                })
+        };
+
+        it('should return 401 if no token is provided', async function () {
+            const res = await request(server)
+                .get('/user/password')
+                .set('x-auth-header', '')
+                .send()
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 400 if invalid token is provided', async function () {
+            const res = await request(server)
+                .get('/user/password')
+                .set('x-auth-header', 'a')
+                .send()
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 404 if email is not found', async function () {
+            email = "wrong@example.com";
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 400 if old password is empty', async function () {
+            oldPassword = "";
+            const res = await exec();
+
+            expect(res.body.error).toMatch('empty');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if new password is empty', async function () {
+            newPassword = "";
+            const res = await exec();
+
+            expect(res.body.error).toMatch('empty');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if old password is wrong', async function () {
+            oldPassword = "12345679";
+            const res = await exec();
+
+            expect(res.body.error).toMatch('Wrong password');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 200 with correct inputs',  async function () {
+            const oldDbPass = "$2b$10$kPLid/ALLlbf27PW6l19GuG.oNZdL3gyFA9abXU4zj58yKMLjwIGW"
+            const res = await exec();
+            const user = await dbUser.findOne({ email: 'test@example.com' });
+            console.log(user.password);
+
+            expect(res.body).toHaveProperty('name')
+            expect(user.password).not.toMatch(oldDbPass)
+
+        });
+    });
 });

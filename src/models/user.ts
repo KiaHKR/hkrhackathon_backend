@@ -119,3 +119,12 @@ export function validateUserCreation(user) {
 
     return schema.validate(user);
 }
+
+export function validateUserPassword(password) {
+    const schema = Joi.object({
+        newPassword: Joi.string().min(8).max(50).required(),
+        oldPassword: Joi.string().min(8).max(50).required()
+    });
+
+    return schema.validate(password);
+}
