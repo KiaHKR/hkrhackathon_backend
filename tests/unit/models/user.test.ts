@@ -2,6 +2,8 @@ import {config} from "dotenv";
 import jwt from "jsonwebtoken";
 import {User} from "../../../src/models/user";
 import {UserPuzzle} from "../../../src/models/userPuzzle";
+import {dbUser} from "../../../src/database/models/db_users";
+const userDB = new dbUser;
 config();
 
 describe('User', () => {
@@ -26,6 +28,16 @@ describe('User', () => {
 
             expect(user.getPuzzle("test")).not.toBeNull();
             expect(user.currentPuzzleId).toBe("test");
+        });
+    });
+
+    describe('correct()', () => {
+        it('should alter complete and completion time fields', function () {
+            const userPuzzle = new UserPuzzle("test", "1 1 1", "1");
+            userPuzzle.correct();
+
+            expect(userPuzzle.completionTime).not.toBeUndefined();
+            expect(userPuzzle.completed).toBeTruthy();
         });
     });
 });

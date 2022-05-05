@@ -6,6 +6,10 @@ import {dbpuzzleStorage} from "../../src/database/models/db_puzzleStorage";
 
 
 export async function populateDatabase() {
+    const completedPuzzle = new UserPuzzle("firstTestPuzzle", "1 1 1", "1");
+    completedPuzzle.completed = true;
+    const uncompletedPuzzle = new UserPuzzle("secondTestPuzzle", "2 2 2", "2");
+
     const userDB = new dbUser({
         name: "test",
         email: "test@example.com",
@@ -13,7 +17,9 @@ export async function populateDatabase() {
         year: 1,
         currentPuzzleId: "firstTestPuzzle",
         userPuzzles: {
-            "firstTestPuzzle": new UserPuzzle("firstTestPuzzle", "1 1 1", "1")
+            "firstTestPuzzle": completedPuzzle,
+            "secondTestPuzzle": uncompletedPuzzle,
+
         }
     });
 
