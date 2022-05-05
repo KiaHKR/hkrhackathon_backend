@@ -109,7 +109,7 @@ router.put('/update/:email', [auth, admin], asyncMiddleware(async (req, res) => 
         user.addPuzzle(userPuzzle);
     });
 
-    user.currentPuzzleId = req.bosy.newPuzzleId;
+    user.currentPuzzleId = req.body.newPuzzleId;
 
     const result = await userDB.updateUserObject(user);
 
