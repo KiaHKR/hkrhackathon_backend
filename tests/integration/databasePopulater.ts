@@ -19,7 +19,6 @@ export async function populateDatabase() {
         userPuzzles: {
             "firstTestPuzzle": completedPuzzle,
             "secondTestPuzzle": uncompletedPuzzle,
-
         }
     });
 

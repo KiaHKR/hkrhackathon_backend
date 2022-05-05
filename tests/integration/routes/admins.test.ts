@@ -374,12 +374,12 @@ describe('/admin', () => {
                 { puzzleid: "lastTestPuzzle", visibility: true },
             ]
 
-            //expect(res.status).toBe(200);
-            //expect(res.body).toEqual(orderArray);
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual(orderArray);
         });
     })
 
-    describe('save /save/puzzles', () => {
+    describe('POST /save/puzzles', () => {
         let token;
         let orderArray;
 
@@ -436,5 +436,79 @@ describe('/admin', () => {
             expect(res.status).toBe(200);
             expect(res.body).toEqual(orderArray);
         });
+    });
+
+    describe('PUT /update/:email', () => {
+        let token;
+        let puzzles;
+        let newPuzzleId;
+        let email;
+
+        beforeEach(async () => {
+            await populateDatabase();
+            const user = new User("test", "test@example.com", "12345678", 1);
+            user.isAdmin = true;
+            token = user.generateAuthToken();
+            puzzles = ["firstTestPuzzle", "secondTestPuzzle"];
+            newPuzzleId = "secondTestPuzzle";
+            email = "test2@example.com";
+        });
+
+        afterEach(async () => {
+            await depopulateDatabase();
+        })
+
+        const exec = async () => {
+            return await request(server)
+                .put('/admin/update/' + email)
+                .set('x-auth-header', token)
+                .send({
+                    puzzles,
+                    newPuzzleId
+                })
+        };
+
+        it('should return 400 if puzzles is not an array', async function () {
+            puzzles = '';
+            const res = await exec();
+
+            expect(res.body.error).toMatch('an array');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if puzzles is empty', async function () {
+            puzzles = [];
+            const res = await exec();
+
+            expect(res.body.error).toMatch('at least 1');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 404 if email is not found', async function () {
+            email = "wrong@example.com";
+            const res = await exec();
+
+            expect(res.body.error).toMatch('not found');
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 400 if last puzzle in the list does not match the new puzzle id', async function () {
+            newPuzzleId = "lastTestPuzzle";
+            const res = await exec();
+
+            expect(res.body.error).toMatch('not match');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return a public user object with valid input', async function () {
+            const res = await exec();
+
+            expect(res.body).toHaveProperty('currentPuzzleId', "secondTestPuzzle");
+            expect(res.status).toBe(200);
+        });
+
+        // it('should ', async function () {
+        //
+        // });
     });
 });

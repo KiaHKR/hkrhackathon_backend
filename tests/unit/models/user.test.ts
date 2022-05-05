@@ -7,9 +7,13 @@ const userDB = new dbUser;
 config();
 
 describe('User', () => {
-    let user;
+    let user: User;
+    let userPuzzle: UserPuzzle;
+
     beforeEach(() => {
         user = new User("name", "test@tester.com", "password", 1);
+        userPuzzle = new UserPuzzle("test", "1 2 3", "2");
+
     });
 
     describe('generateAuthToken', () => {
@@ -23,7 +27,6 @@ describe('User', () => {
     describe('userPuzzles', () => {
         it('should add a userPuzzle to user', function () {
             expect(user.getPuzzle("test")).toBeUndefined();
-            const userPuzzle = new UserPuzzle("test", "1 2 3", "2");
             user.addPuzzle(userPuzzle);
 
             expect(user.getPuzzle("test")).not.toBeNull();
@@ -40,5 +43,17 @@ describe('User', () => {
             expect(userPuzzle.completed).toBeTruthy();
         });
     });
+
+    describe('removePuzzle()', () => {
+        it('should remove all user\'s puzzles', function () {
+            expect(user.userPuzzles).toMatchObject({});
+
+            user.addPuzzle(userPuzzle);
+            expect(user.userPuzzles).toMatchObject({"test": {}});
+
+            user.removePuzzles()
+            expect(user.userPuzzles).toMatchObject({});
+        });
+    })
 });
 

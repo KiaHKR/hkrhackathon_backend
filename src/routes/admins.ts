@@ -99,10 +99,12 @@ router.put('/update/:email', [auth, admin], asyncMiddleware(async (req, res) => 
     const user: User | { error: string } = await userDB.getUserObject(req.params.email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
 
-    user.removePuzzles();
-
     const puzzles: string[] = req.body.puzzles;
+    if (puzzles[puzzles.length-1] !== req.body.newPuzzleId) return res.status(400).json(
+        { error: "Current puzzle ID does not match the last puzzle in the list." }
+    );
 
+    user.removePuzzles();
     puzzles.forEach(puzzleId => {
         const userPuzzle = PuzzleHandler.generatePuzzle(puzzleId);
         userPuzzle.correct();
@@ -111,9 +113,13 @@ router.put('/update/:email', [auth, admin], asyncMiddleware(async (req, res) => 
 
     user.currentPuzzleId = req.body.newPuzzleId;
 
-    const result = await userDB.updateUserObject(user);
+    const updatedUser = await userDB.updateUserObject(user);
+    if (!(updatedUser instanceof User)) return res.status(404).json({ error: "Error while updating the database." });
 
-    return res.status(200).json(result);
+    const publicUser = new PublicUser;
+    publicUser.fromUser(updatedUser);
+
+    return res.status(200).json(publicUser);
 }));
 
 
