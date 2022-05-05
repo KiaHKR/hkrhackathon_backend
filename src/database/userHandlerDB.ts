@@ -48,7 +48,8 @@ export class UserHandlerDB {
 
     async getActiveList(): Promise<string[] | { error: string; }> {
         const puzzleIds = []
-        for (let i of await dbpuzzleStorage.find()[0].storage) {
+        const puzzleStorage = await dbpuzzleStorage.find()
+        for (let i of await puzzleStorage[0].storage) {
             if (i.visibility == true) { puzzleIds.push(i.puzzleid) }
         }
         if (puzzleIds.length == 0) return { error: "Active list empty" }
@@ -57,7 +58,8 @@ export class UserHandlerDB {
 
     async getFullList(): Promise<any[] | { error: string; }> {
         const puzzleIds = []
-        for (let i of await dbpuzzleStorage.find()[0].storage) {
+        const puzzleStorage = await dbpuzzleStorage.find()
+        for (let i of await puzzleStorage[0].storage) {
             puzzleIds.push(i)
         }
         if (puzzleIds.length == 0) return { error: "Order list empty" }
@@ -70,9 +72,7 @@ export class UserHandlerDB {
         if (!user) return { error: "User not found." }
         const activeList = await this.getActiveList()
         if (!Array.isArray(activeList)) return { error: "Active list empty" }
-        if (activeList.includes(user.currentPuzzleId)) {
-            return this.userReconstruct(user)
-        }
+        if (activeList.includes(user.currentPuzzleId)) return this.userReconstruct(user)
         const fullList = await this.getFullList()
         if (!Array.isArray(fullList)) return { error: "Order list empty" }
         for (let i of fullList.slice(fullList.indexOf(user.currentPuzzleId))) {
