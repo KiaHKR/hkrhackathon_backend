@@ -4,6 +4,7 @@ import { depopulateDatabase } from "../databaseDepopulater";
 import {User} from "../../../src/models/user";
 import {dbPuzzle} from "../../../src/database/models/db_puzzles";
 import {dbUser} from "../../../src/database/models/db_users";
+import {PuzzleHandlerDB} from "../../../src/database/puzzleHandlerDB";
 
 let server;
 
@@ -54,13 +55,13 @@ describe('/puzzle', () => {
 
 
     describe('POST /:puzzleId', () => {
-        let answer;
+        let guess;
         let puzzleId;
         let token;
 
         beforeEach(() => {
-            answer = "1"
-            puzzleId = "firstTestPuzzle"
+            guess = "2"
+            puzzleId = "secondTestPuzzle"
             token = new User("test", "test@example.com", "12345678", 1).generateAuthToken();
         })
 
@@ -69,7 +70,7 @@ describe('/puzzle', () => {
                 .post('/puzzles/' + puzzleId)
                 .set('x-auth-header', token)
                 .send({
-                    answer
+                    guess
                 })
         };
 
@@ -113,20 +114,53 @@ describe('/puzzle', () => {
             expect(res.body.error).toMatch('puzzle');
         });
 
-         it('should return 200 and result object if puzzle marked completed', async function () {
-             let user = await dbUser.findOne({ email: "test@example.com" })
-             user.userPuzzles[puzzleId]._completed = true;
-
+         it('should return 200 and and results without altering data when puzzle already completed', async function () {
+             const user = await dbUser.findOne({ email: "test@example.com" })
+             guess = "1"
+             puzzleId = "firstTestPuzzle";
              const res = await exec();
 
-             user = await dbUser.findOne({ email: "test@example.com" })
-             console.log(user)
              const number = user.userPuzzles[puzzleId]._completionTime;
 
              expect(res.status).toBe(200);
-             expect(number).toBeNull();
-
+             expect(res.body.answer).toBeTruthy();
+             expect(number).toBeUndefined();
          });
+
+        it('should alter fields if guess is correct', async function () {
+            await exec();
+            const user = await dbUser.findOne({ email: "test@example.com" })
+
+            expect(user.userPuzzles[puzzleId]._completed).toBeTruthy();
+            expect(user.userPuzzles[puzzleId]._completionTime).not.toBeUndefined();
+
+        });
+
+        it('should return 404 if no next puzzleID found while answering correctly', async function () {
+            jest
+                .spyOn(PuzzleHandlerDB.prototype, "getNextPuzzleId")
+                .mockImplementation(() => {
+                    return new Promise((resolve) => {
+                        resolve({ error: "Error while browsing Puzzles." })
+                    })
+                })
+
+            const res = await exec();
+
+            expect(res.status).toBe(404)
+        });
+
+        it('should alter fields if guess is incorrect', async function () {
+            guess = "erm"
+            await exec();
+            const user = await dbUser.findOne({ email: "test@example.com" })
+
+            expect(user.userPuzzles[puzzleId]._completed).toBeFalsy();
+            expect(user.userPuzzles[puzzleId]._completionTime).toBeDefined();
+            expect(user.userPuzzles[puzzleId]._numberOfWrongSubmissions).toEqual(1);
+
+        });
+
     });
 
 });
