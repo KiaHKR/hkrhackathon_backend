@@ -3,7 +3,7 @@ import { dbUser } from "../../../src/database/models/db_users";
 import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
-import {dbpuzzleStorage} from "../../../src/database/models/db_puzzleStorage";
+import { dbpuzzleStorage } from "../../../src/database/models/db_puzzleStorage";
 let server;
 
 describe('/admin', () => {

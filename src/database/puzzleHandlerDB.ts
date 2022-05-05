@@ -78,10 +78,14 @@ export class PuzzleHandlerDB {
     }
 
     //: { storage: [{ puzzleid: string, visibility: boolean }] }
-    async saveOrderArray(orderArray): Promise<[{ id: string, visibility: boolean }]> {
+    async saveOrderArray(orderArray): Promise<any[]> {
         // updates puzzle storage array
+        const puzzleList = []
         const res = await dbpuzzleStorage.deleteMany()
-        return await new dbpuzzleStorage(orderArray).save()
+        const storedPuzzle = await new dbpuzzleStorage({ storage: orderArray }).save()
+        for (let i of storedPuzzle.storage) {
+            puzzleList.push({ puzzleid: i.puzzleid, visibility: i.visibility })
+        } return puzzleList
     }
 
 
