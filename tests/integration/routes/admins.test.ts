@@ -3,9 +3,10 @@ import { dbUser } from "../../../src/database/models/db_users";
 import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
+import {dbpuzzleStorage} from "../../../src/database/models/db_puzzleStorage";
 let server;
 
-describe('admin', () => {
+describe('/admin', () => {
 
     beforeAll(async () => {
         server = require('../../../src/index')
@@ -330,6 +331,110 @@ describe('admin', () => {
 
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(2);
+        });
+    });
+
+    describe('GET /get/puzzles', () => {
+        let token;
+
+        beforeEach(async () => {
+            await populateDatabase();
+            const user = new User("test", "test@example.com", "12345678", 1);
+            user.isAdmin = true;
+            token = user.generateAuthToken();
+        });
+
+        afterEach(async () => {
+            await depopulateDatabase();
+        })
+
+        const exec = async () => {
+            return await request(server)
+                .get('/admin/get/puzzles')
+                .set('x-auth-header', token)
+                .send()
+        };
+
+        it('should return 404 if no orderArray found', async function () {
+            await dbpuzzleStorage.deleteMany();
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+            expect(res.body.error).toMatch('found');
+        });
+
+        it('should return 200 and an array in order', async function () {
+            const res = await exec();
+
+            const orderArray = [
+                { puzzleid: "firstTestPuzzle", visibility: true },
+                { puzzleid: "secondTestPuzzle", visibility: true },
+                { puzzleid: "thirdTestPuzzle", visibility: true },
+                { puzzleid: "lastTestPuzzle", visibility: true },
+            ]
+
+            //expect(res.status).toBe(200);
+            //expect(res.body).toEqual(orderArray);
+        });
+    })
+
+    describe('save /save/puzzles', () => {
+        let token;
+        let orderArray;
+
+        beforeEach(async () => {
+            await populateDatabase();
+            const user = new User("test", "test@example.com", "12345678", 1);
+            user.isAdmin = true;
+            token = user.generateAuthToken();
+            orderArray = [
+                { puzzleid: "firstTestPuzzle", visibility: true },
+                { puzzleid: "secondTestPuzzle", visibility: true },
+                { puzzleid: "thirdTestPuzzle", visibility: true },
+                { puzzleid: "lastTestPuzzle", visibility: true },
+            ]
+        });
+
+        afterEach(async () => {
+            await depopulateDatabase();
+        })
+
+        const exec = async () => {
+            return await request(server)
+                .post('/admin/save/puzzles')
+                .set('x-auth-header', token)
+                .send({
+                    orderArray
+                })
+        };
+
+        it('should return 400 if no array is passed', async function () {
+            orderArray = '';
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+            expect(res.body.error).toMatch('be an array');
+        });
+
+        it('should return 400 if an empty array is passed', async function () {
+            orderArray = [];
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+            expect(res.body.error).toMatch('at least one');
+        });
+
+        it('should return 200 with valid input', async function () {
+            orderArray = [
+                { puzzleid: "lastTestPuzzle", visibility: true },
+                { puzzleid: "firstTestPuzzle", visibility: true },
+            ]
+
+            const res = await exec();
+
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual(orderArray);
         });
     });
 });

@@ -74,20 +74,21 @@ router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
 }));
 
 // GET THE ORDER ARRAY
-router.get('/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
+router.get('/get/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
     const orderArray = await puzzleDB.getOrderArray();
+
     if (!Array.isArray(orderArray)) return res.status(404).json({ error: "ORDER ARRAY not found." });
 
-    res.status(200).send(orderArray);
+    res.status(200).json(orderArray);
 }));
 
 // SAVE THE ORDER ARRAY
-router.post('/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
+router.post('/save/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
     const { error } = validateOrderArray(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const result = await puzzleDB.saveOrderArray(req.body.orderArray);
-    res.status(200).send(result);
+    res.status(200).json(result);
 }));
 
 // MODIFY user's puzzles.
@@ -120,7 +121,7 @@ export = router;
 
 function validateOrderArray(orderArray) {
     const schema = Joi.object({
-        orderArray: Joi.array().required()
+        orderArray: Joi.array().required().min(1)
     });
 
     return schema.validate(orderArray);
