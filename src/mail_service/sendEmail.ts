@@ -17,17 +17,17 @@ export async function sendEmail(email: string, resetLink: string) {
         from: 'hkr.hackathon@outlook.com',
         to: email,
         subject: 'Reset Password Link - Hkr Hackathon',
-        html: '<p>You requested for reset password, kindly use this <a href="'+resetLink+'">link</a> to reset your password</p>'
+        html: '<p>You requested for reset password, kindly use this <a href="' + resetLink + '">link</a> to reset your password</p>'
 
     };
 
-    return mail.sendMail(mailOptions, function (error) {
-        if (error) {
-            // if (process.env.NODE_ENV !== 'test') {
-            //     logger.error(error)
-            // }
-            return {success: false, message: error as string};
-        }
-        return {success: true, message: "mail sent successfully"};
-    })
+    const mailResult = mail.sendMail(mailOptions);
+
+    if (mailResult.err) {
+        // if (process.env.NODE_ENV !== 'test') {
+        //     logger.error(error)
+        // }
+        return { success: false, message: mailResult.err as string };
+    }
+    return { success: true, message: "mail sent successfully" };
 }
