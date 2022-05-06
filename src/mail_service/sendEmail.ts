@@ -1,8 +1,10 @@
 import nodemailer from 'nodemailer';
+import logger from "../middleware/logger";
 import dotenv from 'dotenv';
+
 dotenv.config();
 
-export default async function sendEmail(email: string, resetLink: string) {
+export async function sendEmail(email: string, resetLink: string) {
     const mail = nodemailer.createTransport({
         service: 'outlook',
         auth: {
@@ -19,11 +21,13 @@ export default async function sendEmail(email: string, resetLink: string) {
 
     };
 
-    mail.sendMail(mailOptions, function(error, info) {
+    return mail.sendMail(mailOptions, function (error) {
         if (error) {
-            console.log(error)
-        } else {
-            console.log(0)
+            // if (process.env.NODE_ENV !== 'test') {
+            //     logger.error(error)
+            // }
+            return {success: false, message: error as string};
         }
-    });
+        return {success: true, message: "mail sent successfully"};
+    })
 }

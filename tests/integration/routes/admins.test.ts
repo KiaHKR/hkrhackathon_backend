@@ -4,6 +4,7 @@ import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
 import { dbpuzzleStorage } from "../../../src/database/models/db_puzzleStorage";
+import generateResetToken from "../../../src/utility_services/generateResetToken";
 let server;
 
 describe('/admin', () => {
@@ -506,9 +507,5 @@ describe('/admin', () => {
             expect(res.body).toHaveProperty('currentPuzzleId', "secondTestPuzzle");
             expect(res.status).toBe(200);
         });
-
-        // it('should ', async function () {
-        //
-        // });
     });
 });

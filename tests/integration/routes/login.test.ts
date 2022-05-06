@@ -1,6 +1,7 @@
 import request from 'supertest'
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
+import * as sendEmail from "../../../src/mail_service/sendEmail";
 
 let server;
 
@@ -56,4 +57,71 @@ describe('/login', () => {
         expect(res.status).toBe(200);
         expect(res.body).toHaveProperty('token');
     });
+});
+
+describe('/login/reset', () => {
+    let email;
+    beforeEach(async () => {
+        server = require('../../../src/index')
+        await populateDatabase();
+        email = "hkr.hackathon.tester@outlook.com";
+    });
+
+    afterEach(async () => {
+        server.close();
+        await depopulateDatabase();
+    });
+
+    const exec = async () => {
+        return await request(server)
+            .post('/login/reset')
+            .send({
+                email
+            })
+    };
+
+    it('should return 400 with invalid email', async function () {
+        email = '';
+        const res = await exec();
+
+        expect(res.body.error).toMatch('email');
+        expect(res.status).toBe(400);
+    });
+
+    it('should return 400 with invalid email', async function () {
+        email = 'wrong@example.com';
+        const res = await exec();
+
+        expect(res.body.error).toMatch('Failed to send mail');
+        expect(res.status).toBe(400);
+    });
+
+    it('should return 400 with failed to send mail', async function () {
+        jest
+            .spyOn(sendEmail, 'sendEmail')
+            .mockImplementation(() => {
+               return new Promise((resolve) => {
+                   resolve({ success: false, message: "Failed to send mail" })
+               })
+            });
+        const res = await exec();
+
+        expect(res.body.error).toMatch('to send mail');
+        expect(res.status).toBe(400);
+    });
+
+    it('should return 200 with success to send mail', async function () {
+        jest
+            .spyOn(sendEmail, 'sendEmail')
+            .mockImplementation(() => {
+                return new Promise((resolve) => {
+                    resolve({ success: true, message: "Mail sent" })
+                })
+            });
+        const res = await exec();
+
+        expect(res.body).toEqual('');
+        expect(res.status).toBe(200);
+    });
+
 });

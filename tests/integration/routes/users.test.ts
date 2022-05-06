@@ -3,6 +3,7 @@ import { dbUser } from "../../../src/database/models/db_users";
 import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
+import generateResetToken from "../../../src/utility_services/generateResetToken";
 
 let server;
 
@@ -516,11 +517,85 @@ describe('/user', () => {
             const oldDbPass = "$2b$10$kPLid/ALLlbf27PW6l19GuG.oNZdL3gyFA9abXU4zj58yKMLjwIGW"
             const res = await exec();
             const user = await dbUser.findOne({ email: 'test@example.com' });
-            console.log(user.password);
 
             expect(res.body).toHaveProperty('name')
             expect(user.password).not.toMatch(oldDbPass)
 
+        });
+    });
+
+    describe('/reset', () => {
+        let token;
+        let password;
+
+        beforeEach(async () => {
+            await populateDatabase();
+            email = "test@example.com";
+            token = generateResetToken(email)
+            password = "abcd1234";
+        });
+
+        afterEach(async () => {
+            await depopulateDatabase();
+        });
+
+        const exec = async () => {
+            return await request(server)
+                .put('/user/reset')
+                .set('x-auth-header', token)
+                .send({
+                    password
+                })
+        };
+
+        it('should return 400 if no password given', async function () {
+            password = '';
+            const res = await exec();
+
+            expect(res.body.error).toMatch('password');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if password is too short', async function () {
+            password = '1234';
+            const res = await exec();
+
+            expect(res.body.error).toMatch('at least');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if password is too long', async function () {
+            password = new Array(52).join('a');
+            const res = await exec();
+
+            expect(res.body.error).toMatch('less than');
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 404 if email not found', async function () {
+            token = generateResetToken("wrong@example.com");
+            const res = await exec();
+
+            expect(res.body.error).toMatch('not found');
+            expect(res.status).toBe(404);
+        });
+
+        it('should update user\'s password with valid input', async function () {
+            const oldHashedPassword = "$2b$10$kPLid/ALLlbf27PW6l19GuG.oNZdL3gyFA9abXU4zj58yKMLjwIGW";
+
+            await exec();
+            const user = await dbUser.findOne({ email })
+
+            expect(user.password).not.toEqual(oldHashedPassword);
+        });
+
+        it('should return 200 and public user with valid input', async function () {
+            const res = await exec();
+
+            expect(res.body).toHaveProperty('name');
+            expect(res.body).toHaveProperty('year');
+            expect(res.body).toHaveProperty('currentPuzzleId');
+            expect(res.status).toEqual(200);
         });
     });
 });
