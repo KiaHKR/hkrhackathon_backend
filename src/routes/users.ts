@@ -16,7 +16,7 @@ import asyncMiddleware from '../middleware/async'
 import PublicUser from "../models/publicUser";
 import PuzzleHandler from "../puzzle_service/puzzleHandler";
 import { UserPuzzle } from "../models/userPuzzle";
-import {PuzzleHandlerDB} from "../database/puzzleHandlerDB";
+import { PuzzleHandlerDB } from "../database/puzzleHandlerDB";
 const puzzleDB = new PuzzleHandlerDB();
 import { UserHandlerDB } from "../database/userHandlerDB";
 const userDB = new UserHandlerDB();
@@ -127,7 +127,7 @@ router.post('/password', auth, asyncMiddleware(async (req, res) => {
 
 
 // Reset password, only accessible with reset token!                                        TODO : TEST
-router.post('/reset', [auth, reset], asyncMiddleware(async (req, res) => {
+router.put('/reset', [auth, reset], asyncMiddleware(async (req, res) => {
     const { error } = validateUserPasswordReset(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 

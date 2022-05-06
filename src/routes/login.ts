@@ -5,9 +5,9 @@ import bcrypt from 'bcrypt';
 import Joi from "joi";
 import asyncMiddleware from '../middleware/async';
 import { UserHandlerDB } from "../database/userHandlerDB";
-import sendEmail from "../mail_service/sendEmail";
+import * as sendEmail from "../mail_service/sendEmail";
 const userDB = new UserHandlerDB();
-import jwt from 'jsonwebtoken';
+import generateResetToken from "../utility_services/generateResetToken";
 
 // Login
 router.post('/', asyncMiddleware(async (req, res) => {
@@ -30,13 +30,15 @@ router.post('/reset', asyncMiddleware(async (req, res) => {
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const user = await userDB.getUserObject(req.body.email);
-    if (!(user instanceof User)) return res.status(400).json({ error: "An error."});    // TODO: what to return?
+    if (!(user instanceof User)) return res.status(400).json({ error: "Failed to send mail."});
 
     const resetToken = generateResetToken(req.body.email);
     const link = `${process.env.SITE_URL}/user/reset?token=${resetToken}`;
-    await sendEmail(req.body.email, link);
+    const result: {success: boolean, message: string} = await sendEmail.sendEmail(req.body.email, link);
 
-    res.status(200).send()
+    if (!result.success) return res.status(400).json({ error: "Failed to send mail."});
+
+    res.status(200).json();
 }));
 
 function validateLogin(request) {
@@ -52,17 +54,6 @@ function validateReset(request) {
         email: Joi.string().min(5).max(255).required().email()
     });
     return schema.validate(request);
-}
-
-function generateResetToken (email) {
-    return jwt.sign({
-            email: email,
-            isReset: true
-        },
-        process.env.JWT_KEY,
-        {
-            expiresIn: process.env.JWT_EXPIRES_IN_FOR_RESET
-        })
 }
 
 export = router;
