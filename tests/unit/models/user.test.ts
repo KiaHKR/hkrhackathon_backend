@@ -1,10 +1,9 @@
 import {config} from "dotenv";
-import jwt from "jsonwebtoken";
-import {User} from "../../../src/models/user";
-import {UserPuzzle} from "../../../src/models/userPuzzle";
-import {dbUser} from "../../../src/database/models/db_users";
-const userDB = new dbUser;
 config();
+
+import jwt from "jsonwebtoken";
+import { User } from "../../../src/models/user";
+import { UserPuzzle } from "../../../src/models/userPuzzle";
 
 describe('User', () => {
     let user: User;

@@ -1,27 +1,32 @@
 import express from "express";
 const router = express.Router();
-import {
-    User,
-    validateUserCreation,
-    validateUserPassword,
-    validateUserPasswordReset,
-    validateUserUpdate
-} from "../models/user";
 import bcrypt from 'bcrypt';
 
 import auth from '../middleware/auth';
 import reset from '../middleware/resetPassword'
 import asyncMiddleware from '../middleware/async'
+import {
+    validateUserCreation,
+    validatePasswordUpdate,
+    validatePassword,
+    validateUserUpdate
+} from '../utility_services/validateService'
 
+import { User } from "../models/user";
 import PublicUser from "../models/publicUser";
 import PuzzleHandler from "../puzzle_service/puzzleHandler";
 import { UserPuzzle } from "../models/userPuzzle";
+
 import { PuzzleHandlerDB } from "../database/puzzleHandlerDB";
 const puzzleDB = new PuzzleHandlerDB();
 import { UserHandlerDB } from "../database/userHandlerDB";
 const userDB = new UserHandlerDB();
 
-// GET user
+/* GET | /user/
+* Get the user from db. Token is used to determine the user's email.
+* Takes no arguments.
+* Returns error or public user object.
+*/
 router.get('/', auth, asyncMiddleware(async (req, res) => {
     const user: User | { error: string } = await userDB.getUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." })
@@ -31,7 +36,11 @@ router.get('/', auth, asyncMiddleware(async (req, res) => {
     res.status(200).json(publicUser);
 }));
 
-// POST user
+/* POST | /user/
+* Creates a user for the db. Token is used to determine the user's email.
+* Takes name, email, password, and year as arguments.
+* Returns error or public user object.
+*/
 router.post('/', asyncMiddleware(async (req, res) => {
     const { error } = validateUserCreation(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -56,6 +65,7 @@ router.post('/', asyncMiddleware(async (req, res) => {
     user.addPuzzle(userPuzzle);
 
     await userDB.saveUserObject(user);
+
     const publicUser = new PublicUser;
     publicUser.fromUser(user)
 
@@ -63,7 +73,11 @@ router.post('/', asyncMiddleware(async (req, res) => {
     res.status(200).setHeader('x-auth-header', token).json(publicUser);
 }));
 
-// DELETE user
+/* DELETE | /user/
+* Removes the user for the db. Token is used to determine the user's email.
+* Takes no arguments.
+* Returns error or public user object.
+*/
 router.delete('/', auth, asyncMiddleware(async (req, res) => {
     const user = await userDB.deleteUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
@@ -74,7 +88,11 @@ router.delete('/', auth, asyncMiddleware(async (req, res) => {
     res.json(publicUser);
 }));
 
-// PUT user
+/* PUT | /user/
+* Updates the user in the db. Token is used to determine the user's email.
+* Takes name and year as arguments.
+* Returns error or public user object.
+*/
 router.put('/', auth, asyncMiddleware(async (req, res) => {
     const { error } = validateUserUpdate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -93,7 +111,11 @@ router.put('/', auth, asyncMiddleware(async (req, res) => {
     res.status(200).send(publicUser);
 }));
 
-// GET userFile
+/* GET | /user/:puzzleId
+* Gets the user puzzle indicated in the url from the db. Token is used to determine the user's email.
+* Takes puzzleId as an argument, this from req.params
+* Returns error or user specific puzzle data.
+*/
 router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     const user = await userDB.getUserObject(req["user"].email);
     if (!(user instanceof User)) return res.status(404).json({ error: "User not found." });
@@ -104,9 +126,13 @@ router.get('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     res.status(200).json({ userInput: userPuzzle.userInput });
 }));
 
-// POST change user's password.
+/* PUT | /user/
+* Updates the user's password to the db. Token is used to determine the user's email.
+* Takes newPassword and oldPassword as arguments.
+* Returns error or public user object.
+*/
 router.post('/password', auth, asyncMiddleware(async (req, res) => {
-    const { error } = validateUserPassword(req.body);
+    const { error } = validatePasswordUpdate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const user: User | { error: string } = await userDB.getUserObject(req["user"].email);
@@ -125,10 +151,13 @@ router.post('/password', auth, asyncMiddleware(async (req, res) => {
     res.status(200).json(publicUser);
 }));
 
-
-// Reset password, only accessible with reset token!                                        TODO : TEST
+/* PUT | /user/reset
+* Updates the user's password to the db. Reset token is used to determine the user's email and as a guard in this API.
+* Takes password as argument.
+* Returns error or public user object.
+*/
 router.put('/reset', [auth, reset], asyncMiddleware(async (req, res) => {
-    const { error } = validateUserPasswordReset(req.body);
+    const { error } = validatePassword(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const user: User | { error: string } = await userDB.getUserObject(req["user"].email);

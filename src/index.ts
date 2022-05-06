@@ -4,7 +4,7 @@ dotenv.config();
 import express from 'express';
 const app = express();
 
-import logger from "./middleware/logger";
+import logger from "./utility_services/logger";
 import config from "./startup/config";
 import logging from "./startup/logging";
 import db from './startup/db'

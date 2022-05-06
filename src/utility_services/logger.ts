@@ -1,4 +1,4 @@
-import {format} from "winston";
+import { format } from "winston";
 import winston from "winston";
 const { combine, timestamp, metadata } = format;
 import 'winston-mongodb';

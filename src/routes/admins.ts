@@ -4,18 +4,26 @@ const router = express.Router();
 import auth from '../middleware/auth';
 import admin from '../middleware/admin';
 import asyncMiddleware from '../middleware/async'
+import {
+    validateOrderArray,
+    validateUserPuzzleUpdate,
+    validateUserUpdate
+} from "../utility_services/validateService";
 
-import { User, validateUserUpdate } from '../models/user';
+import { User } from '../models/user';
 import PublicUser from "../models/publicUser";
+import PuzzleHandler from "../puzzle_service/puzzleHandler";
 
 import { UserHandlerDB } from "../database/userHandlerDB";
 import { PuzzleHandlerDB } from "../database/puzzleHandlerDB";
-import Joi from "joi";
-import PuzzleHandler from "../puzzle_service/puzzleHandler";
 const userDB = new UserHandlerDB();
 const puzzleDB = new PuzzleHandlerDB();
 
-// DELETE user.
+/* DELETE | /admin/:email
+* Removes the user in the db. req.params is used to determine the user's email.
+* Takes no arguments.
+* Returns error or public user object.
+*/
 router.delete('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     const user = await userDB.deleteUserObject(req.params.email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
@@ -26,7 +34,11 @@ router.delete('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     res.status(200).send(publicUser);
 }));
 
-// UPDATE user.
+/* PUT | /admin/:email
+* Updates the user in the db. req.params is used to determine the user's email.
+* Takes name, year, isAdmin and currentPuzzleId as arguments.
+* Returns error or public user object.
+*/
 router.put('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     const { error } = validateUserUpdate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -47,7 +59,11 @@ router.put('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     res.status(200).send(publicUser);
 }));
 
-// GET user.
+/* GET | /admin/:email
+* Gets the user from the db. req.params is used to determine the user's email.
+* Takes no arguments.
+* Returns error or public user object.
+*/
 router.get('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     const user = await userDB.getUserObject(req.params.email);
     if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
@@ -58,7 +74,11 @@ router.get('/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     res.status(200).send(publicUser);
 }));
 
-// GET ALL users
+/* GET | /admin/
+* Gets all the users from the db.
+* Takes no arguments.
+* Returns error or public user object array.
+*/
 router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
     const users: User[] | { error: string } = await userDB.getAllUserObject();
     if (!Array.isArray(users)) return res.status(404).json({ error: "No users in the database." });
@@ -73,7 +93,11 @@ router.get('/', [auth, admin], asyncMiddleware(async (req, res) => {
     res.status(200).send(publicUsers);
 }));
 
-// GET THE ORDER ARRAY
+/* GET | /admin/get/puzzles
+* Gets the puzzle order as from the db.
+* Takes no arguments.
+* Returns error or an array of strings.
+*/
 router.get('/get/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
     const orderArray = await puzzleDB.getOrderArray();
 
@@ -82,7 +106,11 @@ router.get('/get/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
     res.status(200).json(orderArray);
 }));
 
-// SAVE THE ORDER ARRAY
+/* POST | /admin/save/puzzles
+* Saves the puzzle order to the db.
+* Takes a list of puzzle id's as an argument.
+* Returns error or a list.
+*/
 router.post('/save/puzzles', [auth, admin], asyncMiddleware(async (req, res) => {
     const { error } = validateOrderArray(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -91,7 +119,11 @@ router.post('/save/puzzles', [auth, admin], asyncMiddleware(async (req, res) => 
     res.status(200).json(result);
 }));
 
-// MODIFY user's puzzles.
+/* PUT | /update/:email
+* Updates user's puzzle list and updates the db. req.params is used to determine the user's email.
+* Takes puzzles and currentPuzzleId as arguments.
+* Returns error or public user object.
+*/
 router.put('/update/:email', [auth, admin], asyncMiddleware(async (req, res) => {
     const { error } = validateUserPuzzleUpdate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -122,22 +154,4 @@ router.put('/update/:email', [auth, admin], asyncMiddleware(async (req, res) => 
     return res.status(200).json(publicUser);
 }));
 
-
 export = router;
-
-function validateOrderArray(orderArray) {
-    const schema = Joi.object({
-        orderArray: Joi.array().required().min(1)
-    });
-
-    return schema.validate(orderArray);
-}
-
-function validateUserPuzzleUpdate(input) {
-    const schema = Joi.object({
-        puzzles: Joi.array().required().min(1),
-        newPuzzleId: Joi.string().required()
-    });
-
-    return schema.validate(input);
-}

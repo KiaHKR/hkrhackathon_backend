@@ -1,8 +1,7 @@
 import { dbUser } from "../../src/database/models/db_users";
 import { dbPuzzle } from "../../src/database/models/db_puzzles";
 import { UserPuzzle } from "../../src/models/userPuzzle";
-
-import {dbpuzzleStorage} from "../../src/database/models/db_puzzleStorage";
+import { dbpuzzleStorage } from "../../src/database/models/db_puzzleStorage";
 
 
 export async function populateDatabase() {

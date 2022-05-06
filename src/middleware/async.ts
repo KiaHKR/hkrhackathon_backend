@@ -1,4 +1,5 @@
-// Wrapper function for centralised error catching for routes.
+
+/* Wrapper function for centralised error catching for routes. */
 export = function (handler) {
     return async (req, res, next) => {
         try {

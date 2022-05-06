@@ -1,4 +1,3 @@
-import Joi from "joi";
 import { UserPuzzle } from "./userPuzzle";
 import jwt from 'jsonwebtoken';
 
@@ -96,43 +95,4 @@ export class User {
                 expiresIn: process.env.JWT_EXPIRES_IN
             })
     }
-}
-
-export function validateUserUpdate(user) {
-    const schema = Joi.object({
-        name: Joi.string().min(2).max(50).required(),
-        year: Joi.number().required().less(4).greater(0),
-        isAdmin: Joi.boolean(),
-        currentPuzzleId: Joi.string().min(1),
-    });
-
-    return schema.validate(user);
-}
-
-export function validateUserCreation(user) {
-    const schema = Joi.object({
-        name: Joi.string().min(2).max(50).required(),
-        email: Joi.string().min(5).max(255).email().required(),
-        password: Joi.string().min(8).max(50).required(),
-        year: Joi.number().required().less(4).greater(0)
-    });
-
-    return schema.validate(user);
-}
-
-export function validateUserPassword(password) {
-    const schema = Joi.object({
-        newPassword: Joi.string().min(8).max(50).required(),
-        oldPassword: Joi.string().min(8).max(50).required()
-    });
-
-    return schema.validate(password);
-}
-
-export function validateUserPasswordReset(password) {
-    const schema = Joi.object({
-        password: Joi.string().min(8).max(50).required(),
-    });
-
-    return schema.validate(password);
 }

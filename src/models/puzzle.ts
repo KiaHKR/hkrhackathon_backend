@@ -1,5 +1,3 @@
-import Joi from "joi";
-
 export class Puzzle {
     constructor(
         private _id: string,
@@ -41,12 +39,4 @@ export class Puzzle {
     set examples(value: string[]) {
         this._examples = value;
     }
-}
-
-export function validatePuzzle(puzzle) {
-    const schema = Joi.object({
-        id: Joi.string().required(),
-        story: Joi.string().required()
-    });
-    return schema.validate(puzzle);
 }

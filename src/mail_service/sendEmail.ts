@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import logger from "../middleware/logger";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -23,9 +22,6 @@ export async function sendEmail(email: string, resetLink: string) {
 
     return mail.sendMail(mailOptions, function (error) {
         if (error) {
-            // if (process.env.NODE_ENV !== 'test') {
-            //     logger.error(error)
-            // }
             return {success: false, message: error as string};
         }
         return {success: true, message: "mail sent successfully"};

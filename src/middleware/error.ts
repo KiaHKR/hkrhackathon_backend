@@ -1,4 +1,4 @@
-import logger from "./logger";
+import logger from "../utility_services/logger";
 
 export = function(err, req, res, next){
     logger.error(err.message, err);

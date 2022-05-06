@@ -1,4 +1,4 @@
-import logger from "../middleware/logger";
+import logger from "../utility_services/logger";
 import winston from "winston";
 
 export default function() {
