@@ -128,3 +128,11 @@ export function validateUserPassword(password) {
 
     return schema.validate(password);
 }
+
+export function validateUserPasswordReset(password) {
+    const schema = Joi.object({
+        password: Joi.string().min(8).max(50).required(),
+    });
+
+    return schema.validate(password);
+}
