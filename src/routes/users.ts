@@ -1,9 +1,16 @@
 import express from "express";
 const router = express.Router();
-import {User, validateUserCreation, validateUserPassword, validateUserUpdate} from "../models/user";
+import {
+    User,
+    validateUserCreation,
+    validateUserPassword,
+    validateUserPasswordReset,
+    validateUserUpdate
+} from "../models/user";
 import bcrypt from 'bcrypt';
 
 import auth from '../middleware/auth';
+import reset from '../middleware/resetPassword'
 import asyncMiddleware from '../middleware/async'
 
 import PublicUser from "../models/publicUser";
@@ -118,9 +125,23 @@ router.post('/password', auth, asyncMiddleware(async (req, res) => {
     res.status(200).json(publicUser);
 }));
 
-// reset password only accessible with reset token!
-    // check if user exists, if not throw error. No data to the frontend.
-    // create token with user's email and isResetToken field
-    // have a middleware check the token and redirect to
+
+// Reset password, only accessible with reset token!                                        TODO : TEST
+router.post('/reset', [auth, reset], asyncMiddleware(async (req, res) => {
+    const { error } = validateUserPasswordReset(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    const user: User | { error: string } = await userDB.getUserObject(req["user"].email);
+    if (!(user instanceof User)) return res.status(404).json({ error: "Email not found." });
+
+    const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT));
+    user.password = await bcrypt.hash(req.body.password, salt);
+
+    await userDB.updateUserObject(user);
+
+    const publicUser = new PublicUser;
+    publicUser.fromUser(user);
+    res.status(200).json(publicUser);
+}));
 
 export = router;

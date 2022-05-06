@@ -326,11 +326,11 @@ describe('/admin', () => {
             expect(res.status).toBe(404);
         });
 
-        it('should return an array of object with valid input', async function () {
+        it('should return an array of USERS with valid input', async function () {
             const res = await exec();
 
+            expect(res.body.length).toBe(3);
             expect(res.status).toBe(200);
-            expect(res.body.length).toBe(2);
         });
     });
 

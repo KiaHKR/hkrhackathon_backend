@@ -34,8 +34,22 @@ export async function populateDatabase() {
             "thirdTestPuzzle": new UserPuzzle("thirdTestPuzzle", "33 33 33", "33"),
         }
     });
+
+    const userDB3 = new dbUser({
+        name: "test3",
+        email: "hkr.hackathon.tester@outlook.com",
+        password: "$2b$10$kPLid/ALLlbf27PW6l19GuG.oNZdL3gyFA9abXU4zj58yKMLjwIGW",
+        year: 2,
+        currentPuzzleId: "firstTestPuzzle",
+        userPuzzles: {
+            "firstTestPuzzle": new UserPuzzle("firstTestPuzzle", "11 11 11", "11"),
+            "secondTestPuzzle": new UserPuzzle("secondTestPuzzle", "22 22 22", "22"),
+            "thirdTestPuzzle": new UserPuzzle("thirdTestPuzzle", "33 33 33", "33"),
+        }
+    });
     await userDB.save();
     await userDB2.save();
+    await userDB3.save();
 
     const puzzle = new dbPuzzle({
         id: "firstTestPuzzle",
