@@ -47,14 +47,15 @@ router.post('/reset', asyncMiddleware(async (req, res) => {
 
     const resetToken = generateResetToken(req.body.email);
     const link = `${process.env.SITE_URL}/user/reset?token=${resetToken}`;
-    const result: {success: boolean, message: string} = await sendEmail.sendEmail(req.body.email, link);
-
-    if (!result.success) {
-        logger.error(result.message);
-        return res.status(400).json({error: "Failed to send mail."});
-    }
-
-    res.status(200).json();
+    await sendEmail.sendEmail(
+        req.body.email, link,
+        (data: {success: boolean, message: string}) => {
+            if (!data.success) {
+                logger.error(data.message);
+                return res.status(400).json({error: "Failed to send mail."});
+            }
+            res.status(200).json();
+        });
 }));
 
 export = router;
