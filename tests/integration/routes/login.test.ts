@@ -114,8 +114,8 @@ describe('/login/reset', () => {
     //     jest
     //         .spyOn(sendEmail, 'sendEmail')
     //         .mockImplementation(() => {
-    //             return new Promise(() => {
-    //
+    //             return new Promise((resolve) => {
+    //                 resolve()
     //             })
     //         });
     //     const res = await exec();
