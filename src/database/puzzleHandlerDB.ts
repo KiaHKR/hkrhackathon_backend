@@ -33,17 +33,16 @@ export class PuzzleHandlerDB {
     }
 
     async getAllVisiblePuzzles(): Promise<Puzzle[] | { error: string }> {
-        // returns an array of all users from the database.
-        const puzzles = await dbPuzzle.find();
-        let puzzleList = [];
-        if (puzzles.length == 0) return { error: "No puzzles in database." }
-
-        for (const i of puzzles) {
-            puzzleList.push(this.puzzleReconstruct(i))
+        const puzzles = await this.getVisibleOrderArray()
+        const returnList = []
+        const puzzleDbList = await dbPuzzle.find()
+        if (!Array.isArray(puzzles)) return { error: "Error when getting visible puzzles." }
+        for (const i of puzzleDbList) {
+            if (puzzles.includes(i.id)) {
+                returnList.push(i)
+            }
         }
-        return puzzleList
-
-
+        return returnList
     }
 
     async getNextPuzzleId(id?: string): Promise<string | { error: string; }> {
@@ -83,7 +82,7 @@ export class PuzzleHandlerDB {
         const orderArray = await dbpuzzleStorage.find();
         if (orderArray.length == 0) { return { error: "OrderArray not found" } }
         for (let i of orderArray[0].storage) {
-            if (i.visibility == true) returnArray.push({ puzzleid: i.puzzleid, visibility: i.visibility })
+            if (i.visibility == true) returnArray.push(i.puzzleid)
         } return returnArray
     }
 
