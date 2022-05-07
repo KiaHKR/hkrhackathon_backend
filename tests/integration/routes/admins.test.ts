@@ -371,7 +371,7 @@ describe('/admin', () => {
             const orderArray = [
                 { puzzleid: "firstTestPuzzle", visibility: true },
                 { puzzleid: "secondTestPuzzle", visibility: true },
-                { puzzleid: "thirdTestPuzzle", visibility: true },
+                { puzzleid: "thirdTestPuzzle", visibility: false },
                 { puzzleid: "lastTestPuzzle", visibility: true },
             ]
 
@@ -392,7 +392,7 @@ describe('/admin', () => {
             orderArray = [
                 { puzzleid: "firstTestPuzzle", visibility: true },
                 { puzzleid: "secondTestPuzzle", visibility: true },
-                { puzzleid: "thirdTestPuzzle", visibility: true },
+                { puzzleid: "thirdTestPuzzle", visibility: false },
                 { puzzleid: "lastTestPuzzle", visibility: true },
             ]
         });

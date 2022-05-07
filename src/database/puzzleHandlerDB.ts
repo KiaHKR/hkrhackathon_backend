@@ -32,7 +32,7 @@ export class PuzzleHandlerDB {
         }
     }
 
-    async getAllPuzzles(): Promise<Puzzle[] | { error: string }> {
+    async getAllVisiblePuzzles(): Promise<Puzzle[] | { error: string }> {
         // returns an array of all users from the database.
         const puzzles = await dbPuzzle.find();
         let puzzleList = [];

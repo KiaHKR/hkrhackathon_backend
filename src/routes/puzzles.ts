@@ -14,12 +14,12 @@ import { UserHandlerDB } from "../database/userHandlerDB";
 const userDB = new UserHandlerDB();
 
 /* GET | /puzzles
-* Gets all the puzzles in the db.
+* Gets all the puzzles in the db that are marked visible.
 * Takes no arguments.
 * Returns error or an array of puzzles.
 */
 router.get('/', auth, asyncMiddleware(async (req, res) => {
-    const puzzles = await puzzleDB.getAllPuzzles();
+    const puzzles = await puzzleDB.getAllVisiblePuzzles();
     if (!Array.isArray(puzzles)) return res.status(404).json({ error: "No puzzles in the database." });
 
     res.status(200).send(puzzles);

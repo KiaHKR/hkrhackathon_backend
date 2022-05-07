@@ -50,7 +50,7 @@ export async function populateDatabase() {
     await userDB2.save();
     await userDB3.save();
 
-    const puzzle = new dbPuzzle({
+    const puzzle1 = new dbPuzzle({
         id: "firstTestPuzzle",
         title: "FIRST Test Title",
         story: "This is the story of the FIRST test",
@@ -69,14 +69,36 @@ export async function populateDatabase() {
             logicExample: "this is the SECOND logic example",
         }
     });
-    await puzzle.save();
+
+    const puzzle3 = new dbPuzzle({
+        id: "thirdTestPuzzle",
+        title: "THIRD Test Title",
+        story: "This is the story of the THIRD test",
+        examples: {
+            inputExample: "this is the THIRD input example",
+            logicExample: "this is the THIRD logic example",
+        }
+    });
+
+    const puzzle4 = new dbPuzzle({
+        id: "lastTestPuzzle",
+        title: "LAST Test Title",
+        story: "This is the story of the LAST test",
+        examples: {
+            inputExample: "this is the LAST input example",
+            logicExample: "this is the LAST logic example",
+        }
+    });
+    await puzzle1.save();
     await puzzle2.save();
+    await puzzle3.save();
+    await puzzle4.save();
 
     const puzzlestorage = new dbpuzzleStorage({
         storage: [
             { puzzleid: "firstTestPuzzle", visibility: true },
             { puzzleid: "secondTestPuzzle", visibility: true },
-            { puzzleid: "thirdTestPuzzle", visibility: true },
+            { puzzleid: "thirdTestPuzzle", visibility: false },
             { puzzleid: "lastTestPuzzle", visibility: true },
         ]
     })
