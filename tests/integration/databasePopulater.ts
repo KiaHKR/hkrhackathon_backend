@@ -96,8 +96,8 @@ export async function populateDatabase() {
 
     const puzzlestorage = new dbpuzzleStorage({
         storage: [
-            { puzzleid: "firstTestPuzzle", visibility: true },
             { puzzleid: "secondTestPuzzle", visibility: true },
+            { puzzleid: "firstTestPuzzle", visibility: true },
             { puzzleid: "thirdTestPuzzle", visibility: false },
             { puzzleid: "lastTestPuzzle", visibility: true },
         ]
