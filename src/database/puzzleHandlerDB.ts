@@ -37,9 +37,11 @@ export class PuzzleHandlerDB {
         const returnList = []
         const puzzleDbList = await dbPuzzle.find()
         if (!Array.isArray(puzzles)) return { error: "Error when getting visible puzzles." }
-        for (const i of puzzleDbList) {
-            if (puzzles.includes(i.id)) {
-                returnList.push(this.puzzleReconstruct(i))
+        for (const oAPuzzle of puzzles) {
+            for (const dbpuzzle of puzzleDbList) {
+                if (oAPuzzle == dbpuzzle.id) {
+                    returnList.push(this.puzzleReconstruct(dbpuzzle))
+                }
             }
         }
         return returnList
