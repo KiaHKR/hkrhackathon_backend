@@ -39,7 +39,7 @@ export class PuzzleHandlerDB {
         if (!Array.isArray(puzzles)) return { error: "Error when getting visible puzzles." }
         for (const i of puzzleDbList) {
             if (puzzles.includes(i.id)) {
-                returnList.push(i)
+                returnList.push(this.puzzleReconstruct(i))
             }
         }
         return returnList
