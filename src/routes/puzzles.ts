@@ -8,7 +8,7 @@ import { User } from "../models/user";
 import { UserPuzzle } from "../models/userPuzzle";
 import PuzzleHandler from "../puzzle_service/puzzleHandler";
 
-import {PuzzleHandlerDB} from "../database/puzzleHandlerDB";
+import { PuzzleHandlerDB } from "../database/puzzleHandlerDB";
 const puzzleDB = new PuzzleHandlerDB();
 import { UserHandlerDB } from "../database/userHandlerDB";
 const userDB = new UserHandlerDB();

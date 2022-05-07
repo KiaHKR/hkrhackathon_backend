@@ -68,12 +68,22 @@ export class PuzzleHandlerDB {
     }
 
     async getOrderArray(): Promise<any[] | { error: string; }> {
-        // updates puzzle storage array
+        // gets puzzle storage array
         const returnArray = []
         const orderArray = await dbpuzzleStorage.find();
         if (orderArray.length == 0) { return { error: "OrderArray not found" } }
         for (let i of orderArray[0].storage) {
             returnArray.push({ puzzleid: i.puzzleid, visibility: i.visibility })
+        } return returnArray
+    }
+
+    async getVisibleOrderArray(): Promise<any[] | { error: string; }> {
+        // gets visible puzzle storage array
+        const returnArray = []
+        const orderArray = await dbpuzzleStorage.find();
+        if (orderArray.length == 0) { return { error: "OrderArray not found" } }
+        for (let i of orderArray[0].storage) {
+            if (i.visibility == true) returnArray.push({ puzzleid: i.puzzleid, visibility: i.visibility })
         } return returnArray
     }
 
