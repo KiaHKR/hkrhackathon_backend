@@ -194,10 +194,10 @@ describe('/user', () => {
             await dbUser.remove();
             const res = await exec();
 
-            expect(res.status).toBe(200);
             expect(res.header).toHaveProperty('x-auth-header');
             expect(res.body).not.toHaveProperty('password');
-            expect(res.body.currentPuzzleId).toMatch('firstTestPuzzle');
+            expect(res.body.currentPuzzleId).toMatch('secondTestPuzzle');
+            expect(res.status).toBe(200);
         });
     });
 

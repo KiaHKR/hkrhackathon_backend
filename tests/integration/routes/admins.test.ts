@@ -369,8 +369,8 @@ describe('/admin', () => {
             const res = await exec();
 
             const orderArray = [
-                { puzzleid: "firstTestPuzzle", visibility: true },
                 { puzzleid: "secondTestPuzzle", visibility: true },
+                { puzzleid: "firstTestPuzzle", visibility: true },
                 { puzzleid: "thirdTestPuzzle", visibility: false },
                 { puzzleid: "lastTestPuzzle", visibility: true },
             ]
