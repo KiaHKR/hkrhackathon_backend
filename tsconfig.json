@@ -1,22 +1,15 @@
 {
     "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
         "outDir": "dist",
-        "types": ["jest", "node"],
-
-        "target": "es2022",
-        "lib": ["esnext"],
-
-        "module": "nodenext",
-        "moduleResolution": "nodenext",
-        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
         "esModuleInterop": true,
-
-//        "sourceMap": true,
+        "target": "esnext",
     },
-    "lib": [
-        "esnext"
+    "exclude": [
+        "**/tests/**"
     ],
-    "exclude": ["**/tests/**"],
     "ts-node": {
         "compilerOptions": {
             "module": "commonjs",

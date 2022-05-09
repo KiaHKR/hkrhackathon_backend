@@ -3,7 +3,7 @@
     "eslintIgnore": [
         "*.js"
     ],
-    "type": "module",
+    "type": "commonjs",
     "version": "1.10.0",
     "description": "cake",
     "main": "index.js",
@@ -54,4 +54,3 @@
         "winston-mongodb": "^5.0.7"
     }
 }
-  
