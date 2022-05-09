@@ -3,7 +3,7 @@
     "eslintIgnore": [
         "*.js"
     ],
-    "type": "commonjs",
+    "type": "module",
     "version": "1.10.0",
     "description": "cake",
     "main": "index.js",
