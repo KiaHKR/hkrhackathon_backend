@@ -1,7 +1,8 @@
 import request from 'supertest'
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
-import * as sendEmail from "../../../src/mail_service/sendEmail";
+
+import app from '../../../src/index';
 
 let server;
 
@@ -10,7 +11,7 @@ describe('/login', () => {
     let password;
 
     beforeEach(async () => {
-        server = require('../../../src/index')
+        server = app;
         await populateDatabase();
         email = "test@example.com";
         password = "12345678";
@@ -61,8 +62,9 @@ describe('/login', () => {
 
 describe('/login/reset', () => {
     let email;
+
     beforeEach(async () => {
-        server = require('../../../src/index')
+        server = app;
         await populateDatabase();
         email = "hkr.hackathon.tester@outlook.com";
     });

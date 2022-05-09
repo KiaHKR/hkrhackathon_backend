@@ -173,4 +173,4 @@ router.put('/reset', [auth, reset], asyncMiddleware(async (req, res) => {
     res.status(200).json(publicUser);
 }));
 
-export = router;
+export default router;

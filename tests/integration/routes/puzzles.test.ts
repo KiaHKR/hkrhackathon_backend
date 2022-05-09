@@ -5,22 +5,23 @@ import {User} from "../../../src/models/user";
 import {dbPuzzle} from "../../../src/database/models/db_puzzles";
 import {dbUser} from "../../../src/database/models/db_users";
 import {PuzzleHandlerDB} from "../../../src/database/puzzleHandlerDB";
+import app from '../../../src/index';
 
 let server;
 
 describe('/puzzle', () => {
 
-    beforeEach(async () => {
-        server = require('../../../src/index')
-        await populateDatabase();
-    });
-
-    afterEach(async () => {
-        server.close();
-        await depopulateDatabase();
-    });
-
     describe('GET', () => {
+
+        beforeEach(async () => {
+            server = app;
+            await populateDatabase();
+        });
+
+        afterEach(async () => {
+            server.close();
+            await depopulateDatabase();
+        });
 
         const exec = async () => {
             const token = new User("test", "test@example.com", "12345678", 1).generateAuthToken();
@@ -53,17 +54,23 @@ describe('/puzzle', () => {
         });
     });
 
-
     describe('POST /:puzzleId', () => {
         let guess;
         let puzzleId;
         let token;
 
-        beforeEach(() => {
+        beforeEach(async () => {
+            server = app;
+            await populateDatabase();
             guess = "2"
             puzzleId = "secondTestPuzzle"
             token = new User("test", "test@example.com", "12345678", 1).generateAuthToken();
-        })
+        });
+
+        afterEach(async () => {
+            server.close();
+            await depopulateDatabase();
+        });
 
         const exec = async () => {
             return await request(server)
@@ -162,5 +169,4 @@ describe('/puzzle', () => {
         });
 
     });
-
 });

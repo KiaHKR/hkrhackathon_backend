@@ -1,6 +1,6 @@
 
 /* Wrapper function for centralised error catching for routes. */
-export = function (handler) {
+export default function (handler) {
     return async (req, res, next) => {
         try {
             await handler(req, res)

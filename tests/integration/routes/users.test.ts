@@ -4,6 +4,7 @@ import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
 import generateResetToken from "../../../src/utility_services/generateResetToken";
+import app from '../../../src/index';
 
 let server;
 
@@ -11,24 +12,17 @@ describe('/user', () => {
     let email;
     let password;
 
-    beforeAll(async () => {
-        server = require('../../../src/index')
-    })
-
-    afterAll(async () => {
-        server.close();
-        await depopulateDatabase();
-    })
-
     describe('GET', () => {
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             password = "12345678";
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 
@@ -73,6 +67,7 @@ describe('/user', () => {
         let year;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             name = "post test";
             email = "postTest@example.com";
@@ -81,6 +76,7 @@ describe('/user', () => {
         })
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 
@@ -204,15 +200,16 @@ describe('/user', () => {
     describe('DELETE', () => {
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             password = "12345678";
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
-
-        })
+        });
 
         const exec = async () => {
             const token = new User("test", email, password, 1).generateAuthToken();
@@ -268,7 +265,9 @@ describe('/user', () => {
     describe('PUT', () => {
         let name;
         let year;
+
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             password = "12345678";
@@ -277,6 +276,7 @@ describe('/user', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         });
 
@@ -372,7 +372,9 @@ describe('/user', () => {
 
     describe('GET /:puzzleId', () => {
         let id;
+
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             password = "12345678";
@@ -380,7 +382,8 @@ describe('/user', () => {
         });
 
         afterEach(async () => {
-            await dbUser.remove();
+            server.close();
+            await depopulateDatabase();
         });
 
         const exec = async () => {
@@ -443,6 +446,7 @@ describe('/user', () => {
         let newPassword;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             password = "12345678";
@@ -451,6 +455,7 @@ describe('/user', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         });
 
@@ -529,6 +534,7 @@ describe('/user', () => {
         let password;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             token = generateResetToken(email)
@@ -536,6 +542,7 @@ describe('/user', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         });
 

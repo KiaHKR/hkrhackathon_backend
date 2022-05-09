@@ -58,4 +58,4 @@ router.post('/reset', asyncMiddleware(async (req, res) => {
         });
 }));
 
-export = router;
+export default router;

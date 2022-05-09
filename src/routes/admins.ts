@@ -154,4 +154,4 @@ router.put('/update/:email', [auth, admin], asyncMiddleware(async (req, res) => 
     return res.status(200).json(publicUser);
 }));
 
-export = router;
+export default router;

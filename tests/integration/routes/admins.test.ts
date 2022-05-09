@@ -4,25 +4,18 @@ import { User } from "../../../src/models/user";
 import { populateDatabase } from "../databasePopulater";
 import { depopulateDatabase } from "../databaseDepopulater";
 import { dbpuzzleStorage } from "../../../src/database/models/db_puzzleStorage";
-import generateResetToken from "../../../src/utility_services/generateResetToken";
+import app from '../../../src/index';
+
 let server;
 
 describe('/admin', () => {
-
-    beforeAll(async () => {
-        server = require('../../../src/index')
-    })
-
-    afterAll(async () => {
-        server.close();
-        await depopulateDatabase();
-    });
 
     describe('DELETE /:email', () => {
         let email;
         let token;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             const user = new User("test", "admin@email.com", "12345678", 1);
@@ -31,6 +24,7 @@ describe('/admin', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 
@@ -104,6 +98,7 @@ describe('/admin', () => {
         let isAdmin;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             const user = new User("test", "admin@email.com", "12345678", 1);
@@ -115,6 +110,7 @@ describe('/admin', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 
@@ -216,6 +212,7 @@ describe('/admin', () => {
         let token;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             email = "test@example.com";
             const user = new User("test", "admin@email.com", "12345678", 1);
@@ -224,6 +221,7 @@ describe('/admin', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 
@@ -279,6 +277,7 @@ describe('/admin', () => {
         let token;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             const user = new User("test", "admin@email.com", "12345678", 1);
             user.isAdmin = true;
@@ -286,6 +285,7 @@ describe('/admin', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 
@@ -339,6 +339,7 @@ describe('/admin', () => {
         let token;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             const user = new User("test", "test@example.com", "12345678", 1);
             user.isAdmin = true;
@@ -346,6 +347,7 @@ describe('/admin', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 
@@ -385,6 +387,7 @@ describe('/admin', () => {
         let orderArray;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             const user = new User("test", "test@example.com", "12345678", 1);
             user.isAdmin = true;
@@ -398,6 +401,7 @@ describe('/admin', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 
@@ -446,6 +450,7 @@ describe('/admin', () => {
         let email;
 
         beforeEach(async () => {
+            server = app;
             await populateDatabase();
             const user = new User("test", "test@example.com", "12345678", 1);
             user.isAdmin = true;
@@ -456,6 +461,7 @@ describe('/admin', () => {
         });
 
         afterEach(async () => {
+            server.close();
             await depopulateDatabase();
         })
 

@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "es2020",
         "esModuleInterop": true,
         "target": "es6",
         "moduleResolution": "node",
@@ -10,5 +10,10 @@
     "lib": [
         "es2015"
     ],
-    "exclude": ["**/tests/**"]
+    "exclude": ["**/tests/**"],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "commonjs",
+        }
+    }
 }

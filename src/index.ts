@@ -17,7 +17,11 @@ routes(app);
 db();
 prod(app);
 
-const port = process.env.PORT || 3000;
-const server =app.listen(port, () => logger.info(`Listening port ${port}...`));
 
-export = server;
+const port = process.env.PORT || 3000;
+
+const server = (process.env.NODE_ENV === 'test') ?
+    app.listen() :
+    app.listen(port, () => logger.info(`Listening port ${port}...`));
+
+export default server;
