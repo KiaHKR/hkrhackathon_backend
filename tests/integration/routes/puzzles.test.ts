@@ -131,7 +131,7 @@ describe('/puzzle', () => {
 
              expect(res.status).toBe(200);
              expect(res.body.answer).toBeTruthy();
-             expect(number).toBeUndefined();
+             expect(number).toBeNull();
          });
 
         it('should alter fields if guess is correct', async function () {

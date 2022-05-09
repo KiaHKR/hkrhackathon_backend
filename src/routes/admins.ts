@@ -115,6 +115,9 @@ router.post('/save/puzzles', [auth, admin], asyncMiddleware(async (req, res) => 
     const { error } = validateOrderArray(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
+    const hasVisiblePuzzle = req.body.orderArray.some(element => element.visibility === true);
+    if (!hasVisiblePuzzle) return res.status(400).json({ error: "orderArray must contain at least one visible puzzle." })
+
     const result = await puzzleDB.saveOrderArray(req.body.orderArray);
     res.status(200).json(result);
 }));

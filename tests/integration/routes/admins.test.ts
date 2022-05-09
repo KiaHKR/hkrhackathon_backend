@@ -441,6 +441,19 @@ describe('/admin', () => {
             expect(res.status).toBe(200);
             expect(res.body).toEqual(orderArray);
         });
+
+        it('should return 400 if none of the items are marked visible', async function () {
+            orderArray = [
+                { puzzleid: "firstTestPuzzle", visibility: false },
+                { puzzleid: "secondTestPuzzle", visibility: false },
+                { puzzleid: "thirdTestPuzzle", visibility: false },
+                { puzzleid: "lastTestPuzzle", visibility: false },
+            ]
+            const res = await exec();
+
+            expect(res.body.error).toMatch('visible');
+            expect(res.status).toBe(400);
+        })
     });
 
     describe('PUT /update/:email', () => {
