@@ -6,6 +6,7 @@ import {dbPuzzle} from "../../../src/database/models/db_puzzles";
 import {dbUser} from "../../../src/database/models/db_users";
 import {PuzzleHandlerDB} from "../../../src/database/puzzleHandlerDB";
 import app from '../../../src/index';
+import {Puzzle} from "../../../src/models/puzzle";
 
 let server;
 
@@ -136,10 +137,14 @@ describe('/puzzle', () => {
 
         it('should alter fields if guess is correct', async function () {
             await exec();
-            const user = await dbUser.findOne({ email: "test@example.com" })
+            const user = await dbUser.findOne({ email: "test@example.com" });
+            const puzzle = await dbPuzzle.findOne({ id: puzzleId });
 
+            console.log(puzzle)
             expect(user.userPuzzles[puzzleId]._completed).toBeTruthy();
             expect(user.userPuzzles[puzzleId]._completionTime).not.toBeUndefined();
+
+            expect(puzzle.timesCompleted).toBe(3);
 
         });
 
@@ -158,14 +163,16 @@ describe('/puzzle', () => {
         });
 
         it('should alter fields if guess is incorrect', async function () {
-            guess = "erm"
+            guess = "erm";
             await exec();
-            const user = await dbUser.findOne({ email: "test@example.com" })
+            const user = await dbUser.findOne({ email: "test@example.com" });
+            const puzzle: Puzzle = await dbPuzzle.findOne({ id: puzzleId });
 
             expect(user.userPuzzles[puzzleId]._completed).toBeFalsy();
             expect(user.userPuzzles[puzzleId]._completionTime).toBeDefined();
             expect(user.userPuzzles[puzzleId]._numberOfWrongSubmissions).toEqual(1);
 
+            expect(puzzle.wrongSubmissions).toBe(3);
         });
 
     });

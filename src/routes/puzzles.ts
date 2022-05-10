@@ -44,6 +44,7 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
 
     if (result.answer) {
         userPuzzle.correct()
+        await puzzleDB.submissionSuccess(req.params.puzzleId, user.name);
         const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId(userPuzzle.id);
         if (typeof currentPuzzleId !== 'string') return res.status(404).json({ error: "Next puzzle id not found." });
 
@@ -52,6 +53,7 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
     }
     if (!result.answer) {
         userPuzzle.incorrect();
+        await puzzleDB.submissionFail(req.params.puzzleId);
     }
 
     await userDB.updateUserObject(user);

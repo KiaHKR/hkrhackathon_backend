@@ -57,6 +57,12 @@ export async function populateDatabase() {
         examples: {
             inputExample: "this is the FIRST input example",
             logicExample: "this is the FIRST logic example",
+        },
+        timesCompleted: 1,
+        wrongSubmissions: 1,
+        firstSolved: {
+            name: "test",
+            timeStamp: 1519211809934,
         }
     });
 
@@ -67,6 +73,12 @@ export async function populateDatabase() {
         examples: {
             inputExample: "this is the SECOND input example",
             logicExample: "this is the SECOND logic example",
+        },
+        timesCompleted: 2,
+        wrongSubmissions: 2,
+        firstSolved: {
+            name: "test2",
+            timeStamp: 1619211809934,
         }
     });
 
@@ -77,6 +89,12 @@ export async function populateDatabase() {
         examples: {
             inputExample: "this is the THIRD input example",
             logicExample: "this is the THIRD logic example",
+        },
+        timesCompleted: 3,
+        wrongSubmissions: 3,
+        firstSolved: {
+            name: "test3",
+            timeStamp: 1719211809934,
         }
     });
 
@@ -87,6 +105,12 @@ export async function populateDatabase() {
         examples: {
             inputExample: "this is the LAST input example",
             logicExample: "this is the LAST logic example",
+        },
+        timesCompleted: 0,
+        wrongSubmissions: 0,
+        firstSolved: {
+            name: '',
+            timeStamp: undefined,
         }
     });
     await puzzle1.save();
