@@ -93,8 +93,8 @@ export async function populateDatabase() {
         timesCompleted: 3,
         wrongSubmissions: 3,
         firstSolved: {
-            name: "test3",
-            timeStamp: 1719211809934,
+            name: undefined,
+            timeStamp: undefined,
         }
     });
 
@@ -109,7 +109,7 @@ export async function populateDatabase() {
         timesCompleted: 0,
         wrongSubmissions: 0,
         firstSolved: {
-            name: '',
+            name: undefined,
             timeStamp: undefined,
         }
     });

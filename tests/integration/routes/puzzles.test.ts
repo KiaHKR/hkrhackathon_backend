@@ -140,7 +140,6 @@ describe('/puzzle', () => {
             const user = await dbUser.findOne({ email: "test@example.com" });
             const puzzle = await dbPuzzle.findOne({ id: puzzleId });
 
-            console.log(puzzle)
             expect(user.userPuzzles[puzzleId]._completed).toBeTruthy();
             expect(user.userPuzzles[puzzleId]._completionTime).not.toBeUndefined();
 

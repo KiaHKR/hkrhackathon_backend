@@ -1,8 +1,8 @@
 export class Puzzle {
     private _nameFirstSolved: string;
     private _timeFirstSolved: Date;
-    private _wrongSubmissions: Number;
-    private _correctSubmissions: Number;
+    private _wrongSubmissions: number;
+    private _correctSubmissions: number;
 
     constructor(
         private _id: string,
@@ -53,11 +53,11 @@ export class Puzzle {
         this._timeFirstSolved = value;
     }
 
-    get correctSubmissions(): Number {
+    get correctSubmissions(): number {
         return this._correctSubmissions;
     }
 
-    set correctSubmissions(value: Number) {
+    set correctSubmissions(value: number) {
         this._correctSubmissions = value;
     }
 
@@ -69,11 +69,11 @@ export class Puzzle {
         this._nameFirstSolved = value;
     }
 
-    get wrongSubmissions(): Number {
+    get wrongSubmissions(): number {
         return this._wrongSubmissions;
     }
 
-    set wrongSubmissions(value: Number) {
+    set wrongSubmissions(value: number) {
         this._wrongSubmissions = value;
     }
 }

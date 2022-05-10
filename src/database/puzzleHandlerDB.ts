@@ -8,7 +8,7 @@ import { dbUser } from "./models/db_users";
 export class PuzzleHandlerDB {
 
     puzzleDeconstruct(puzzle) {
-        return new dbPuzzle({ id: puzzle.id, title: puzzle.title, story: puzzle.story, examples: puzzle.examples, timesCompleted: puzzle.timesCompleted, wrongSubmissions: puzzle.wrongSubmissions, firstSolved: { name: puzzle.nameFirstSolved, timeStamp: puzzle.timeFirstSolved } })
+        return new dbPuzzle({ id: puzzle.id, title: puzzle.title, story: puzzle.story, examples: puzzle.examples, timesCompleted: puzzle.correctSubmissions, wrongSubmissions: puzzle.wrongSubmissions, firstSolved: { name: puzzle.nameFirstSolved, timeStamp: puzzle.timeFirstSolved } })
     }
 
     puzzleReconstruct(dbpuzzle) {
@@ -19,6 +19,7 @@ export class PuzzleHandlerDB {
             puzz.nameFirstSolved = dbpuzzle.firstSolved.name
             puzz.timeFirstSolved = dbpuzzle.firstSolved.timeStamp
         }
+        puzz.correctSubmissions = dbpuzzle.timesCompleted
         return puzz
     }
 
@@ -43,6 +44,7 @@ export class PuzzleHandlerDB {
         const puzzles = await this.getVisibleOrderArray()
         const returnList = []
         const puzzleDbList = await dbPuzzle.find()
+
         if (!Array.isArray(puzzles)) return { error: "Error when getting visible puzzles." }
         for (const oAPuzzle of puzzles) {
             for (const dbpuzzle of puzzleDbList) {
@@ -51,6 +53,7 @@ export class PuzzleHandlerDB {
                 }
             }
         }
+
         return returnList
     }
 
