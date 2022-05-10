@@ -1,4 +1,5 @@
 import { Puzzle } from "../models/puzzle";
+import db from "../startup/db";
 import { dbPuzzle } from "./models/db_puzzles";
 import { dbpuzzleStorage } from "./models/db_puzzleStorage"
 import { dbUser } from "./models/db_users";
@@ -7,11 +8,17 @@ import { dbUser } from "./models/db_users";
 export class PuzzleHandlerDB {
 
     puzzleDeconstruct(puzzle) {
-        return new dbPuzzle({ id: puzzle.id, title: puzzle.title, story: puzzle.story, examples: puzzle.examples })
+        return new dbPuzzle({ id: puzzle.id, title: puzzle.title, story: puzzle.story, examples: puzzle.examples, timesCompleted: puzzle.timesCompleted, wrongSubmissions: puzzle.wrongSubmissions, firstSolved: { name: puzzle.nameFirstSolved, timeStamp: puzzle.timeFirstSolved } })
     }
 
     puzzleReconstruct(dbpuzzle) {
         const puzz = new Puzzle(dbpuzzle.id, dbpuzzle.title, dbpuzzle.story, dbpuzzle.examples)
+        puzz.timeFirstSolved = dbpuzzle.timesCompleted
+        puzz.wrongSubmissions = dbpuzzle.wrongSubmissions
+        if (dbpuzzle.firstSolved) {
+            puzz.nameFirstSolved = dbpuzzle.firstSolved.name
+            puzz.timeFirstSolved = dbpuzzle.firstSolved.timeStamp
+        }
         return puzz
     }
 
@@ -105,6 +112,43 @@ export class PuzzleHandlerDB {
         if (users.length == 0) { return true }
         return false
     }
+
+    async submissionFail(puzzleid): Promise<Puzzle | { error: string }> {
+        const puzzle = await dbPuzzle.findOne({ id: puzzleid })
+        if (!puzzle) return { error: "Puzzle not found" }
+        const updateReturn = await dbPuzzle.updateOne({ id: puzzleid }, { wrongSubmissions: puzzle.wrongSubmissions + 1 })
+        return this.puzzleReconstruct(updateReturn)
+    }
+
+    async submissionSuccess(puzzleid, userName): Promise<Puzzle | { error: string }> {
+        const puzzle = await dbPuzzle.findOne({ id: puzzleid })
+        if (!puzzle) return { error: "Puzzle not found" }
+        if (puzzle.timesCompleted == 0) {
+            const updateReturn = await dbPuzzle.updateOne({ id: puzzleid }, { timesCompleted: puzzle.timesCompleted + 1, firstSolved: { name: userName, timeStamp: Date.now() } })
+            return this.puzzleReconstruct(updateReturn)
+        }
+        const updateReturn = await dbPuzzle.updateOne({ id: puzzleid }, { timesCompleted: puzzle.timesCompleted + 1 })
+        return this.puzzleReconstruct(updateReturn)
+    }
+
+    async firstFinished(puzzleid): Promise<{ name: string, timeStamp: Date } | { error: string }> {
+        const puzzle = await dbPuzzle.findOne({ id: puzzleid })
+        if (!puzzle) return { error: "Puzzle not found" }
+        return puzzle.firstSolved
+    }
+
+    async getLeaderboard(): Promise<any[] | { error: string }> {
+        const leaderBoard = []
+        const puzzle = await this.getAllVisiblePuzzles()
+
+        if (!Array.isArray(puzzle)) return { error: "No puzzles found" }
+        for (const p of puzzle) {
+            let puzzR = await this.puzzleDeconstruct(p)
+            leaderBoard.push({ puzzleId: puzzR.id, wrongSubmissions: puzzR.wrongSubmissions, timesCompleted: puzzR.timesCompleted, firstToFinish: puzzR.firstSolved.name, timeFinished: puzzR.firstSolved.timeStamp })
+        }
+        return leaderBoard
+    }
+
 }
 
 /* async changePuzzleVisibility(id: string, visiblity: boolean): Promise<string | { error: string; }> {
