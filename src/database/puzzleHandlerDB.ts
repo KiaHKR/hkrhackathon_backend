@@ -144,7 +144,7 @@ export class PuzzleHandlerDB {
         if (!Array.isArray(puzzle)) return { error: "No puzzles found" }
         for (const p of puzzle) {
             let puzzR = await this.puzzleDeconstruct(p)
-            leaderBoard.push({ puzzleId: puzzR.id, wrongSubmissions: puzzR.wrongSubmissions, timesCompleted: puzzR.timesCompleted, firstToFinish: puzzR.firstSolved.name, timeFinished: puzzR.firstSolved.timeStamp })
+            leaderBoard.push({ puzzle: puzzR.title, wrongSubmissions: puzzR.wrongSubmissions, timesCompleted: puzzR.timesCompleted, firstToFinish: puzzR.firstSolved.name, timeFinished: puzzR.firstSolved.timeStamp })
         }
         return leaderBoard
     }
