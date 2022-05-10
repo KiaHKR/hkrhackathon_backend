@@ -1,3 +1,4 @@
+import { date } from 'joi';
 import mongoose from 'mongoose';
 const puzzleSchema = new mongoose.Schema({
     id: {
@@ -26,6 +27,22 @@ const puzzleSchema = new mongoose.Schema({
             required: true,
         }
 
+    },
+    timesCompleted: {
+        type: Number,
+        default: 0
+    },
+    wrongSubmissions: {
+        type: Number,
+        default: 0
+    },
+    firstSolved: {
+        name: {
+            type: String,
+        },
+        timeStamp: {
+            type: Date,
+        }
     }
 }, { minimize: false });
 
