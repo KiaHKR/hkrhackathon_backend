@@ -16,7 +16,7 @@ const userDB = new UserHandlerDB();
 
 /* POST | /login
 * Login.
-* Takes email and password as arguments
+* Takes email and password as arguments.
 * Returns error or token.
 */
 router.post('/', asyncMiddleware(async (req, res) => {
