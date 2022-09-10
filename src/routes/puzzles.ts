@@ -51,6 +51,7 @@ router.post('/:puzzleId', auth, asyncMiddleware(async (req, res) => {
         const newUserPuzzle = PuzzleHandler.generatePuzzle(currentPuzzleId as string);
         user.addPuzzle(newUserPuzzle);
     }
+
     if (!result.answer) {
         userPuzzle.incorrect();
         await puzzleDB.submissionFail(req.params.puzzleId);

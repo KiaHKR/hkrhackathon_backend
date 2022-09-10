@@ -134,11 +134,11 @@ export class PuzzleHandlerDB {
         return this.puzzleReconstruct(updateReturn)
     }
 
-    async firstFinished(puzzleid): Promise<{ name: string, timeStamp: Date } | { error: string }> {
-        const puzzle = await dbPuzzle.findOne({ id: puzzleid })
-        if (!puzzle) return { error: "Puzzle not found" }
-        return puzzle.firstSolved
-    }
+    // async firstFinished(puzzleid): Promise<{ name: string, timeStamp: Date } | { error: string }> {
+    //     const puzzle = await dbPuzzle.findOne({ id: puzzleid })
+    //     if (!puzzle) return { error: "Puzzle not found" }
+    //     return puzzle.firstSolved
+    // }
 
     async getLeaderboard(): Promise<any[] | { error: string }> {
         const leaderBoard = []
