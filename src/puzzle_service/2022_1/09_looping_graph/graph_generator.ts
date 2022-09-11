@@ -1,14 +1,14 @@
 import Randoms from "../utilities/randoms";
 
 export default class GraphGenerator {
-    symbolsToUse: string[];
-    minNumberOfNodes = 15;
+    private symbolsToUse: string[];
+    private minNumberOfNodes = 20;
 
-    nodes!: Set<string>;
-    nodesToConnectTo!: Set<string>;
-    connections: Map<string, Set<string>> | undefined;
+    private nodes!: Set<string>;
+    private nodesToConnectTo!: Set<string>;
+    private connections: Map<string, Set<string>> | undefined;
 
-    random = new Randoms();
+    private random = new Randoms();
 
 
     constructor(symbolsToUse: string[]) {

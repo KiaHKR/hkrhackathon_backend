@@ -7,10 +7,10 @@ export default class GridWithBoxesPuzzle implements PuzzleModuleInterface{
     
     private readonly alphabet = "abcdefghijklmnopqrstuvwxyz";
     private readonly initialValueForGrid = "X";
-    width = 200;
-    height = 200;
-    minCountOfBoxes = 250;
-    maxCountOfBoxes = 350;
+    private width = 200;
+    private height = 200;
+    private minCountOfBoxes = 250;
+    private maxCountOfBoxes = 350;
 
     puzzleId = "05_grid_with_boxes";
 

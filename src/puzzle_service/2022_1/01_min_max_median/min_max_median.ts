@@ -6,9 +6,9 @@ import OutputFormatter from "../utilities/output_formatter";
 export default class MinMaxMedianPuzzle implements PuzzleModuleInterface{
 
     puzzleId = "01_min_max_median"
-    numberOfEntries = 2000;
-    lowerLimitForNumber = 100;
-    upperLimitForNumbers = 100000;
+    private numberOfEntries = 2000;
+    private lowerLimitForNumber = 100;
+    private upperLimitForNumbers = 100000;
 
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string } {

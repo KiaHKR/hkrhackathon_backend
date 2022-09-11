@@ -12,7 +12,8 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface{
     puzzleId = "06_parenthesis";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string } {
-        return (correctAnswer === guessAnswer) ? { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" };
+        return (correctAnswer === guessAnswer) ?
+            { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" };
     }
 
     generatePuzzle(): UserPuzzle {

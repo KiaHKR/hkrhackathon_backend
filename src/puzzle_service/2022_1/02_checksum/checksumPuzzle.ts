@@ -5,7 +5,7 @@ import OutputFormatter from "../utilities/output_formatter";
 
 export default class ChecksumPuzzle implements PuzzleModuleInterface{
     puzzleId = "02_checksum";
-    numberOfEntries = 2000;
+    private numberOfEntries = 2000;
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string } {
         return (correctAnswer === guessAnswer) ?
