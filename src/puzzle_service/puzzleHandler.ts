@@ -6,6 +6,8 @@ import NiceWordsPuzzle from "./2022_1/03_nice_words/nice_words";
 import StringManipulationPuzzle from "./2022_1/04_string_manipulation/string_manipulation";
 import GridWithBoxesPuzzle from "./2022_1/05_grid_with_boxes/grid_with_boxes";
 import ParenthesisPuzzle from "./2022_1/06_parenthesis/parenthesisPuzzle";
+import MazePuzzle from "./2022_1/08_maze/maze";
+import LoopingGraph from "./2022_1/09_looping_graph/looping_graph";
 
 export default class PuzzleHandler {
     private static puzzleClasses: {
@@ -16,7 +18,9 @@ export default class PuzzleHandler {
         "03_nice_words": new NiceWordsPuzzle(),
         "04_string_manipulation": new StringManipulationPuzzle(),
         "05_grid_with_boxes": new GridWithBoxesPuzzle(),
-        "06_parenthesis": new ParenthesisPuzzle()
+        "06_parenthesis": new ParenthesisPuzzle(),
+        "08_maze": new MazePuzzle(),
+        "09_looping_graph": new LoopingGraph()
     };
 
     static generatePuzzle(id: string): UserPuzzle {

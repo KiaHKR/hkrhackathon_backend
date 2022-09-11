@@ -3,7 +3,7 @@ import { PuzzleModuleInterface } from "../../puzzleModuleInterface";
 import * as generation from './maze_generation';
 import solveMaze from './maze_solver';
 
-class MazePuzzle implements PuzzleModuleInterface {
+export default class MazePuzzle implements PuzzleModuleInterface {
     puzzleId: string = "08_maze";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string; } {

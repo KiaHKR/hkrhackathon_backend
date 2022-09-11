@@ -12,4 +12,18 @@ export default class OutputFormatter {
 
         return output;
     }
+
+    public graphMapToString(map: Map<string, Set<string>>) {
+        let result = "";
+
+        map.forEach((values: Set<string>, key: string) => {
+            result += key;
+            values.forEach((value: string) => {
+                result += value;
+            })
+            result += " ";
+        })
+
+        return result;
+    }
 }
