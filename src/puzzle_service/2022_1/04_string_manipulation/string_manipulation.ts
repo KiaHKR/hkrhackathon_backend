@@ -4,7 +4,7 @@ import Constants from './constants';
 import { Command, getRandomCommand } from "./command_manager";
 import operations from './operations';
 
-class StringManipulationPuzzle implements PuzzleModuleInterface {
+export default class StringManipulationPuzzle implements PuzzleModuleInterface {
     puzzleId = "04_string_manipulation";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string; } {
