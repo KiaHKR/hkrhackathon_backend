@@ -5,7 +5,7 @@ import * as generators from './string_generators';
 
 export default class NiceWordsPuzzle implements PuzzleModuleInterface {
 
-    puzzleId = "01_nice_words";
+    puzzleId = "03_nice_words";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string; } {
         return (correctAnswer === guessAnswer) ? { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" };
