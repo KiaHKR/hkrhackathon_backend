@@ -3,7 +3,7 @@ import {PuzzleModuleInterface} from "../../puzzleModuleInterface";
 import {UserPuzzle} from "../../../models/userPuzzle";
 import OutputFormatter from "../utilities/output_formatter";
 
-export default class GridWithBoxes implements PuzzleModuleInterface{
+export default class GridWithBoxesPuzzle implements PuzzleModuleInterface{
     
     private readonly alphabet = "abcdefghijklmnopqrstuvwxyz";
     private readonly initialValueForGrid = "X";
