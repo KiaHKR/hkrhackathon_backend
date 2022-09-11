@@ -24,7 +24,7 @@ export default class StringManipulationPuzzle implements PuzzleModuleInterface {
         return new UserPuzzle(this.puzzleId, command_list.join('\n'), s);
     }
 
-    perform_command_get_result(s: string, command_type: Command): { s: string, op_string: string } {
+    private perform_command_get_result(s: string, command_type: Command): { s: string, op_string: string } {
         switch (command_type) {
             case Command.ROTATE:
                 const rotate_count = Math.floor(Math.random() * 9);

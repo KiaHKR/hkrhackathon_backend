@@ -7,21 +7,23 @@ import StringManipulationPuzzle from "./2022_1/04_string_manipulation/string_man
 import GridWithBoxesPuzzle from "./2022_1/05_grid_with_boxes/grid_with_boxes";
 import ParenthesisPuzzle from "./2022_1/06_parenthesis/parenthesisPuzzle";
 import MazePuzzle from "./2022_1/08_maze/maze";
-import LoopingGraph from "./2022_1/09_looping_graph/looping_graph";
+import LoopingGraphPuzzle from "./2022_1/09_looping_graph/looping_graph";
+import HouseRobberPuzzle from "./2022_1/07_house_robber/house_robber";
 
 export default class PuzzleHandler {
     private static puzzleClasses: {
         [puzzleId: string]: PuzzleModuleInterface
     } = {
-        "01_min_max_median" : new MinMaxMedianPuzzle(),
-        "02_checksum" : new ChecksumPuzzle(),
-        "03_nice_words": new NiceWordsPuzzle(),
-        "04_string_manipulation": new StringManipulationPuzzle(),
-        "05_grid_with_boxes": new GridWithBoxesPuzzle(),
-        "06_parenthesis": new ParenthesisPuzzle(),
-        "08_maze": new MazePuzzle(),
-        "09_looping_graph": new LoopingGraph()
-    };
+            "01_min_max_median": new MinMaxMedianPuzzle(),
+            "02_checksum": new ChecksumPuzzle(),
+            "03_nice_words": new NiceWordsPuzzle(),
+            "04_string_manipulation": new StringManipulationPuzzle(),
+            "05_grid_with_boxes": new GridWithBoxesPuzzle(),
+            "06_parenthesis": new ParenthesisPuzzle(),
+            "07_house_robber": new HouseRobberPuzzle(),
+            "08_maze": new MazePuzzle(),
+            "09_looping_graph": new LoopingGraphPuzzle()
+        };
 
     static generatePuzzle(id: string): UserPuzzle {
         if (!this.idFound(id)) throw new Error("ID does not match to any puzzle modules");
