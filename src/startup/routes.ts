@@ -16,10 +16,10 @@ export default function (app) {
         res.header('Access-Control-Allow-Methods', '*');
         next();
     });
-    app.use('/hackathon/user', users);
-    app.use('/hackathon/login', login);
-    app.use('/hackathon/admin', admin);
-    app.use('/hackathon/puzzles', puzzles);
-    app.use('/hackathon/leaderboard', leaderboard);
+    app.use('/user', users);
+    app.use('/login', login);
+    app.use('/admin', admin);
+    app.use('/puzzles', puzzles);
+    app.use('/leaderboard', leaderboard);
     app.use(error);
 }
