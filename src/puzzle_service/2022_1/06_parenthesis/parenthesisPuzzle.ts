@@ -1,11 +1,11 @@
 import Randoms from "../utilities/randoms";
 import { PuzzleModuleInterface } from "../../puzzleModuleInterface";
 import { UserPuzzle } from "../../../models/userPuzzle";
-import OutputFormatter from "../utilities/output_formatter";
+import OutputFormatter, { Split } from "../utilities/output_formatter";
 
-export default class ParenthesisPuzzle implements PuzzleModuleInterface{
-    private openParenthesis = [ 's', 'k', 'f', 'h' ];
-    private closingParenthesis = [ 'p', 'r', 'm', 'c' ];
+export default class ParenthesisPuzzle implements PuzzleModuleInterface {
+    private openParenthesis = ['s', 'k', 'f', 'h'];
+    private closingParenthesis = ['p', 'r', 'm', 'c'];
     private stringLength = 30;
     private numberOfEntries = 2000;
 
@@ -33,7 +33,7 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface{
         }
 
         const formatter = new OutputFormatter()
-        const formattedOutput: string = formatter.entriesInRows(output)
+        const formattedOutput: string = formatter.entriesSplitByCharacter(output, Split.NEWLINE);
 
         return new UserPuzzle(this.puzzleId, formattedOutput, numberOfValidEntries.toString())
     }
@@ -127,7 +127,7 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface{
         const random = new Randoms();
 
         const first = random.randomInt(0, this.openParenthesis.length);
-        let second;
+        let second: number;
 
         do {
             second = random.randomInt(0, this.openParenthesis.length);

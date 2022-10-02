@@ -3,6 +3,7 @@ import { PuzzleModuleInterface } from "../../puzzleModuleInterface";
 import Constants from './constants';
 import { Command, getRandomCommand } from "./command_manager";
 import operations from './operations';
+import OutputFormatter, { Split } from "../utilities/output_formatter";
 
 export default class StringManipulationPuzzle implements PuzzleModuleInterface {
     puzzleId = "04_string_manipulation";
@@ -16,15 +17,18 @@ export default class StringManipulationPuzzle implements PuzzleModuleInterface {
         let s = Constants.START_STRING;
         for (let i = 0; i < Constants.JUMBLES; i++) {
             const command = getRandomCommand();
-            const result: { s: string, op_string: string } = this.perform_command_get_result(s, command);
+            const result: { s: string, op_string: string } = this.performCommandAndGetResult(s, command);
             s = result.s;
             command_list.push(result.op_string);
         }
 
-        return new UserPuzzle(this.puzzleId, command_list.join('\n'), s);
+        const formatter: OutputFormatter = new OutputFormatter();
+        const output: string = formatter.entriesSplitByCharacter(command_list, Split.COMMA);
+
+        return new UserPuzzle(this.puzzleId, output, s);
     }
 
-    private perform_command_get_result(s: string, command_type: Command): { s: string, op_string: string } {
+    private performCommandAndGetResult(s: string, command_type: Command): { s: string, op_string: string } {
         switch (command_type) {
             case Command.ROTATE:
                 const rotate_count = Math.floor(Math.random() * 9);

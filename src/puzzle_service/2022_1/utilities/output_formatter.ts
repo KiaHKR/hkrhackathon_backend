@@ -1,7 +1,13 @@
 export default class OutputFormatter {
 
-    entriesInRows(output: number[]) {
-        return output.join('\n');
+    entriesSplitByCharacter(output: any[], split: Split, split_string_format: SplitStringFormat = SplitStringFormat.UNSPACED) {
+        let split_string: string = split;
+
+        if (split_string_format == SplitStringFormat.SPACED) {
+            split_string = ' ' + split + ' ';
+        }
+
+        return output.join(split_string);
     }
 
     gridWithBoxesOutput(grid: string[][]) {
@@ -26,4 +32,17 @@ export default class OutputFormatter {
 
         return result;
     }
+}
+
+export enum Split {
+    SPACE = ' ',
+    NEWLINE = '\n',
+    COMMA = ',',
+    VERTICALBAR = '|',
+}
+
+// Control whether the split string should be surrounded by spaces or not
+export enum SplitStringFormat {
+    SPACED,
+    UNSPACED
 }

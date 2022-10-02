@@ -1,9 +1,9 @@
 import Randoms from "../utilities/randoms";
 import { PuzzleModuleInterface } from "../../puzzleModuleInterface";
 import { UserPuzzle } from "../../../models/userPuzzle";
-import OutputFormatter from "../utilities/output_formatter";
+import OutputFormatter, { Split } from "../utilities/output_formatter";
 
-export default class ChecksumPuzzle implements PuzzleModuleInterface{
+export default class ChecksumPuzzle implements PuzzleModuleInterface {
     puzzleId = "02_checksum";
     private numberOfEntries = 2000;
 
@@ -28,7 +28,7 @@ export default class ChecksumPuzzle implements PuzzleModuleInterface{
         }
 
         const formatter = new OutputFormatter();
-        const formattedOutput: string = formatter.entriesInRows(output);
+        const formattedOutput: string = formatter.entriesSplitByCharacter(output, Split.NEWLINE);
 
         return new UserPuzzle(this.puzzleId, formattedOutput, totalChecksum.toString());
     }

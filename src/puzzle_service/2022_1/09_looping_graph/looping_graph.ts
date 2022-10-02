@@ -3,7 +3,7 @@ import { UserPuzzle } from "../../../models/userPuzzle";
 import GraphGenerator from "./graph_generator";
 import Randoms from "../utilities/randoms";
 import GraphUtils from "./graph_utilities";
-import OutputFormatter from "../utilities/output_formatter";
+import OutputFormatter, { Split } from "../utilities/output_formatter";
 
 export default class LoopingGraphPuzzle implements PuzzleModuleInterface {
     puzzleId = "09_looping_graph";
@@ -40,7 +40,7 @@ export default class LoopingGraphPuzzle implements PuzzleModuleInterface {
             output.push(changedEntry);
         }
 
-        const formattedOutput = formatter.entriesInRows(output);
+        const formattedOutput = formatter.entriesSplitByCharacter(output, Split.NEWLINE);
 
 
         return new UserPuzzle(this.puzzleId, formattedOutput, numberOfLoopingGraphs.toString());

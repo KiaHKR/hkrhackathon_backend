@@ -1,5 +1,6 @@
 import { UserPuzzle } from "../../../models/userPuzzle";
 import { PuzzleModuleInterface } from "../../puzzleModuleInterface";
+import OutputFormatter, { Split, SplitStringFormat } from "../utilities/output_formatter";
 import Randoms from "../utilities/randoms";
 
 
@@ -23,7 +24,10 @@ export default class HouseRobberPuzzle implements PuzzleModuleInterface {
         }
         const answerValue = this.solve(houses);
 
-        return new UserPuzzle(this.puzzleId, houses.join('|'), answerValue.toString());
+        const formatter: OutputFormatter = new OutputFormatter();
+        const output: string = formatter.entriesSplitByCharacter(houses, Split.VERTICALBAR, SplitStringFormat.SPACED);
+
+        return new UserPuzzle(this.puzzleId, output, answerValue.toString());
     }
 
     private solve(nums: number[]): number {

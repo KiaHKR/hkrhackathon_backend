@@ -1,9 +1,9 @@
 import Randoms from "../utilities/randoms";
 import { PuzzleModuleInterface } from "../../puzzleModuleInterface";
 import { UserPuzzle } from "../../../models/userPuzzle";
-import OutputFormatter from "../utilities/output_formatter";
+import OutputFormatter, { Split } from "../utilities/output_formatter";
 
-export default class MinMaxMedianPuzzle implements PuzzleModuleInterface{
+export default class MinMaxMedianPuzzle implements PuzzleModuleInterface {
 
     puzzleId = "01_min_max_median"
     private numberOfEntries = 2000;
@@ -28,7 +28,7 @@ export default class MinMaxMedianPuzzle implements PuzzleModuleInterface{
         const answer = this.getAnswer(output);
 
         const formatter = new OutputFormatter();
-        const formattedOutput: string = formatter.entriesInRows(output);
+        const formattedOutput: string = formatter.entriesSplitByCharacter(output, Split.SPACE);
 
         return new UserPuzzle(this.puzzleId, formattedOutput, answer.toString());
     }

@@ -2,6 +2,7 @@ import { PuzzleModuleInterface } from "../../puzzleModuleInterface";
 import { UserPuzzle } from "../../../models/userPuzzle";
 import Constants from './constants';
 import * as generators from './string_generators';
+import OutputFormatter, { Split } from "../utilities/output_formatter";
 
 export default class NiceWordsPuzzle implements PuzzleModuleInterface {
 
@@ -23,6 +24,9 @@ export default class NiceWordsPuzzle implements PuzzleModuleInterface {
             }
         }
 
-        return new UserPuzzle(this.puzzleId, strings.join('\n'), nice_strings.toString());
+        const formatter: OutputFormatter = new OutputFormatter();
+        const output: string = formatter.entriesSplitByCharacter(strings, Split.NEWLINE);
+
+        return new UserPuzzle(this.puzzleId, output, nice_strings.toString());
     }
 }
