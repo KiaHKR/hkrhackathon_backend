@@ -41,37 +41,37 @@ router.get('/', auth, asyncMiddleware(async (req, res) => {
 * Takes name, email, password, and year as arguments.
 * Returns error or public user object.
 */
-// router.post('/', asyncMiddleware(async (req, res) => {
-//     const { error } = validateUserCreation(req.body);
-//     if (error) return res.status(400).json({ error: error.details[0].message });
-//
-//     let user = await userDB.getUserObject(req.body.email);
-//     if (user instanceof User) return res.status(400).json({ error: "Email already in use." });
-//
-//     user = new User(
-//         req.body.name,
-//         req.body.email,
-//         req.body.password,
-//         req.body.year
-//     );
-//
-//     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT));
-//     user.password = await bcrypt.hash(user.password, salt);
-//
-//     const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId();
-//     if (typeof currentPuzzleId !== 'string') return res.status(404).json({ error: "Next puzzle id not found." });
-//
-//     const userPuzzle = PuzzleHandler.generatePuzzle(currentPuzzleId as string);
-//     user.addPuzzle(userPuzzle);
-//
-//     await userDB.saveUserObject(user);
-//
-//     const publicUser = new PublicUser;
-//     publicUser.fromUser(user)
-//
-//     const token = user.generateAuthToken();
-//     res.status(200).setHeader('x-auth-header', token).json(publicUser);
-// }));
+router.post('/', asyncMiddleware(async (req, res) => {
+    const { error } = validateUserCreation(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    let user = await userDB.getUserObject(req.body.email);
+    if (user instanceof User) return res.status(400).json({ error: "Email already in use." });
+
+    user = new User(
+        req.body.name,
+        req.body.email,
+        req.body.password,
+        req.body.year
+    );
+
+    const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT));
+    user.password = await bcrypt.hash(user.password, salt);
+
+    const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId();
+    if (typeof currentPuzzleId !== 'string') return res.status(404).json({ error: "Next puzzle id not found." });
+
+    const userPuzzle = PuzzleHandler.generatePuzzle(currentPuzzleId as string);
+    user.addPuzzle(userPuzzle);
+
+    await userDB.saveUserObject(user);
+
+    const publicUser = new PublicUser;
+    publicUser.fromUser(user)
+
+    const token = user.generateAuthToken();
+    res.status(200).setHeader('x-auth-header', token).json(publicUser);
+}));
 
 /* DELETE | /user/
 * Removes the user for the db. Token is used to determine the user's email.
@@ -143,7 +143,7 @@ router.post('/password', auth, asyncMiddleware(async (req, res) => {
 
     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT));
     user.password = await bcrypt.hash(req.body.newPassword, salt);
-    
+
     await userDB.updateUserObject(user);
 
     const publicUser = new PublicUser;
