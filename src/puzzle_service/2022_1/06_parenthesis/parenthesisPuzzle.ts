@@ -25,11 +25,13 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface {
 
         for (let i = 0; i < this.numberOfEntries; i++) {
             if (random.coinFlip()) {
-                output.push(this.getValidEntry(entryLength));
+                // Joining the result of getValidEntry as we want output to contain whole strings
+                output.push(this.getValidEntry(entryLength).join(''));
                 numberOfValidEntries++;
             }
             else
-                output.push(this.getInvalidEntry(entryLength))
+                // Joining the result of getInvalidEntry as we want output to contain whole strings
+                output.push(this.getInvalidEntry(entryLength).join(''));
         }
 
         const formatter = new OutputFormatter()
@@ -48,7 +50,7 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface {
         return stringLength;
     }
 
-    private getValidEntry(entryLength: number) {
+    private getValidEntry(entryLength: number): string[] {
         const stack: string[] = [];
         const entry: string[] = [];
 
@@ -98,8 +100,8 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface {
         return this.closingParenthesis[index];
     }
 
-    private getInvalidEntry(entryLength: number) {
-        const methods: any[] = [
+    private getInvalidEntry(entryLength: number): string[] {
+        const methods: string[][] = [
             this.extraClosing(entryLength),
             this.extraOpening(entryLength),
             this.wrongClosure(entryLength)]
@@ -107,7 +109,7 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface {
         return methods[Math.floor(Math.random() * methods.length)];
     }
 
-    private extraClosing(entryLength: number) {
+    private extraClosing(entryLength: number): string[] {
         const entry = this.getValidEntry(entryLength - 2);
         entry.push(this.getRandomClosingParenthesis());
         entry.push(this.getRandomClosingParenthesis());
@@ -115,7 +117,7 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface {
         return entry;
     }
 
-    private extraOpening(entryLength: number) {
+    private extraOpening(entryLength: number): string[] {
         const entry = this.getValidEntry(entryLength - 2);
         entry.unshift(this.getRandomOpenParenthesis());
         entry.unshift(this.getRandomOpenParenthesis());
@@ -123,7 +125,7 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface {
         return entry;
     }
 
-    private wrongClosure(entryLength: number) {
+    private wrongClosure(entryLength: number): string[] {
         const random = new Randoms();
 
         const first = random.randomInt(0, this.openParenthesis.length);
