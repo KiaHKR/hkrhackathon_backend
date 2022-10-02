@@ -58,7 +58,7 @@ router.post('/', asyncMiddleware(async (req, res) => {
     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT));
     user.password = await bcrypt.hash(user.password, salt);
 
-    const currentPuzzleId: string | { error: string } = await puzzleDB.getNextPuzzleId();
+    const currentPuzzleId: string | { error: string } = await puzzleDB.getFirstPuzzleId();
     if (typeof currentPuzzleId !== 'string') return res.status(404).json({ error: "Next puzzle id not found." });
 
     const userPuzzle = PuzzleHandler.generatePuzzle(currentPuzzleId as string);

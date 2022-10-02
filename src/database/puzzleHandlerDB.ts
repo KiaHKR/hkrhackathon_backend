@@ -78,6 +78,14 @@ export class PuzzleHandlerDB {
         }
     }
 
+    async getFirstPuzzleId():Promise<string | { error: string; }> {
+        const orderArray = await dbpuzzleStorage.find();
+        for (const puzzle of orderArray[0].storage) {
+            if (puzzle.visibility)
+                return puzzle.puzzleid
+        }
+    }
+
     async getOrderArray(): Promise<any[] | { error: string; }> {
         // gets puzzle storage array
         const returnArray = []
