@@ -20,7 +20,7 @@ export default class NiceWordsPuzzle implements PuzzleModuleInterface {
                 strings.push(generators.generateNiceString());
                 nice_strings++;
             } else {
-                strings.push(generators.generateNiceString());
+                strings.push(generators.generateNotNiceString());
             }
         }
 
