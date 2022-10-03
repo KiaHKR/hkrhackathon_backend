@@ -1,5 +1,6 @@
 import { UserPuzzle } from "../../../models/userPuzzle";
 import { PuzzleModuleInterface } from "../../puzzleModuleInterface";
+import Constants from "./constants";
 import * as generation from './maze_generation';
 import solveMaze from './maze_solver';
 

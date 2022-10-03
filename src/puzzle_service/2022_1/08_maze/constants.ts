@@ -1,4 +1,4 @@
-class Constants {
+export default class Constants {
     static MAZE_OPTIONS = { width: 75, height: 75 };
     static WALL = 'X';
     static START = '*';
