@@ -17,10 +17,10 @@ export default class NiceWordsPuzzle implements PuzzleModuleInterface {
         let nice_strings = 0;
         for (let count = 0; count < Constants.NUMBER_OF_STRINGS; count++) {
             if (Math.random() > 0.5) {
-                generators.generateNiceString();
+                strings.push(generators.generateNiceString());
                 nice_strings++;
             } else {
-                generators.generateNiceString();
+                strings.push(generators.generateNiceString());
             }
         }
 
