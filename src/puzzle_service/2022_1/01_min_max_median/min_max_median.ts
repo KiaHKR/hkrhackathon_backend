@@ -6,7 +6,7 @@ import OutputFormatter, { Split } from "../utilities/output_formatter";
 export default class MinMaxMedianPuzzle implements PuzzleModuleInterface {
 
     puzzleId = "01_min_max_median"
-    private numberOfEntries = 2000;
+    private numberOfEntries = 2001;
     private lowerLimitForNumber = 100;
     private upperLimitForNumbers = 100000;
 
@@ -34,7 +34,7 @@ export default class MinMaxMedianPuzzle implements PuzzleModuleInterface {
     }
 
     private getAnswer(output: number[]) {
-        const sorted = [...output].sort();
+        const sorted = [...output].sort((n1,n2) => n1 - n2);
 
         const min = sorted[0];
         const max = sorted[sorted.length - 1];
