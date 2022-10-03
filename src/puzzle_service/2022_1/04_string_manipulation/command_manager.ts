@@ -6,11 +6,13 @@ enum Command {
     MIRROR
 }
 
-function getRandomCommand(): Command {
-    let randomIndex = Math.floor(Math.random() * Object.keys(Command).length);
-    let randomEnumValue = Object.values(Command)[randomIndex];
-
-    return Command[randomEnumValue];
+function getRandomCommand<Command>(): Command[keyof Command] {
+    const enumValues = Object.keys(Command)
+        .map(n => Number.parseInt(n))
+        .filter(n => !Number.isNaN(n)) as unknown as Command[keyof Command][]
+    const randomIndex = Math.floor(Math.random() * enumValues.length)
+    const randomEnumValue = enumValues[randomIndex]
+    return randomEnumValue;
 }
 
 
