@@ -1,5 +1,5 @@
 function isNice(s: string, vowels: string[], numbers: string[], min_vowel_in_row: number, min_length_to_not_need_numbers: number, min_number_count: number, min_unallowed_vowel_repeat: number): boolean {
-    return hasThreeVowels(s, vowels, min_vowel_in_row) && hasThreeSameVowels(s, vowels, min_unallowed_vowel_repeat) && isLongEnoughOrHasNumbers(s, numbers, min_length_to_not_need_numbers, min_number_count);
+    return hasThreeVowels(s, vowels, min_vowel_in_row) && !hasThreeSameVowels(s, vowels, min_unallowed_vowel_repeat) && isLongEnoughOrHasNumbers(s, numbers, min_length_to_not_need_numbers, min_number_count);
 }
 
 function hasThreeVowels(s: string, vowels: string[], min_vowel_in_row: number): boolean {
@@ -44,7 +44,7 @@ function charIsNumber(char: string, numbers: string[]): boolean {
 }
 
 function hasThreeSameVowels(s: string, vowels: string[], min_unallowed_vowel_repeat: number): boolean {
-    const repeated_vowels = vowels.map(value => value.repeat(3));
+    const repeated_vowels = vowels.map(value => value.repeat(min_unallowed_vowel_repeat));
 
     return repeated_vowels.some(str => s.includes(str));
 }

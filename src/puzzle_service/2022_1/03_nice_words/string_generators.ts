@@ -18,8 +18,7 @@ function generateNiceString(): string {
         // console.log(s);
 
         if (rules.hasThreeSameVowels(s, Constants.VOWELS, Constants.MIN_UNALLOWED_VOWEL_REPEAT)) {
-            let repeated_vowels = modifiers.getRepeatedVowels(s, Constants.VOWELS, Constants.MIN_UNALLOWED_VOWEL_REPEAT);
-            s = modifiers.removeSameVowels(s, repeated_vowels, Constants.NON_VOWELS, Constants.MIN_UNALLOWED_VOWEL_REPEAT);
+            s = modifiers.removeSameVowels(s, Constants.VOWELS, Constants.MIN_UNALLOWED_VOWEL_REPEAT);
         }
         // console.log(s);
         if (!rules.isLongEnoughOrHasNumbers(s, Constants.NUMBERS, Constants.MIN_LENGTH_TO_NOT_NEED_NUMBERS, Constants.MIN_NUMBER_COUNT)) {

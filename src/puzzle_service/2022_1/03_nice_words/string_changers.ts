@@ -32,16 +32,17 @@ function addNumberToShortString(s: string, numbers: string[]): string {
     return string_arr.join('');
 }
 
-function removeSameVowels(s: string, repeated_vowels: { char: string, start: number, end: number }[], non_vowels: string[], min_unallowed_vowel_repeat: number): string {
-    // Each item has char, start, and end indexes
-    let string_arr = s.split('');
-    for (const illegal_string of repeated_vowels) {
-        for (let index = illegal_string.start; index < illegal_string.end; index += min_unallowed_vowel_repeat) {
-            string_arr[index] = non_vowels[Math.floor(Math.random() * non_vowels.length)];
-        }
-    }
+function removeSameVowels(s: string, vowels: string[], min_unallowed_vowel_repeat: number): string {
+    const repeated_vowels = vowels.map(value => value.repeat(min_unallowed_vowel_repeat));
 
-    return string_arr.join('');
+    // Each item has char, start, and end indexes
+    do {
+        for (const repeat of repeated_vowels) {
+            s = s.replace(repeat, "ffc");
+        }
+    } while (repeated_vowels.some(str => s.includes(str)));
+
+    return s;
 }
 
 function getRepeatedVowels(s: string, vowels: string[], min_unallowed_vowel_repeat: number) {
