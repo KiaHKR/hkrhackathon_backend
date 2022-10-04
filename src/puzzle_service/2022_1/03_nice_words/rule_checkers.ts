@@ -1,5 +1,5 @@
 function isNice(s: string, vowels: string[], numbers: string[], min_vowel_in_row: number, min_length_to_not_need_numbers: number, min_number_count: number, min_unallowed_vowel_repeat: number): boolean {
-    return hasThreeVowels(s, vowels, min_vowel_in_row) && doesNotHaveThreeSameVowels(s, vowels, min_unallowed_vowel_repeat) && isLongEnoughOrHasNumbers(s, numbers, min_length_to_not_need_numbers, min_number_count);
+    return hasThreeVowels(s, vowels, min_vowel_in_row) && hasThreeSameVowels(s, vowels, min_unallowed_vowel_repeat) && isLongEnoughOrHasNumbers(s, numbers, min_length_to_not_need_numbers, min_number_count);
 }
 
 function hasThreeVowels(s: string, vowels: string[], min_vowel_in_row: number): boolean {
@@ -43,22 +43,10 @@ function charIsNumber(char: string, numbers: string[]): boolean {
     return numbers.includes(char);
 }
 
-function doesNotHaveThreeSameVowels(s: string, vowels: string[], min_unallowed_vowel_repeat: number): boolean {
-    // Map the vowel constants into a map of counters
-    let vowel_counters = new Map(vowels.map(e => [e, 0]));
-    for (const char of s) {
-        if (charIsVowel(char, vowels)) {
-            vowel_counters[char]++;
-        } else {
-            Object.keys(vowel_counters).forEach(key => vowel_counters[key] = 0);
-        }
+function hasThreeSameVowels(s: string, vowels: string[], min_unallowed_vowel_repeat: number): boolean {
+    const repeated_vowels = vowels.map(value => value.repeat(3));
 
-        if (vowel_counters[char] == min_unallowed_vowel_repeat) {
-            return false;
-        }
-    }
-    // console.log("DOES NOT HAVE THREE SAME VOWELS IS FALSE");
-    return true;
+    return repeated_vowels.some(str => s.includes(str));
 }
 
-export { isNice, hasThreeVowels, charIsVowel, isLongEnoughOrHasNumbers, charIsNumber, doesNotHaveThreeSameVowels };
+export { isNice, hasThreeVowels, charIsVowel, isLongEnoughOrHasNumbers, charIsNumber, hasThreeSameVowels };
