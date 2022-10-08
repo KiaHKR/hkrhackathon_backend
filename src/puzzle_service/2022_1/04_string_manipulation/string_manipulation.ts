@@ -6,7 +6,7 @@ import operations from './operations';
 import OutputFormatter, { Split } from "../utilities/output_formatter";
 
 export default class StringManipulationPuzzle implements PuzzleModuleInterface {
-    puzzleId = "04_string_manipulation";
+    puzzleId = "seating_arrangements";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string; } {
         return (correctAnswer === guessAnswer) ? { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" };

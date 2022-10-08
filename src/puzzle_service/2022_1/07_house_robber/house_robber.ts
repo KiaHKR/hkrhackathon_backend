@@ -5,7 +5,7 @@ import Randoms from "../utilities/randoms";
 
 
 export default class HouseRobberPuzzle implements PuzzleModuleInterface {
-    puzzleId: string = "07_house_robber";
+    puzzleId: string = "snack_stealing";
 
     private numOfHouses = 2000;
     private maxHouseVal = 100;

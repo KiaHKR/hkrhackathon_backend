@@ -9,20 +9,22 @@ import ParenthesisPuzzle from "./2022_1/06_parenthesis/parenthesisPuzzle";
 import MazePuzzle from "./2022_1/08_maze/maze";
 import LoopingGraphPuzzle from "./2022_1/09_looping_graph/looping_graph";
 import HouseRobberPuzzle from "./2022_1/07_house_robber/house_robber";
+import IntroPuzzle from "./2022_1/00_intro/intro";
 
 export default class PuzzleHandler {
     private static puzzleClasses: {
         [puzzleId: string]: PuzzleModuleInterface
     } = {
-            "01_min_max_median": new MinMaxMedianPuzzle(),
-            "02_checksum": new ChecksumPuzzle(),
-            "03_nice_words": new NiceWordsPuzzle(),
-            "04_string_manipulation": new StringManipulationPuzzle(),
-            "05_grid_with_boxes": new GridWithBoxesPuzzle(),
-            "06_parenthesis": new ParenthesisPuzzle(),
-            "07_house_robber": new HouseRobberPuzzle(),
-            "08_maze": new MazePuzzle(),
-            "09_looping_graph": new LoopingGraphPuzzle()
+            "spoon_serials": new MinMaxMedianPuzzle(),
+            "intro": new IntroPuzzle(),
+            "coffee_weights": new ChecksumPuzzle(),
+            "nice_recipes": new NiceWordsPuzzle(),
+            "seating_arrangements": new StringManipulationPuzzle(),
+            "coffee_boxes": new GridWithBoxesPuzzle(),
+            "baking_instructions": new ParenthesisPuzzle(),
+            "snack_stealing": new HouseRobberPuzzle(),
+            "store_map": new MazePuzzle(),
+            "infinity_instructions": new LoopingGraphPuzzle()
         };
 
     static generatePuzzle(id: string): UserPuzzle {

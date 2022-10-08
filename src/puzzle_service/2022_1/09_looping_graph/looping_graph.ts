@@ -6,7 +6,7 @@ import GraphUtils from "./graph_utilities";
 import OutputFormatter, { Split } from "../utilities/output_formatter";
 
 export default class LoopingGraphPuzzle implements PuzzleModuleInterface {
-    puzzleId = "09_looping_graph";
+    puzzleId = "infinity_instructions";
 
     private symbolsToUse =
         ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",

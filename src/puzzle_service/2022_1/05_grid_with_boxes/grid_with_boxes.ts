@@ -12,7 +12,7 @@ export default class GridWithBoxesPuzzle implements PuzzleModuleInterface{
     private minCountOfBoxes = 250;
     private maxCountOfBoxes = 350;
 
-    puzzleId = "05_grid_with_boxes";
+    puzzleId = "coffee_boxes";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string } {
         return (correctAnswer === guessAnswer) ?

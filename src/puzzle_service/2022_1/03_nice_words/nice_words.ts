@@ -6,7 +6,7 @@ import OutputFormatter, { Split } from "../utilities/output_formatter";
 
 export default class NiceWordsPuzzle implements PuzzleModuleInterface {
 
-    puzzleId = "03_nice_words";
+    puzzleId = "nice_recipes";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string; } {
         return (correctAnswer === guessAnswer) ? { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" };

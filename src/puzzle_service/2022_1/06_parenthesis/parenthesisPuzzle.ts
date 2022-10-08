@@ -9,7 +9,7 @@ export default class ParenthesisPuzzle implements PuzzleModuleInterface {
     private stringLength = 30;
     private numberOfEntries = 2000;
 
-    puzzleId = "06_parenthesis";
+    puzzleId = "baking_instructions";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string } {
         return (correctAnswer === guessAnswer) ?

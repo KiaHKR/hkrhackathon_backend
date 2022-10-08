@@ -5,7 +5,7 @@ import OutputFormatter, { Split } from "../utilities/output_formatter";
 
 export default class MinMaxMedianPuzzle implements PuzzleModuleInterface {
 
-    puzzleId = "01_min_max_median"
+    puzzleId = "spoon_serials"
     private numberOfEntries = 2001;
     private lowerLimitForNumber = 100;
     private upperLimitForNumbers = 100000;

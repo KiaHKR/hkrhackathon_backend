@@ -5,7 +5,7 @@ import * as generation from './maze_generation';
 import solveMaze from './maze_solver';
 
 export default class MazePuzzle implements PuzzleModuleInterface {
-    puzzleId: string = "08_maze";
+    puzzleId: string = "store_map";
 
     checkAnswer(correctAnswer: string, guessAnswer: string): { answer: boolean; information: string; } {
         return (correctAnswer === guessAnswer) ? { answer: true, information: "Correct" } : { answer: false, information: "Incorrect" };
