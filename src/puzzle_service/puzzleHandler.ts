@@ -10,6 +10,7 @@ import MazePuzzle from "./2022_1/08_maze/maze";
 import LoopingGraphPuzzle from "./2022_1/09_looping_graph/looping_graph";
 import HouseRobberPuzzle from "./2022_1/07_house_robber/house_robber";
 import IntroPuzzle from "./2022_1/00_intro/intro";
+import OutroPuzzle from "./2022_1/outro/outro";
 
 export default class PuzzleHandler {
     private static puzzleClasses: {
@@ -24,7 +25,8 @@ export default class PuzzleHandler {
             "baking_instructions": new ParenthesisPuzzle(),
             "snack_stealing": new HouseRobberPuzzle(),
             "store_map": new MazePuzzle(),
-            "infinity_instructions": new LoopingGraphPuzzle()
+            "infinity_instructions": new LoopingGraphPuzzle(),
+            "outro": new OutroPuzzle()
         };
 
     static generatePuzzle(id: string): UserPuzzle {
